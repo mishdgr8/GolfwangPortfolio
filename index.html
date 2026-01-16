@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golfwang0x | Web3 Research & Content</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #CCFF00; /* Cyber Lime */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* Vertical Sidebar Text Styling - Restored to original subtle state */
+        .sidebar-text {
+            font-size: 8rem;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -0.05em;
+            -webkit-text-stroke: 1px rgba(204, 255, 0, 0.1);
+            color: transparent;
+            text-transform: uppercase;
+            white-space: nowrap;
+            pointer-events: auto;
+            user-select: none;
+            z-index: 5;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: default;
+        }
+
+        .sidebar-text:hover {
+            -webkit-text-stroke: 1px var(--accent);
+            color: rgba(204, 255, 0, 0.05);
+            text-shadow: 0 0 30px rgba(204, 255, 0, 0.4);
+            filter: drop-shadow(0 0 10px var(--accent));
+        }
+
+        /* Hero Footer Text - Adjusted to be subtle/faded like the sidebar */
+        .text-huge {
+            font-size: clamp(2.5rem, 14vw, 11rem);
+            line-height: 1;
+            letter-spacing: -0.06em;
+            -webkit-text-stroke: 1px rgba(204, 255, 0, 0.1);
+            color: transparent;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            font-weight: 900;
+        }
+        .text-huge:hover {
+            -webkit-text-stroke: 1px var(--accent);
+            color: rgba(204, 255, 0, 0.05); /* Faded fill instead of solid */
+            text-shadow: 0 0 30px rgba(204, 255, 0, 0.3);
+            filter: drop-shadow(0 0 10px var(--accent));
+            opacity: 1;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .hover-card {
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .hover-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px -20px rgba(204, 255, 0, 0.15);
+        }
+        .accent-glow {
+            box-shadow: 0 0 20px rgba(204, 255, 0, 0.2);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes reveal {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .reveal {
+            animation: reveal 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        /* Grainy Overlay */
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1a1a1a;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.12.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div class="grain"></div>
+    <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
