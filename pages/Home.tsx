@@ -55,19 +55,18 @@ const Home: React.FC = () => {
       {/* 
         VERTICAL SIDEBAR TEXT 
       */}
-      <div className="fixed left-0 top-0 h-full w-24 hidden xl:flex flex-col items-center justify-start z-20 pointer-events-none pt-48 overflow-hidden">
+      <div className="fixed left-0 top-0 h-full w-24 hidden xl:flex flex-col items-center justify-start z-20 pointer-events-none pt-24 overflow-hidden">
         <div className="sidebar-text rotate-180 pointer-events-auto" style={{ writingMode: 'vertical-rl' }}>
           GOLFWANG0X
         </div>
       </div>
-      <div className="fixed right-0 bottom-0 h-full w-24 hidden xl:flex flex-col items-center justify-end z-20 pointer-events-none pb-48 overflow-hidden">
+      <div className="fixed right-0 bottom-0 h-full w-24 hidden xl:flex flex-col items-center justify-end z-20 pointer-events-none pb-24 overflow-hidden">
         <div className="sidebar-text pointer-events-auto" style={{ writingMode: 'vertical-rl' }}>
           GOLFWANG0X
         </div>
       </div>
 
-      {/* DRAMATIC HERO SECTION */}
-      <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 pt-12 pb-24 z-10">
+      <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 pt-12 pb-6 md:pb-24 z-10">
 
         {/* Adjusted Role Tags Position to avoid obstruction */}
         <div className="absolute top-[10%] left-[8%] hidden lg:flex items-center space-x-3 bg-white/5 backdrop-blur-xl border border-white/10 px-5 py-2 rounded-full animate-float cursor-crosshair">
@@ -101,7 +100,7 @@ const Home: React.FC = () => {
           <div className="max-w-md reveal text-right self-end" style={{ animationDelay: '0.2s' }}>
             <div className="w-20 h-1 bg-[#CCFF00] mb-8 ml-auto"></div>
             <p className="text-white/40 text-2xl md:text-3xl leading-relaxed font-medium italic tracking-tight">
-              "Decoding the modular endgame with developer precision."
+              "Channeling my creativity and passion through my content and web development."
             </p>
           </div>
         </div>
@@ -109,7 +108,7 @@ const Home: React.FC = () => {
         {/* About Me Card Showcase */}
         <div className="relative w-full max-w-7xl px-4 flex flex-col items-center">
 
-          <Link to="/about" className="relative block w-full aspect-[21/9] rounded-[3rem] overflow-hidden group shadow-2xl reveal border border-white/10 transition-all duration-700 hover:border-[#CCFF00]/40 z-10 hover:z-[60]" style={{ animationDelay: '0.4s' }}>
+          <Link to="/about" className="relative block w-full aspect-[4/5] md:aspect-[16/9] lg:aspect-[21/9] rounded-[3rem] overflow-hidden group shadow-2xl reveal border border-white/10 transition-all duration-700 hover:border-[#CCFF00]/40 z-10 hover:z-[60]" style={{ animationDelay: '0.4s' }}>
             <img
               src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000"
               alt="The Architect"
@@ -131,7 +130,7 @@ const Home: React.FC = () => {
                     ABOUT_ME
                   </span>
                 </div>
-                <h3 className="text-4xl md:text-6xl font-black text-white leading-none tracking-tighter mb-4 uppercase">
+                <h3 className="text-2xl md:text-6xl font-black text-white leading-none tracking-tighter mb-4 uppercase">
                   The Architect <br /> behind the Signal
                 </h3>
                 <p className="text-white/50 text-xl font-medium max-w-lg leading-snug">Web3 researcher, technical content strategist, and security analyst dedicated to the modular endgame.</p>
@@ -206,8 +205,7 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        {/* The Iconic Name Footer */}
-        <div className="w-full mt-48 overflow-hidden border-t border-white/5 pt-16">
+        <div className="w-full mt-8 md:mt-48 overflow-hidden border-t border-white/5 pt-4 md:pt-16">
           <div className="reveal">
             <h2 className="text-huge text-center uppercase tracking-tighter">
               GOLFWANG0X
@@ -217,7 +215,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Global Telemetry Bar */}
-      <div className="max-w-7xl mx-auto px-6 mb-24 hidden lg:grid grid-cols-5 gap-12 pt-12 border-t border-white/5 reveal" style={{ animationDelay: '1s' }}>
+      <div className="max-w-7xl mx-auto px-6 xl:px-32 mb-24 hidden lg:flex justify-between items-start pt-12 border-t border-white/5 reveal" style={{ animationDelay: '1s' }}>
         {[
           { label: 'Replies', val: '42.7K', icon: MessageCircle },
           { label: 'Bookmarks', val: '4.6K', icon: Zap },
@@ -253,7 +251,7 @@ const Home: React.FC = () => {
                 </div>
                 <span className="text-[11px] font-black text-white/40 tracking-[0.4em] uppercase">High Performance Feed</span>
               </div>
-              <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9]">Top Signal <br /><span className="text-white/20">Archive.</span></h2>
+              <h2 className="text-3xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9]">Top Signal <br /><span className="text-white/20">Archive.</span></h2>
             </div>
             <Link to="/tweets" className="hidden md:flex items-center px-8 py-4 rounded-full border border-white/10 text-[11px] font-black text-white/40 hover:text-white hover:border-[#CCFF00]/50 transition-all uppercase tracking-[0.3em] group backdrop-blur-md">
               ALL TRANSMISSIONS <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform text-[#CCFF00]" />
@@ -312,7 +310,7 @@ const Home: React.FC = () => {
               <div className="w-16 h-[2px] bg-[#CCFF00]"></div>
               <span className="text-[11px] font-black text-white/40 tracking-[0.5em] uppercase">Intelligence Ledger</span>
             </div>
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-[0.85]">Analytical <br /><span className="text-white/20">Breakdowns.</span></h2>
+            <h2 className="text-3xl md:text-6xl font-black tracking-tighter uppercase leading-[0.85]">Analytical <br /><span className="text-white/20">Breakdowns.</span></h2>
           </div>
 
           <div className="flex flex-col">
@@ -361,7 +359,7 @@ const Home: React.FC = () => {
                 </div>
                 <span className="text-[11px] font-black text-white/40 tracking-[0.5em] uppercase">Deep Intelligence</span>
               </div>
-              <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-[0.85]">Medium <br /><span className="text-white/20">Research.</span></h2>
+              <h2 className="text-3xl md:text-6xl font-black tracking-tighter uppercase leading-[0.85]">Medium <br /><span className="text-white/20">Research.</span></h2>
             </div>
             <Link to="/research" className="hidden md:flex items-center px-8 py-4 rounded-full border border-white/10 text-[11px] font-black text-white/40 hover:text-white hover:border-[#CCFF00]/50 transition-all uppercase tracking-[0.3em] group backdrop-blur-md">
               VIEW ARCHIVE <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform text-[#CCFF00]" />
@@ -426,7 +424,7 @@ const Home: React.FC = () => {
           <div className="inline-block px-6 py-3 rounded-full bg-[#CCFF00]/10 border border-[#CCFF00]/30 text-[11px] font-black text-[#CCFF00] uppercase tracking-[0.4em] mb-12 animate-pulse">
             SYSTEMS ONLINE / OPEN_FOR_OPS
           </div>
-          <h2 className="text-6xl md:text-9xl font-black tracking-tighter mb-12 md:mb-16 leading-[0.8] uppercase">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-9xl font-black tracking-tighter mb-12 md:mb-16 leading-[0.8] uppercase">
             Start the <br /> <span className="text-[#CCFF00] drop-shadow-[0_0_50px_rgba(204,255,0,0.4)]">Transmission.</span>
           </h2>
           <p className="text-white/40 mb-16 md:mb-24 text-2xl md:text-4xl font-medium max-w-3xl mx-auto leading-tight italic tracking-tighter">
