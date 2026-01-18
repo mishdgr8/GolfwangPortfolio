@@ -124,28 +124,24 @@ const Home: React.FC = () => {
                 Ensures write-up is left-aligned and NOT behind the bottom-left telemetry shard.
                 Arrow is moved BELOW the text.
               */}
-            <div className="absolute top-6 left-4 right-4 md:top-12 md:left-12 md:right-12 flex flex-col items-start gap-4 md:gap-8 z-30 pointer-events-none">
-              <div className="max-w-2xl text-left pointer-events-auto">
-                <div className="flex items-center space-x-3 mb-4">
-                  <span className="text-[#CCFF00] text-[10px] font-black tracking-[0.4em] uppercase bg-black/80 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#CCFF00]/20">
+            <div className="absolute top-4 left-3 right-3 md:top-12 md:left-12 md:right-12 flex flex-col items-start gap-3 md:gap-8 z-30">
+              <div className="max-w-2xl text-left">
+                <div className="flex items-center space-x-2 mb-2 md:mb-4">
+                  <span className="text-[#CCFF00] text-[8px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.4em] uppercase bg-black/80 backdrop-blur-md px-2 py-1 md:px-4 md:py-1.5 rounded-full border border-[#CCFF00]/20">
                     ABOUT_ME
                   </span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl md:text-6xl font-black text-white leading-tight tracking-tighter mb-3 md:mb-4 uppercase">
+                <h3 className="text-xl sm:text-2xl md:text-6xl font-black text-white leading-tight tracking-tighter mb-2 md:mb-4 uppercase">
                   The Architect <br /> behind the Signal
                 </h3>
-                <p className="text-white/50 text-base md:text-xl font-medium max-w-lg leading-relaxed mb-5 md:mb-6">Web3 researcher, technical content strategist, and security analyst dedicated to the modular endgame.</p>
-                <div className="flex flex-wrap items-center gap-3 md:gap-4 relative z-30">
-                  <a href="mailto:golfwang0x@gmail.com" target="_blank" rel="noopener noreferrer" className="px-5 py-2.5 md:px-8 md:py-3 bg-[#CCFF00] text-black text-sm md:text-sm font-black uppercase tracking-wider rounded-full hover:scale-105 transition-transform flex items-center shadow-[0_0_20px_rgba(204,255,0,0.3)]">
-                    Contact Me
+                <p className="text-white/50 text-sm md:text-xl font-medium max-w-lg leading-relaxed mb-3 md:mb-6">Web3 researcher, technical content strategist, and security analyst dedicated to the modular endgame.</p>
+                <div className="flex flex-wrap items-center gap-2 md:gap-4 relative z-40 pointer-events-auto">
+                  <a href="mailto:golfwang0x@gmail.com" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 md:px-8 md:py-3 bg-[#CCFF00] text-black text-[10px] md:text-sm font-black uppercase tracking-wider rounded-full hover:scale-105 transition-transform flex items-center shadow-[0_0_20px_rgba(204,255,0,0.3)]">
+                    Contact
                   </a>
-                  <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="px-5 py-2.5 md:px-8 md:py-3 bg-black/80 border border-[#CCFF00] text-[#CCFF00] text-sm md:text-sm font-black uppercase tracking-wider rounded-full hover:bg-[#CCFF00]/10 transition-colors flex items-center shadow-[0_0_15px_rgba(204,255,0,0.2)]">
-                    <Twitter className="w-4 h-4 mr-2" /> X
+                  <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 md:px-8 md:py-3 bg-black/80 border border-[#CCFF00] text-[#CCFF00] text-[10px] md:text-sm font-black uppercase tracking-wider rounded-full hover:bg-[#CCFF00]/10 transition-colors flex items-center shadow-[0_0_15px_rgba(204,255,0,0.2)]">
+                    <Twitter className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" /> X
                   </a>
-                  {/* Mobile: Arrow indicator to show card is clickable */}
-                  <div className="md:hidden p-2.5 glass border border-white/20 text-white rounded-full flex items-center justify-center">
-                    <ArrowRight className="w-5 h-5" />
-                  </div>
                   {/* Desktop: Telegram button */}
                   <a href="https://t.me/mishdgr8" target="_blank" rel="noopener noreferrer" className="hidden md:flex p-3 glass border border-white/10 text-white rounded-full hover:bg-white/10 transition-colors items-center justify-center">
                     <Send className="w-5 h-5" />
