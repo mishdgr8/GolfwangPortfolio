@@ -142,6 +142,10 @@ const Home: React.FC = () => {
                   <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 md:px-8 md:py-3 bg-black/80 border border-[#CCFF00] text-[#CCFF00] text-[10px] md:text-sm font-black uppercase tracking-wider rounded-full hover:bg-[#CCFF00]/10 transition-colors flex items-center shadow-[0_0_15px_rgba(204,255,0,0.2)]">
                     <Twitter className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" /> X
                   </a>
+                  {/* Mobile: Arrow to indicate card is clickable */}
+                  <div className="md:hidden p-1.5 bg-white/10 border border-white/20 text-white rounded-full flex items-center justify-center">
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
                   {/* Desktop: Telegram button */}
                   <a href="https://t.me/mishdgr8" target="_blank" rel="noopener noreferrer" className="hidden md:flex p-3 glass border border-white/10 text-white rounded-full hover:bg-white/10 transition-colors items-center justify-center">
                     <Send className="w-5 h-5" />
