@@ -108,7 +108,7 @@ const Home: React.FC = () => {
         {/* About Me Card Showcase */}
         <div className="relative w-full max-w-7xl px-4 flex flex-col items-center">
 
-          <div className="relative block w-full aspect-[3/4] sm:aspect-[4/5] md:aspect-[16/9] lg:aspect-[21/9] rounded-[2rem] md:rounded-[3rem] overflow-hidden group shadow-2xl reveal border border-white/10 transition-all duration-700 hover:border-[#CCFF00]/40 z-10 hover:z-[60]" style={{ animationDelay: '0.4s' }}>
+          <div className="relative block w-full aspect-square sm:aspect-[5/6] md:aspect-[16/9] lg:aspect-[21/9] rounded-[2rem] md:rounded-[3rem] overflow-hidden group shadow-2xl reveal border border-white/10 transition-all duration-700 hover:border-[#CCFF00]/40 z-10 hover:z-[60]" style={{ animationDelay: '0.4s' }}>
             <Link to="/about" className="absolute inset-0 z-20 cursor-pointer" aria-label="Go to About page"></Link>
             <img
               src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000"
@@ -131,27 +131,27 @@ const Home: React.FC = () => {
                     ABOUT_ME
                   </span>
                 </div>
-                <h3 className="text-xl sm:text-2xl md:text-6xl font-black text-white leading-none tracking-tighter mb-2 md:mb-4 uppercase">
+                <h3 className="text-2xl sm:text-3xl md:text-6xl font-black text-white leading-tight tracking-tighter mb-3 md:mb-4 uppercase">
                   The Architect <br /> behind the Signal
                 </h3>
-                <p className="text-white/50 text-sm md:text-xl font-medium max-w-lg leading-snug mb-4 md:mb-6">Web3 researcher, technical content strategist, and security analyst dedicated to the modular endgame.</p>
-                <div className="flex flex-wrap items-center gap-2 md:gap-4 relative z-30">
-                  <a href="mailto:golfwang0x@gmail.com" target="_blank" rel="noopener noreferrer" className="px-4 py-2 md:px-8 md:py-3 bg-[#CCFF00] text-black text-xs md:text-sm font-black uppercase tracking-wider rounded-full hover:scale-105 transition-transform flex items-center shadow-[0_0_20px_rgba(204,255,0,0.3)]">
+                <p className="text-white/50 text-base md:text-xl font-medium max-w-lg leading-relaxed mb-5 md:mb-6">Web3 researcher, technical content strategist, and security analyst dedicated to the modular endgame.</p>
+                <div className="flex flex-wrap items-center gap-3 md:gap-4 relative z-30">
+                  <a href="mailto:golfwang0x@gmail.com" target="_blank" rel="noopener noreferrer" className="px-5 py-2.5 md:px-8 md:py-3 bg-[#CCFF00] text-black text-sm md:text-sm font-black uppercase tracking-wider rounded-full hover:scale-105 transition-transform flex items-center shadow-[0_0_20px_rgba(204,255,0,0.3)]">
                     Contact Me
                   </a>
-                  <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="px-4 py-2 md:px-8 md:py-3 bg-black/80 border border-[#CCFF00] text-[#CCFF00] text-xs md:text-sm font-black uppercase tracking-wider rounded-full hover:bg-[#CCFF00]/10 transition-colors flex items-center shadow-[0_0_15px_rgba(204,255,0,0.2)]">
-                    <Twitter className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" /> X
+                  <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="px-5 py-2.5 md:px-8 md:py-3 bg-black/80 border border-[#CCFF00] text-[#CCFF00] text-sm md:text-sm font-black uppercase tracking-wider rounded-full hover:bg-[#CCFF00]/10 transition-colors flex items-center shadow-[0_0_15px_rgba(204,255,0,0.2)]">
+                    <Twitter className="w-4 h-4 md:w-4 md:h-4 mr-2" /> X
                   </a>
-                  <a href="https://t.me/mishdgr8" target="_blank" rel="noopener noreferrer" className="p-2 md:p-3 glass border border-white/10 text-white rounded-full hover:bg-white/10 transition-colors flex items-center justify-center">
-                    <Send className="w-4 h-4 md:w-5 md:h-5" />
+                  <a href="https://t.me/mishdgr8" target="_blank" rel="noopener noreferrer" className="p-2.5 md:p-3 glass border border-white/10 text-white rounded-full hover:bg-white/10 transition-colors flex items-center justify-center">
+                    <Send className="w-5 h-5 md:w-5 md:h-5" />
                   </a>
                 </div>
               </div>
 
               {/* Learn More Button */}
-              <Link to="/about" className="pointer-events-auto px-4 py-2 md:px-8 md:py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-[#CCFF00] hover:text-black hover:border-transparent transition-all duration-300 rounded-full flex items-center space-x-2 md:space-x-3 group/btn">
-                <span className="font-black tracking-[0.1em] md:tracking-[0.2em] uppercase text-[10px] md:text-xs">LEARN MORE</span>
-                <ArrowRight className="w-3 h-3 md:w-4 md:h-4 group-hover/btn:translate-x-1 transition-transform" />
+              <Link to="/about" className="pointer-events-auto px-5 py-2.5 md:px-8 md:py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-[#CCFF00] hover:text-black hover:border-transparent transition-all duration-300 rounded-full flex items-center space-x-2 md:space-x-3 group/btn">
+                <span className="font-black tracking-[0.15em] md:tracking-[0.2em] uppercase text-xs md:text-xs">LEARN MORE</span>
+                <ArrowRight className="w-4 h-4 md:w-4 md:h-4 group-hover/btn:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>
@@ -271,7 +271,56 @@ const Home: React.FC = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+          {/* Mobile: Show 3 cards */}
+          <div className="grid grid-cols-1 gap-6 md:hidden">
+            {topSignal.slice(0, 3).map((tweet, idx) => (
+              <Link
+                key={tweet.id}
+                to={`/content/${tweet.id}`}
+                className="group relative block reveal"
+                style={{ animationDelay: `${idx * 0.05}s` }}
+              >
+                <div className="glass p-6 rounded-[1.5rem] border border-white/5 hover-card h-full flex flex-col justify-between overflow-hidden relative min-h-[280px]">
+                  <div>
+                    <div className="flex justify-between items-start mb-6">
+                      <span className="text-4xl font-black text-[#CCFF00]/10 group-hover:text-[#CCFF00] transition-all duration-500">
+                        0{idx + 1}
+                      </span>
+                      <div className="w-10 h-10 rounded-xl bg-white/5 group-hover:bg-[#CCFF00] flex items-center justify-center transition-all duration-500">
+                        <TrendingUp className="w-5 h-5 text-white/20 group-hover:text-black" />
+                      </div>
+                    </div>
+                    <h3 className="text-xl font-black mb-4 group-hover:text-[#CCFF00] transition-colors leading-[1.1] tracking-tighter uppercase">
+                      {tweet.title}
+                    </h3>
+                    <p className="text-white/40 mb-6 line-clamp-2 text-sm leading-relaxed font-medium">
+                      {tweet.excerpt}
+                    </p>
+                  </div>
+                  <div className="flex items-center space-x-4 pt-4 border-t border-white/10 mt-auto">
+                    {['Views', 'Likes'].map((label, i) => {
+                      const metric = tweet.metrics?.find(m => m.label === label);
+                      return metric ? (
+                        <div key={i}>
+                          <p className="text-[9px] uppercase tracking-wider text-white/20 font-black">{metric.label}</p>
+                          <p className="text-lg font-black text-white/80">{metric.value}</p>
+                        </div>
+                      ) : null;
+                    })}
+                  </div>
+                </div>
+              </Link>
+            ))}
+            <Link
+              to="/tweets"
+              className="flex items-center justify-center py-4 px-6 glass border border-[#CCFF00]/30 rounded-2xl text-[#CCFF00] font-black uppercase text-sm tracking-wider hover:bg-[#CCFF00]/10 transition-colors"
+            >
+              See All Signals <ArrowRight className="w-4 h-4 ml-2" />
+            </Link>
+          </div>
+
+          {/* Desktop: Show all 6 cards */}
+          <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
             {topSignal.map((tweet, idx) => (
               <Link
                 key={tweet.id}
@@ -326,7 +375,37 @@ const Home: React.FC = () => {
             <h2 className="text-3xl md:text-6xl font-black tracking-tighter uppercase leading-[0.85]">Analytical <br /><span className="text-white/20">Breakdowns.</span></h2>
           </div>
 
-          <div className="flex flex-col">
+          {/* Mobile: Show 3 posts */}
+          <div className="flex flex-col md:hidden">
+            {analyticalPosts.slice(0, 3).map((post, idx) => (
+              <Link
+                key={post.id}
+                to={`/content/${post.id}`}
+                className="group flex flex-col p-6 border-b border-white/5 hover:bg-white/[0.02] transition-all relative overflow-hidden reveal"
+                style={{ animationDelay: `${idx * 0.1}s` }}
+              >
+                <div className="absolute left-0 top-0 w-1 h-0 bg-[#CCFF00] group-hover:h-full transition-all duration-500"></div>
+                <span className="text-[10px] font-black text-white/10 tracking-widest uppercase mb-2 font-mono">
+                  GT-{idx + 1}
+                </span>
+                <h3 className="text-lg font-black text-white group-hover:text-[#CCFF00] transition-all tracking-tighter mb-2 uppercase">
+                  {post.title}
+                </h3>
+                <p className="text-white/30 text-sm font-medium line-clamp-2">
+                  {post.excerpt}
+                </p>
+              </Link>
+            ))}
+            <Link
+              to="/tweets"
+              className="flex items-center justify-center py-4 px-6 mt-4 glass border border-[#CCFF00]/30 rounded-2xl text-[#CCFF00] font-black uppercase text-sm tracking-wider hover:bg-[#CCFF00]/10 transition-colors"
+            >
+              See All Breakdowns <ArrowRight className="w-4 h-4 ml-2" />
+            </Link>
+          </div>
+
+          {/* Desktop: Show all 6 posts */}
+          <div className="hidden md:flex flex-col">
             {analyticalPosts.map((post, idx) => (
               <Link
                 key={post.id}
