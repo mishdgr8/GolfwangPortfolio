@@ -10,7 +10,7 @@ export const portfolioData: PortfolioItem[] = [
     excerpt: 'An exploration into the burgeoning Bitcoin DeFi ecosystem and why BTC is finally becoming a productive asset.',
     fullContent: 'Bitcoin is no longer just "digital gold." With the advent of Ordinals, Runes, and Layer 2 solutions like Union, the BTCfi ecosystem is expanding at a rate that mirrors the early days of DeFi on Ethereum. This research article breaks down the core protocols driving this growth.',
     date: 'Dec 12, 2025',
-    imageUrl: 'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&q=80&w=1000',
+    imageUrl: '/assets/BTC_Artcile.png',
     metrics: [{ label: 'Reads', value: '18.4K' }, { label: 'Claps', value: '5.2K' }],
     externalLink: 'https://medium.com/@golfwang',
     tags: ['BTCfi', 'DeFi', 'Bitcoin']
@@ -22,7 +22,7 @@ export const portfolioData: PortfolioItem[] = [
     excerpt: 'A technical guide on navigating the new Uniswap-native L2, focusing on cross-chain swaps.',
     fullContent: 'Unichain represents a paradigm shift for Uniswap, moving from an application to a sovereign infrastructure layer. This guide walks you through setting up your wallet for the testnet.',
     date: 'Nov 20, 2025',
-    imageUrl: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=1000',
+    imageUrl: '/assets/Unichain.png',
     metrics: [{ label: 'Reads', value: '12.1K' }, { label: 'Claps', value: '3.8K' }],
     externalLink: 'https://medium.com/@golfwang',
     tags: ['Unichain', 'L2', 'Uniswap']
@@ -34,7 +34,7 @@ export const portfolioData: PortfolioItem[] = [
     excerpt: 'Deep dive into Move-based performance and why the Sui ecosystem is attracting massive liquidity.',
     fullContent: 'Speed, scalability, and developer experience are the three pillars of the Sui network. By leveraging the Move programming language, Sui allows for object-centric data models.',
     date: 'Oct 15, 2025',
-    imageUrl: 'https://images.unsplash.com/photo-1614728263952-84ea206f99b6?auto=format&fit=crop&q=80&w=1000',
+    imageUrl: '/assets/SUI.png',
     metrics: [{ label: 'Reads', value: '22.7K' }, { label: 'Claps', value: '8.4K' }],
     externalLink: 'https://medium.com/@golfwang',
     tags: ['Sui', 'L1', 'Move']

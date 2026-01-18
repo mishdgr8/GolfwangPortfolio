@@ -6,7 +6,7 @@ import ContentDetail from './pages/ContentDetail';
 import Tweets from './pages/Tweets';
 import Research from './pages/Research';
 import About from './pages/About';
-import { Github, Twitter, MessageSquare, ArrowUpRight, Menu, X } from 'lucide-react';
+import { Github, Twitter, MessageSquare, ArrowUpRight, Menu, X, Send } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -16,17 +16,17 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-2 group">
           <div className="w-8 h-8 bg-white rounded-sm flex items-center justify-center group-hover:rotate-12 transition-transform">
-             <div className="w-4 h-4 bg-black rounded-full"></div>
+            <div className="w-4 h-4 bg-black rounded-full"></div>
           </div>
           <span className="font-bold tracking-tighter text-xl">GOLFWANG0X</span>
         </Link>
-        
+
         <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-white/60">
           <Link to="/" className="hover:text-white transition-colors">HOME</Link>
           <Link to="/tweets" className="hover:text-white transition-colors">TWEETS</Link>
           <Link to="/research" className="hover:text-white transition-colors">RESEARCH</Link>
           <Link to="/about" className="hover:text-white transition-colors">ABOUT</Link>
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center">
+          <a href="https://github.com/mishdgr8" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center">
             GITHUB <Github className="w-3 h-3 ml-1" />
           </a>
           <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center">
@@ -46,7 +46,7 @@ const Navbar = () => {
           <Link to="/tweets" onClick={() => setIsOpen(false)}>TWEETS</Link>
           <Link to="/research" onClick={() => setIsOpen(false)}>RESEARCH</Link>
           <Link to="/about" onClick={() => setIsOpen(false)}>ABOUT</Link>
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="flex items-center">GITHUB <Github className="w-3 h-3 ml-1" /></a>
+          <a href="https://github.com/mishdgr8" target="_blank" rel="noopener noreferrer" className="flex items-center">GITHUB <Github className="w-3 h-3 ml-1" /></a>
           <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="flex items-center">X <ArrowUpRight className="w-3 h-3 ml-1" /></a>
         </div>
       )}
@@ -65,17 +65,20 @@ const Footer = () => (
         <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass hover:bg-white/10 transition-colors">
           <Twitter className="w-5 h-5" />
         </a>
-        <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass hover:bg-white/10 transition-colors">
+        <a href="https://github.com/mishdgr8" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass hover:bg-white/10 transition-colors">
           <Github className="w-5 h-5" />
         </a>
-        <a href="#" className="p-3 rounded-full glass hover:bg-white/10 transition-colors">
+        <a href="https://t.me/mishdgr8" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass hover:bg-white/10 transition-colors">
+          <Send className="w-5 h-5" />
+        </a>
+        <a href="mailto:golfwang0x@gmail.com" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass hover:bg-white/10 transition-colors">
           <MessageSquare className="w-5 h-5" />
         </a>
       </div>
     </div>
     <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between text-xs text-white/20 uppercase tracking-widest gap-4">
-      <p>© 2024 GOLFWANG0X STUDIO</p>
-      <p>EST. 2021 • WEB3 RESEARCHER • CONTENT STRATEGIST</p>
+      <p>© 2026 GOLFWANG0X STUDIO</p>
+      <p>EST. 2023 • WEB3 RESEARCHER • CONTENT STRATEGIST</p>
     </div>
   </footer>
 );

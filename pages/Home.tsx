@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { portfolioData } from '../data';
-import { ArrowRight, TrendingUp, Sparkles, Zap, BookOpen, ExternalLink, Terminal, Cpu, PenTool, BarChart3, MessageCircle } from 'lucide-react';
+import { ArrowRight, TrendingUp, Sparkles, Zap, BookOpen, ExternalLink, Terminal, Cpu, PenTool, BarChart3, MessageCircle, Twitter, Send } from 'lucide-react';
 
 // Helper to parse view count strings like "88.6K", "1,234", "10.5M" into numbers
 const parseViewCount = (value: string): number => {
@@ -108,7 +108,8 @@ const Home: React.FC = () => {
         {/* About Me Card Showcase */}
         <div className="relative w-full max-w-7xl px-4 flex flex-col items-center">
 
-          <Link to="/about" className="relative block w-full aspect-[4/5] md:aspect-[16/9] lg:aspect-[21/9] rounded-[3rem] overflow-hidden group shadow-2xl reveal border border-white/10 transition-all duration-700 hover:border-[#CCFF00]/40 z-10 hover:z-[60]" style={{ animationDelay: '0.4s' }}>
+          <div className="relative block w-full aspect-[4/5] md:aspect-[16/9] lg:aspect-[21/9] rounded-[3rem] overflow-hidden group shadow-2xl reveal border border-white/10 transition-all duration-700 hover:border-[#CCFF00]/40 z-10 hover:z-[60]" style={{ animationDelay: '0.4s' }}>
+            <Link to="/about" className="absolute inset-0 z-20 cursor-pointer" aria-label="Go to About page"></Link>
             <img
               src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000"
               alt="The Architect"
@@ -123,8 +124,8 @@ const Home: React.FC = () => {
                 Ensures write-up is left-aligned and NOT behind the bottom-left telemetry shard.
                 Arrow is moved BELOW the text.
               */}
-            <div className="absolute top-12 left-4 right-12 flex flex-col items-start gap-8 z-30">
-              <div className="max-w-2xl text-left">
+            <div className="absolute top-12 left-12 right-12 flex flex-col items-start gap-8 z-30 pointer-events-none">
+              <div className="max-w-2xl text-left pointer-events-auto">
                 <div className="flex items-center space-x-3 mb-4">
                   <span className="text-[#CCFF00] text-[10px] font-black tracking-[0.4em] uppercase bg-black/80 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#CCFF00]/20">
                     ABOUT_ME
@@ -133,15 +134,27 @@ const Home: React.FC = () => {
                 <h3 className="text-2xl md:text-6xl font-black text-white leading-none tracking-tighter mb-4 uppercase">
                   The Architect <br /> behind the Signal
                 </h3>
-                <p className="text-white/50 text-xl font-medium max-w-lg leading-snug">Web3 researcher, technical content strategist, and security analyst dedicated to the modular endgame.</p>
+                <p className="text-white/50 text-xl font-medium max-w-lg leading-snug mb-6">Web3 researcher, technical content strategist, and security analyst dedicated to the modular endgame.</p>
+                <div className="flex flex-wrap items-center gap-4 relative z-30">
+                  <a href="mailto:golfwang0x@gmail.com" target="_blank" rel="noopener noreferrer" className="px-8 py-3 bg-[#CCFF00] text-black text-sm font-black uppercase tracking-wider rounded-full hover:scale-105 transition-transform flex items-center shadow-[0_0_20px_rgba(204,255,0,0.3)]">
+                    Contact Me
+                  </a>
+                  <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="px-8 py-3 bg-black/80 border border-[#CCFF00] text-[#CCFF00] text-sm font-black uppercase tracking-wider rounded-full hover:bg-[#CCFF00]/10 transition-colors flex items-center shadow-[0_0_15px_rgba(204,255,0,0.2)] animate-pulse">
+                    <Twitter className="w-4 h-4 mr-2" /> X / TWITTER
+                  </a>
+                  <a href="https://t.me/mishdgr8" target="_blank" rel="noopener noreferrer" className="p-3 glass border border-white/10 text-white rounded-full hover:bg-white/10 transition-colors flex items-center justify-center">
+                    <Send className="w-5 h-5" />
+                  </a>
+                </div>
               </div>
 
-              {/* Arrow Button Below Text */}
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-[#CCFF00] flex items-center justify-center text-black group-hover:scale-110 transition-transform shadow-[0_0_30px_rgba(204,255,0,0.4)]">
-                <ArrowRight className="w-8 h-8 md:w-10 md:h-10" />
-              </div>
+              {/* Learn More Button */}
+              <Link to="/about" className="pointer-events-auto px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-[#CCFF00] hover:text-black hover:border-transparent transition-all duration-300 rounded-full flex items-center space-x-3 group/btn">
+                <span className="font-black tracking-[0.2em] uppercase text-xs">LEARN MORE</span>
+                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              </Link>
             </div>
-          </Link>
+          </div>
 
           {/* PERFORMANCE METRICS SHARD (xImpact Telemetry) */}
           <div className="absolute -bottom-16 right-0 w-full max-w-md glass rounded-[2.5rem] p-10 hidden lg:flex flex-col justify-between border-[#CCFF00]/30 rotate-2 hover:rotate-0 transition-all duration-500 reveal z-20 shadow-2xl" style={{ animationDelay: '0.6s' }}>
@@ -431,7 +444,7 @@ const Home: React.FC = () => {
             "The best way to predict the future is to encode it."
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-8 md:gap-12">
-            <a href="mailto:contact@golfwang0x.xyz" className="px-16 md:px-20 py-7 md:py-9 bg-[#CCFF00] text-black font-black rounded-[2rem] hover:scale-105 transition-all uppercase tracking-[0.3em] text-xs shadow-[0_0_50px_rgba(204,255,0,0.3)] text-center">
+            <a href="mailto:contact@golfwang0x.xyz" target="_blank" rel="noopener noreferrer" className="px-16 md:px-20 py-7 md:py-9 bg-[#CCFF00] text-black font-black rounded-[2rem] hover:scale-105 transition-all uppercase tracking-[0.3em] text-xs shadow-[0_0_50px_rgba(204,255,0,0.3)] text-center">
               ESTABLISH CONNECTION
             </a>
             <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="px-16 md:px-20 py-7 md:py-9 glass border border-white/10 text-white font-black rounded-[2rem] hover:bg-white/5 transition-all uppercase tracking-[0.3em] text-xs text-center backdrop-blur-md">
