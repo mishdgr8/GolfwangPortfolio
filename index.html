@@ -5,20 +5,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Golfwang0x | Web3 Research & Content</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <style>
         :root {
             --accent: #CCFF00;
-            /* Cyber Lime */
+            --accent-rgb: 204, 255, 0;
+            --bg-primary: #050505;
+            --bg-secondary: #0a0a0a;
+            --bg-tertiary: #111111;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --text-muted: rgba(255, 255, 255, 0.4);
+            --text-faint: rgba(255, 255, 255, 0.2);
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --card-hover-bg: rgba(255, 255, 255, 0.04);
+            --scrollbar-thumb: rgba(255, 255, 255, 0.1);
+        }
+
+        :root.light {
+            --accent: #8BC34A;
+            --accent-rgb: 139, 195, 74;
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #111111;
+            --text-secondary: rgba(0, 0, 0, 0.7);
+            --text-muted: rgba(0, 0, 0, 0.5);
+            --text-faint: rgba(0, 0, 0, 0.25);
+            --glass-bg: rgba(0, 0, 0, 0.02);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --card-hover-bg: rgba(0, 0, 0, 0.04);
+            --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+        }
+
+        :root.light .sidebar-text,
+        :root.light .text-huge {
+            -webkit-text-stroke: 1px #000000;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #050505;
-            color: #ffffff;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* Vertical Sidebar Text Styling - Restored to original subtle state */
@@ -27,7 +60,7 @@
             font-weight: 900;
             line-height: 1;
             letter-spacing: -0.05em;
-            -webkit-text-stroke: 1px rgba(204, 255, 0, 0.1);
+            -webkit-text-stroke: 1px rgba(var(--accent-rgb), 0.3);
             color: transparent;
             text-transform: uppercase;
             white-space: nowrap;
@@ -40,8 +73,8 @@
 
         .sidebar-text:hover {
             -webkit-text-stroke: 1px var(--accent);
-            color: rgba(204, 255, 0, 0.05);
-            text-shadow: 0 0 30px rgba(204, 255, 0, 0.4);
+            color: rgba(var(--accent-rgb), 0.05);
+            text-shadow: 0 0 30px rgba(var(--accent-rgb), 0.4);
             filter: drop-shadow(0 0 10px var(--accent));
         }
 
@@ -50,7 +83,7 @@
             font-size: clamp(2.5rem, 11vw, 11rem);
             line-height: 1;
             letter-spacing: -0.06em;
-            -webkit-text-stroke: 1px rgba(204, 255, 0, 0.1);
+            -webkit-text-stroke: 1px rgba(var(--accent-rgb), 0.3);
             color: transparent;
             transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
@@ -59,17 +92,17 @@
 
         .text-huge:hover {
             -webkit-text-stroke: 1px var(--accent);
-            color: rgba(204, 255, 0, 0.05);
+            color: rgba(var(--accent-rgb), 0.05);
             /* Faded fill instead of solid */
-            text-shadow: 0 0 30px rgba(204, 255, 0, 0.3);
+            text-shadow: 0 0 30px rgba(var(--accent-rgb), 0.3);
             filter: drop-shadow(0 0 10px var(--accent));
             opacity: 1;
         }
 
         .glass {
-            background: rgba(255, 255, 255, 0.02);
+            background: var(--glass-bg);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
         }
 
         .hover-card {
@@ -77,14 +110,14 @@
         }
 
         .hover-card:hover {
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--card-hover-bg);
             transform: translateY(-8px);
             border-color: var(--accent);
-            box-shadow: 0 20px 40px -20px rgba(204, 255, 0, 0.15);
+            box-shadow: 0 20px 40px -20px rgba(var(--accent-rgb), 0.15);
         }
 
         .accent-glow {
-            box-shadow: 0 0 20px rgba(204, 255, 0, 0.2);
+            box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.2);
         }
 
         @keyframes float {
@@ -139,11 +172,11 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #050505;
+            background: var(--bg-primary);
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #1a1a1a;
+            background: var(--scrollbar-thumb);
             border-radius: 10px;
         }
 
@@ -151,6 +184,27 @@
             background: var(--accent);
         }
     </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        accent: 'var(--accent)',
+                        'bg-primary': 'var(--bg-primary)',
+                        'bg-secondary': 'var(--bg-secondary)',
+                        'bg-tertiary': 'var(--bg-tertiary)',
+                        'text-primary': 'var(--text-primary)',
+                        'text-secondary': 'var(--text-secondary)',
+                        'text-muted': 'var(--text-muted)',
+                        'text-faint': 'var(--text-faint)',
+                        'glass-bg': 'var(--glass-bg)',
+                        'glass-border': 'var(--glass-border)',
+                        'card-hover': 'var(--card-hover-bg)',
+                    }
+                }
+            }
+        }
+    </script>
     <script type="importmap">
 {
   "imports": {
@@ -162,7 +216,6 @@
   }
 }
 </script>
-    <link rel="stylesheet" href="/index.css">
 </head>
 
 <body>
