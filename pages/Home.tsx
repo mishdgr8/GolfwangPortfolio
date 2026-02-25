@@ -61,7 +61,7 @@ const Home: React.FC = () => {
       ease: 'sine.inOut'
     });
 
-    // 2. Initial Page Load Animations (Hero Section)
+    // 2. Initial Page Load Animations (Hero Section + Sidebars)
     const tl = gsap.timeline();
 
     tl.fromTo('.sidebar-text-cont',
@@ -107,42 +107,43 @@ const Home: React.FC = () => {
     );
 
     // 3. HORIZONTAL SCROLL FOR TOP SIGNAL
-    // Pin the section and scroll the track horizontally
     const signalTrack = document.querySelector('.signal-track') as HTMLElement;
     if (signalTrack) {
-      // Calculate how far to move left: 
-      // Track width minus Viewport width (approx).
-      const scrollDist = signalTrack.scrollWidth - window.innerWidth + 100; // Adding padding
+      // Dynamic end value based on track width
+      const getScrollDist = () => signalTrack.scrollWidth - window.innerWidth + 150;
 
       gsap.to(signalTrack, {
-        x: -scrollDist,
+        x: () => -getScrollDist(),
         ease: 'none',
         scrollTrigger: {
           trigger: '#top-signal',
-          pin: true,           // Pin the section
-          scrub: 1,            // Smooth scrubbing
-          start: 'top 5%',     // When the top of the section hits 5% of viewport
-          end: `+=${scrollDist}`, // Scroll for the duration of the track width
+          pin: true,
+          scrub: 1,
+          start: 'top top', // Pin when hits top of screen
+          end: () => `+=${getScrollDist()}`,
+          invalidateOnRefresh: true, // Recalculates if window resizes
         }
       });
-      // Small fade up on enter
-      gsap.fromTo('#top-signal',
+
+      gsap.fromTo('#top-signal .signal-track',
         { opacity: 0 },
         { opacity: 1, duration: 1, scrollTrigger: { trigger: '#top-signal', start: 'top 70%' } }
       );
     }
 
     // 4. STACKED PINNED PANELS FOR THE REST OF THE PAGE
-    // Get all panel sections after horizontal scrolling
     const stackedPanels = gsap.utils.toArray<HTMLElement>('.stacked-panel');
 
     stackedPanels.forEach((panel, i) => {
-      ScrollTrigger.create({
-        trigger: panel,
-        start: 'top top',
-        pin: true,           // Pin the panel when it hits the top
-        pinSpacing: false,   // Crucial: allows the NEXT section to slide up *over* it
-      });
+      // Pin all but the very last panel, which prevents scrolling bugs
+      if (i !== stackedPanels.length - 1) {
+        ScrollTrigger.create({
+          trigger: panel,
+          start: 'top top',
+          pin: true,
+          pinSpacing: false,   // Crucial: allows the NEXT section to slide up *over* it
+        });
+      }
 
       // Animate interior elements of panels on enter
       const header = panel.querySelector('.panel-header');
@@ -179,7 +180,9 @@ const Home: React.FC = () => {
   }, { scope: container });
 
   return (
-    <div ref={container} className="relative bg-bg-primary overflow-x-hidden pt-24">
+    // REMOVED overflow-x-hidden which breaks GSAP ScrollTrigger pin
+    <div ref={container} className="relative bg-bg-primary pt-24 min-h-screen">
+
       {/* Background Elements */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <img
@@ -192,8 +195,25 @@ const Home: React.FC = () => {
         <div className="ambient-orb-2 absolute bottom-[20%] right-[10%] w-[600px] h-[600px] bg-accent/5 blur-[150px] rounded-full"></div>
       </div>
 
+      {/* Cinematic Sidebar Text (RESTORED) */}
+      <div className="fixed left-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex">
+        <div className="sidebar-text-cont rotate-180 pointer-events-auto opacity-0" style={{ writingMode: 'vertical-rl' }}>
+          <span className="text-[10px] font-black tracking-[0.4em] text-text-muted uppercase hover:text-accent transition-colors cursor-pointer">
+            GOLFWANG0X // SYSTEMS ONLINE
+          </span>
+        </div>
+      </div>
+
+      <div className="fixed right-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex">
+        <div className="sidebar-text-cont pointer-events-auto opacity-0" style={{ writingMode: 'vertical-rl' }}>
+          <span className="text-[10px] font-black tracking-[0.4em] text-text-muted uppercase hover:text-accent transition-colors cursor-pointer">
+            GOLFWANG0X // EST. 2023
+          </span>
+        </div>
+      </div>
+
       {/* Hero Section */}
-      <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 xl:px-32 pt-12 pb-6 md:pb-24 z-10 bg-bg-primary">
+      <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 xl:px-32 pt-12 pb-6 md:pb-24 z-10 bg-bg-primary overflow-clip">
 
         {/* Role Tags */}
         <div className="role-tag absolute top-[10%] left-[8%] xl:left-32 hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full cursor-crosshair opacity-0">
@@ -302,17 +322,13 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        <div className="hero-bottom-text opacity-0 w-full mt-8 md:mt-48 overflow-hidden border-t border-glass-border pt-4 md:pt-16">
+        <div className="hero-bottom-text opacity-0 w-full mt-8 md:mt-48 border-t border-glass-border pt-4 md:pt-16">
           <h2 className="text-huge text-center uppercase tracking-tighter">GOLFWANG0X</h2>
         </div>
       </section>
 
       {/* HORIZONTALLY SCROLLING: TOP SIGNAL TWEETS */}
-      {/* 
-        This section uses a wrapper with 100vh. Inside, a track extends beyond 100vw.
-        GSAP will pin `#top-signal` and scroll `.signal-track` on the X axis.
-      */}
-      <section id="top-signal" className="w-full h-screen relative z-10 bg-bg-primary overflow-hidden border-t border-glass-border flex flex-col justify-center">
+      <section id="top-signal" className="w-full h-screen relative z-10 bg-bg-primary overflow-clip border-t border-glass-border flex flex-col justify-center">
         <div className="w-full px-6 xl:px-32 absolute top-16 left-0 right-0 z-20">
           <div className="flex justify-between items-end mb-8">
             <div>
@@ -330,8 +346,6 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        {/* The Track that moves horizontally */}
-        {/* We make the track very wide based on how many items there are. Display 3 on desktop at a time. */}
         <div className="signal-track flex gap-8 px-6 xl:px-32 w-max mt-32 min-w-full items-center pl-6 xl:pl-32">
           {topSignal.map((tweet, idx) => (
             <Link
@@ -342,7 +356,7 @@ const Home: React.FC = () => {
               <div className="glass p-8 md:p-10 rounded-[2.5rem] border border-glass-border hover-card h-full flex flex-col justify-between overflow-hidden relative min-h-[400px]">
                 <div>
                   <div className="flex justify-between items-start mb-10">
-                    <span className="text-6xl font-black text-accent/10 group-hover:text-accent transition-all duration-500">
+                    <span className="text-5xl md:text-6xl font-black text-accent/10 group-hover:text-accent transition-all duration-500">
                       0{idx + 1}
                     </span>
                     <div className="w-12 h-12 rounded-2xl bg-bg-secondary/20 group-hover:bg-accent flex items-center justify-center transition-all duration-500">
@@ -375,9 +389,8 @@ const Home: React.FC = () => {
       </section>
 
       {/* STACKED PANEL 1: ANALYTICAL POSTS */}
-      {/* Minimum height 100vh, bg-bg-primary so it slides over the pinned section behind it */}
-      <section className="stacked-panel px-6 xl:px-32 py-24 border-t border-glass-border z-20 bg-bg-primary min-h-[100vh] shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
-        <div className="max-w-7xl mx-auto h-full flex flex-col justify-center">
+      <section className="stacked-panel px-6 xl:px-32 py-24 border-t border-glass-border z-20 bg-bg-primary min-h-[100vh] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col justify-center">
+        <div className="max-w-7xl mx-auto w-full h-full flex flex-col justify-center">
           <div className="panel-header opacity-0 mb-16">
             <div className="flex items-center space-x-3 mb-6">
               <div className="w-16 h-[2px] bg-accent"></div>
@@ -422,7 +435,7 @@ const Home: React.FC = () => {
 
       {/* STACKED PANEL 2: MEDIUM RESEARCH */}
       <section className="stacked-panel px-6 xl:px-32 py-24 border-t border-glass-border z-30 bg-[#080808] min-h-[100vh] flex flex-col justify-center shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
-        <div className="max-w-7xl mx-auto w-full">
+        <div className="max-w-7xl mx-auto w-full flex flex-col justify-center">
           <div className="panel-header opacity-0 flex justify-between items-end mb-20">
             <div>
               <div className="flex items-center space-x-3 mb-6">
