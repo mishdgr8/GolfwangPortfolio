@@ -139,7 +139,7 @@ const Home: React.FC = () => {
       if (i !== stackedPanels.length - 1) {
         ScrollTrigger.create({
           trigger: panel,
-          start: 'top top',
+          start: 'bottom bottom',   // Wait until the bottom of the panel reaches the bottom of the screen
           pin: true,
           pinSpacing: false,   // Crucial: allows the NEXT section to slide up *over* it
         });
