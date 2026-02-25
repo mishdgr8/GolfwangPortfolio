@@ -18,3 +18,16 @@ export interface PortfolioItem {
   externalLink: string;
   tags: string[];
 }
+
+export interface ProjectItem {
+  id: string;
+  title: string;
+  excerpt: string;
+  longDescription?: string;
+  techStack: string[];
+  imageUrl: string;
+  demoUrl?: string;
+  repoUrl?: string;
+  date: string;
+  featured?: boolean;
+}

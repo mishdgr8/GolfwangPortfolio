@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { portfolioData } from '../data';
-import { ArrowRight, TrendingUp, Sparkles, Zap, BookOpen, ExternalLink, Terminal, Cpu, PenTool, BarChart3, MessageCircle, Twitter, Send } from 'lucide-react';
+import { portfolioData, projectsData } from '../data';
+import { ArrowRight, TrendingUp, Sparkles, Zap, BookOpen, ExternalLink, Terminal, Cpu, PenTool, BarChart3, MessageCircle, Twitter, Send, Code } from 'lucide-react';
 
 // Helper to parse view count strings like "88.6K", "1,234", "10.5M" into numbers
 const parseViewCount = (value: string): number => {
@@ -33,6 +33,7 @@ const Home: React.FC = () => {
   const analyticalPosts = sortedByViews.slice(6, 12);
 
   const mediumResearch = portfolioData.filter(item => item.type === 'article').slice(0, 3);
+  const featuredProjects = projectsData.filter(item => item.featured).slice(0, 3);
 
   return (
     <div className="pt-24 relative overflow-hidden">
@@ -66,22 +67,22 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 pt-12 pb-6 md:pb-24 z-10">
+      <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 xl:px-32 pt-12 pb-6 md:pb-24 z-10">
 
         {/* Adjusted Role Tags Position to avoid obstruction */}
-        <div className="absolute top-[10%] left-[8%] hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full animate-float cursor-crosshair">
+        <div className="absolute top-[10%] left-[8%] xl:left-32 hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full animate-float cursor-crosshair">
           <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
           <PenTool className="w-3 h-3 text-text-muted" />
           <span className="text-[11px] font-black text-text-secondary tracking-[0.2em] uppercase">CONTENT WRITER</span>
         </div>
 
-        <div className="absolute top-[18%] right-[5%] hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full animate-float cursor-crosshair" style={{ animationDelay: '2s' }}>
+        <div className="absolute top-[18%] right-[5%] xl:right-32 hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full animate-float cursor-crosshair" style={{ animationDelay: '2s' }}>
           <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
           <Terminal className="w-3 h-3 text-text-muted" />
           <span className="text-[11px] font-black text-text-secondary tracking-[0.2em] uppercase">WEB DEVELOPER</span>
         </div>
 
-        <div className="absolute bottom-[25%] right-[8%] hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full animate-float cursor-crosshair" style={{ animationDelay: '1s' }}>
+        <div className="absolute bottom-[25%] right-[8%] xl:right-32 hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full animate-float cursor-crosshair" style={{ animationDelay: '1s' }}>
           <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
           <Cpu className="w-3 h-3 text-text-muted" />
           <span className="text-[11px] font-black text-text-secondary tracking-[0.2em] uppercase">BLOCKCHAIN TECH</span>
@@ -259,7 +260,7 @@ const Home: React.FC = () => {
       `}</style>
 
       {/* 1. TOP SIGNAL TWEETS */}
-      <section id="top-signal" className="px-6 py-20 relative z-10 border-t border-glass-border bg-bg-primary/60 backdrop-blur-sm">
+      <section id="top-signal" className="px-6 xl:px-32 py-20 relative z-10 border-t border-glass-border bg-bg-primary/60 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-16">
             <div className="reveal">
@@ -370,7 +371,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* 2. ANALYTICAL POSTS */}
-      <section id="analytical" className="px-6 py-24 border-t border-glass-border relative z-10">
+      <section id="analytical" className="px-6 xl:px-32 py-24 border-t border-glass-border relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="mb-16 reveal">
             <div className="flex items-center space-x-3 mb-6">
@@ -446,7 +447,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* 3. MEDIUM RESEARCH */}
-      <section id="medium-research" className="px-6 py-24 border-t border-glass-border relative z-10 bg-bg-primary/40">
+      <section id="medium-research" className="px-6 xl:px-32 py-24 border-t border-glass-border relative z-10 bg-bg-primary/40">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-20">
             <div className="reveal">
@@ -515,8 +516,89 @@ const Home: React.FC = () => {
         </div>
       </section>
 
+      {/* 4. DEV PORTFOLIO */}
+      <section id="dev-portfolio" className="px-6 xl:px-32 py-24 border-t border-glass-border relative z-10 bg-bg-secondary/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-end mb-20">
+            <div className="reveal">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
+                  <Code className="w-6 h-6 text-accent" />
+                </div>
+                <span className="text-[11px] font-black text-text-muted tracking-[0.5em] uppercase">Visual Interfaces</span>
+              </div>
+              <h2 className="text-3xl md:text-6xl font-black tracking-tighter uppercase leading-[0.85]">Dev <br /><span className="text-text-faint">Portfolio.</span></h2>
+            </div>
+            <Link to="/projects" className="hidden md:flex items-center px-8 py-4 rounded-full border border-glass-border text-[11px] font-black text-text-muted hover:text-text-primary hover:border-accent/50 transition-all uppercase tracking-[0.3em] group backdrop-blur-md">
+              ALL PROJECTS <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform text-accent" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+            {featuredProjects.map((project, idx) => (
+              <Link
+                key={project.id}
+                to="/projects"
+                className="group relative flex flex-col h-full reveal overflow-hidden rounded-[2.5rem] glass border border-glass-border hover:border-accent/40 transition-all duration-700 hover:shadow-2xl"
+                style={{ animationDelay: `${idx * 0.1}s` }}
+              >
+                <div className="aspect-[16/9] overflow-hidden relative shrink-0">
+                  {project.demoUrl ? (
+                    <iframe
+                      src={project.demoUrl}
+                      title={project.title}
+                      className="w-[250%] h-[250%] pointer-events-none origin-top-left scale-[0.4] group-hover:scale-[0.42] transition-transform duration-1000"
+                      loading="lazy"
+                      sandbox="allow-scripts allow-same-origin"
+                    />
+                  ) : (
+                    <img
+                      src={project.imageUrl}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-60 group-hover:opacity-100"
+                    />
+                  )}
+                </div>
+
+                <div className="p-8 md:p-10 flex flex-col justify-between flex-1">
+                  <div>
+                    <div className="flex items-center space-x-5 mb-6 flex-wrap gap-y-2">
+                      {project.techStack.map(tech => (
+                        <span key={tech} className="text-[9px] font-black uppercase tracking-[0.3em] text-accent/80 bg-accent/5 px-3 py-1 rounded-sm border border-accent/10">{tech}</span>
+                      ))}
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-black group-hover:text-accent transition-colors leading-[1.1] tracking-tight mb-4 uppercase">
+                      {project.title}
+                    </h3>
+                    <p className="text-text-muted text-base line-clamp-2 leading-relaxed mb-6 font-medium tracking-tight">
+                      {project.excerpt}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-6 border-t border-glass-border mt-auto">
+                    <span className="text-[10px] uppercase font-black tracking-widest text-text-secondary">{project.date}</span>
+                    <div className="w-12 h-12 rounded-full border border-glass-border flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all shadow-xl">
+                      <ExternalLink className="w-5 h-5 text-text-faint group-hover:text-bg-primary" />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-12 md:hidden flex justify-center">
+            <Link
+              to="/projects"
+              className="flex items-center justify-center py-4 px-8 glass border border-accent/30 rounded-full text-accent font-black uppercase text-xs tracking-widest hover:bg-accent/10 transition-colors w-full"
+            >
+              See All Projects <ArrowRight className="w-4 h-4 ml-3" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
-      <section className="px-6 py-32 md:py-48 relative overflow-hidden border-t border-glass-border z-10">
+      <section className="px-6 xl:px-32 py-32 md:py-48 relative overflow-hidden border-t border-glass-border z-10">
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <div className="inline-block px-6 py-3 rounded-full bg-accent/10 border border-accent/30 text-[11px] font-black text-accent uppercase tracking-[0.4em] mb-12 animate-pulse">
             SYSTEMS ONLINE / OPEN_FOR_OPS

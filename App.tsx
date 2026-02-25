@@ -6,6 +6,7 @@ import ContentDetail from './pages/ContentDetail';
 import Tweets from './pages/Tweets';
 import Research from './pages/Research';
 import About from './pages/About';
+import Projects from './pages/Projects';
 import { Github, Twitter, MessageSquare, ArrowUpRight, Menu, X, Send, Sun, Moon } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 
@@ -27,6 +28,7 @@ const Navbar = () => {
           <Link to="/" className="hover:opacity-100 transition-opacity">HOME</Link>
           <Link to="/tweets" className="hover:opacity-100 transition-opacity">TWEETS</Link>
           <Link to="/research" className="hover:opacity-100 transition-opacity">RESEARCH</Link>
+          <Link to="/projects" className="hover:opacity-100 transition-opacity">PROJECTS</Link>
           <Link to="/about" className="hover:opacity-100 transition-opacity">ABOUT</Link>
           <a href="https://github.com/mishdgr8" target="_blank" rel="noopener noreferrer" className="hover:opacity-100 transition-opacity flex items-center">
             GITHUB <Github className="w-3 h-3 ml-1" />
@@ -63,6 +65,7 @@ const Navbar = () => {
           <Link to="/" onClick={() => setIsOpen(false)}>HOME</Link>
           <Link to="/tweets" onClick={() => setIsOpen(false)}>TWEETS</Link>
           <Link to="/research" onClick={() => setIsOpen(false)}>RESEARCH</Link>
+          <Link to="/projects" onClick={() => setIsOpen(false)}>PROJECTS</Link>
           <Link to="/about" onClick={() => setIsOpen(false)}>ABOUT</Link>
           <a href="https://github.com/mishdgr8" target="_blank" rel="noopener noreferrer" className="flex items-center">GITHUB <Github className="w-3 h-3 ml-1" /></a>
           <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="flex items-center">X <ArrowUpRight className="w-3 h-3 ml-1" /></a>
@@ -116,6 +119,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/tweets" element={<Tweets />} />
           <Route path="/research" element={<Research />} />
+          <Route path="/projects" element={<Projects />} />
           <Route path="/about" element={<About />} />
           <Route path="/content/:id" element={<ContentDetail />} />
         </Routes>
