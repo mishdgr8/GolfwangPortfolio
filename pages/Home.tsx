@@ -389,8 +389,8 @@ const Home: React.FC = () => {
       </section>
 
       {/* STACKED PANEL 1: ANALYTICAL POSTS */}
-      <section className="stacked-panel px-6 xl:px-32 py-24 border-t border-glass-border z-20 bg-bg-primary min-h-[100vh] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col justify-center">
-        <div className="max-w-7xl mx-auto w-full h-full flex flex-col justify-center">
+      <section className="stacked-panel px-6 xl:px-32 py-24 xl:py-32 border-t border-glass-border z-20 bg-bg-primary min-h-[100vh] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col">
+        <div className="max-w-7xl mx-auto w-full h-full flex flex-col">
           <div className="panel-header opacity-0 mb-16">
             <div className="flex items-center space-x-3 mb-6">
               <div className="w-16 h-[2px] bg-accent"></div>
@@ -434,8 +434,8 @@ const Home: React.FC = () => {
       </section>
 
       {/* STACKED PANEL 2: MEDIUM RESEARCH */}
-      <section className="stacked-panel px-6 xl:px-32 py-24 border-t border-glass-border z-30 bg-[#080808] min-h-[100vh] flex flex-col justify-center shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
-        <div className="max-w-7xl mx-auto w-full flex flex-col justify-center">
+      <section className="stacked-panel px-6 xl:px-32 py-24 xl:py-32 border-t border-glass-border z-30 bg-[#080808] min-h-[100vh] flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
+        <div className="max-w-7xl mx-auto w-full flex flex-col">
           <div className="panel-header opacity-0 flex justify-between items-end mb-20">
             <div>
               <div className="flex items-center space-x-3 mb-6">
@@ -477,6 +477,23 @@ const Home: React.FC = () => {
                     <h3 className="text-3xl font-black group-hover:text-accent transition-colors leading-[1.1] tracking-tight mb-6 uppercase">
                       {article.title}
                     </h3>
+                    <p className="text-text-muted text-lg line-clamp-2 leading-relaxed mb-8 font-medium tracking-tight">
+                      {article.excerpt}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-10 border-t border-glass-border mt-auto">
+                    <div className="flex items-center space-x-10">
+                      {article.metrics?.slice(0, 2).map((m, i) => (
+                        <div key={i}>
+                          <p className="text-[9px] uppercase tracking-[0.3em] text-text-faint font-black mb-2">{m.label}</p>
+                          <p className="text-2xl font-black text-text-secondary">{m.value}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="w-14 h-14 rounded-full border border-glass-border flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all shadow-xl">
+                      <ExternalLink className="w-6 h-6 text-text-faint group-hover:text-bg-primary" />
+                    </div>
                   </div>
                 </div>
               </Link>
@@ -485,10 +502,8 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* STACKED PANEL 3: DEV PORTFOLIO & CONTACT */}
-      <section className="stacked-panel px-6 xl:px-32 py-24 border-t border-glass-border z-40 bg-bg-secondary min-h-[100vh] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col">
-
-        {/* DEV PORTFOLIO TOP HALF */}
+      {/* STACKED PANEL 3: DEV PORTFOLIO */}
+      <section className="stacked-panel px-6 xl:px-32 py-24 xl:py-32 border-t border-glass-border z-40 bg-bg-secondary min-h-[100vh] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col">
         <div className="max-w-7xl mx-auto w-full flex-1">
           <div className="panel-header opacity-0 flex justify-between items-end mb-20">
             <div>
@@ -505,7 +520,7 @@ const Home: React.FC = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 pb-32">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 pb-16 lg:pb-32">
             {featuredProjects.map((project, idx) => (
               <Link
                 key={project.id}
@@ -540,24 +555,51 @@ const Home: React.FC = () => {
                     <h3 className="text-2xl md:text-3xl font-black group-hover:text-accent transition-colors leading-[1.1] tracking-tight mb-4 uppercase">
                       {project.title}
                     </h3>
+                    <p className="text-text-muted text-base line-clamp-2 leading-relaxed mb-6 font-medium tracking-tight">
+                      {project.excerpt}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-6 border-t border-glass-border mt-auto">
+                    <span className="text-[10px] uppercase font-black tracking-widest text-text-secondary">{project.date}</span>
+                    <div className="w-12 h-12 rounded-full border border-glass-border flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all shadow-xl">
+                      <ExternalLink className="w-5 h-5 text-text-faint group-hover:text-bg-primary" />
+                    </div>
                   </div>
                 </div>
               </Link>
             ))}
           </div>
-        </div>
 
-        {/* CONTACT BOTTOM HALF */}
-        <div className="max-w-5xl mx-auto text-center relative mt-auto border-t border-glass-border pt-32 w-full">
-          <div className="panel-item opacity-0 inline-block px-6 py-3 rounded-full bg-accent/10 border border-accent/30 text-[11px] font-black text-accent uppercase tracking-[0.4em] mb-12 animate-pulse">
+          <div className="mt-12 md:hidden flex justify-center pb-24">
+            <Link
+              to="/projects"
+              className="panel-item opacity-0 flex items-center justify-center py-4 px-8 glass border border-accent/30 rounded-full text-accent font-black uppercase text-xs tracking-widest hover:bg-accent/10 transition-colors w-full"
+            >
+              See All Projects <ArrowRight className="w-4 h-4 ml-3" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FINAL NOT PINNED SECTION: CONTACT */}
+      <section className="px-6 xl:px-32 py-32 md:py-48 relative overflow-hidden border-t border-glass-border z-10 bg-bg-primary">
+        <div className="max-w-5xl mx-auto text-center relative z-10">
+          <div className="inline-block px-6 py-3 rounded-full bg-accent/10 border border-accent/30 text-[11px] font-black text-accent uppercase tracking-[0.4em] mb-12 animate-pulse">
             SYSTEMS ONLINE / OPEN_FOR_OPS
           </div>
-          <h2 className="panel-header opacity-0 text-4xl md:text-6xl lg:text-7xl xl:text-9xl font-black tracking-tighter mb-12 md:mb-16 leading-[0.8] uppercase">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-9xl font-black tracking-tighter mb-12 md:mb-16 leading-[0.8] uppercase">
             Start the <br /> <span className="text-accent drop-shadow-[0_0_50px_rgba(var(--accent-rgb),0.4)]">Transmission.</span>
           </h2>
+          <p className="text-text-muted mb-16 md:mb-24 text-2xl md:text-4xl font-medium max-w-3xl mx-auto leading-tight italic tracking-tighter">
+            "The best way to predict the future is to encode it."
+          </p>
           <div className="flex flex-col sm:flex-row justify-center gap-8 md:gap-12">
-            <a href="mailto:contact@golfwang0x.xyz" target="_blank" rel="noopener noreferrer" className="panel-item opacity-0 px-16 md:px-20 py-7 md:py-9 bg-accent text-bg-primary font-black rounded-[2rem] hover:scale-105 transition-all uppercase tracking-[0.3em] text-xs shadow-[0_0_50px_rgba(var(--accent-rgb),0.3)] text-center">
+            <a href="mailto:contact@golfwang0x.xyz" target="_blank" rel="noopener noreferrer" className="px-16 md:px-20 py-7 md:py-9 bg-accent text-bg-primary font-black rounded-[2rem] hover:scale-105 transition-all uppercase tracking-[0.3em] text-xs shadow-[0_0_50px_rgba(var(--accent-rgb),0.3)] text-center">
               ESTABLISH CONNECTION
+            </a>
+            <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="px-16 md:px-20 py-7 md:py-9 glass border border-glass-border text-text-primary font-black rounded-[2rem] hover:bg-glass-bg transition-all uppercase tracking-[0.3em] text-xs text-center backdrop-blur-md">
+              FOLLOW_FEED
             </a>
           </div>
         </div>
