@@ -8,7 +8,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-// Helper to parse view count strings like "88.6K", "1,234", "10.5M" into numbers
 const parseViewCount = (value: string): number => {
   const cleaned = value.replace(/,/g, '').trim();
   if (cleaned.endsWith('K')) {
@@ -22,27 +21,20 @@ const parseViewCount = (value: string): number => {
 const Home: React.FC = () => {
   const container = useRef<HTMLDivElement>(null);
 
-  // Filter only tweets
   const allTweets = portfolioData.filter(item => item.type === 'tweet');
-
-  // Sort tweets by view count (descending)
   const sortedByViews = [...allTweets].sort((a, b) => {
     const aViews = a.metrics?.find(m => m.label === 'Views')?.value || '0';
     const bViews = b.metrics?.find(m => m.label === 'Views')?.value || '0';
     return parseViewCount(bViews) - parseViewCount(aViews);
   });
 
-  // Top 6 for Top Signal section
   const topSignal = sortedByViews.slice(0, 6);
-
-  // 7th to 12th highest for Analytical Breakdowns section
   const analyticalPosts = sortedByViews.slice(6, 12);
-
   const mediumResearch = portfolioData.filter(item => item.type === 'article').slice(0, 3);
   const featuredProjects = projectsData.filter(item => item.featured).slice(0, 3);
 
   useGSAP(() => {
-    // 1. Background elements slow scale/move
+    // 1. Background Ambient Elements
     gsap.to('.bg-img', {
       scale: 1.1,
       duration: 30,
@@ -114,49 +106,72 @@ const Home: React.FC = () => {
       1.8
     );
 
-    // 3. Scroll in Panels
-    // We animate every major section as a panel that slides/fades into view
-    const panels = gsap.utils.toArray<HTMLElement>('.scroll-panel');
+    // 3. HORIZONTAL SCROLL FOR TOP SIGNAL
+    // Pin the section and scroll the track horizontally
+    const signalTrack = document.querySelector('.signal-track') as HTMLElement;
+    if (signalTrack) {
+      // Calculate how far to move left: 
+      // Track width minus Viewport width (approx).
+      const scrollDist = signalTrack.scrollWidth - window.innerWidth + 100; // Adding padding
 
-    panels.forEach((panel) => {
-      // Find elements inside the panel to animate if needed
+      gsap.to(signalTrack, {
+        x: -scrollDist,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#top-signal',
+          pin: true,           // Pin the section
+          scrub: 1,            // Smooth scrubbing
+          start: 'top 5%',     // When the top of the section hits 5% of viewport
+          end: `+=${scrollDist}`, // Scroll for the duration of the track width
+        }
+      });
+      // Small fade up on enter
+      gsap.fromTo('#top-signal',
+        { opacity: 0 },
+        { opacity: 1, duration: 1, scrollTrigger: { trigger: '#top-signal', start: 'top 70%' } }
+      );
+    }
+
+    // 4. STACKED PINNED PANELS FOR THE REST OF THE PAGE
+    // Get all panel sections after horizontal scrolling
+    const stackedPanels = gsap.utils.toArray<HTMLElement>('.stacked-panel');
+
+    stackedPanels.forEach((panel, i) => {
+      ScrollTrigger.create({
+        trigger: panel,
+        start: 'top top',
+        pin: true,           // Pin the panel when it hits the top
+        pinSpacing: false,   // Crucial: allows the NEXT section to slide up *over* it
+      });
+
+      // Animate interior elements of panels on enter
       const header = panel.querySelector('.panel-header');
       const items = panel.querySelectorAll('.panel-item');
 
       const panelTl = gsap.timeline({
         scrollTrigger: {
           trigger: panel,
-          start: 'top 85%',
-          toggleActions: "play none none reverse" // plays on enter, reverses on leave backwards
+          start: 'top 80%',
+          toggleActions: "play none none reverse"
         }
       });
 
-      // Animate the panel container itself slightly
-      panelTl.fromTo(panel,
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }
-      );
-
-      // Animate header if exists
       if (header) {
         panelTl.fromTo(header,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
-          "-=0.4"
+          { opacity: 0, y: 50 },
+          { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
         );
       }
 
-      // Animate items if they exist
       if (items.length > 0) {
         panelTl.fromTo(items,
-          { opacity: 0, y: 40, scale: 0.98 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.1, ease: 'back.out(1.2)' },
-          "-=0.4"
+          { opacity: 0, y: 50 },
+          { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'back.out(1.2)' },
+          "-=0.6"
         );
       }
     });
 
-    // Refresh ScrollTrigger to ensure calculations are correct after React renders images
     setTimeout(() => {
       ScrollTrigger.refresh();
     }, 500);
@@ -164,9 +179,8 @@ const Home: React.FC = () => {
   }, { scope: container });
 
   return (
-    // Changed overflow-hidden to overflow-x-clip to prevent vertical scroll breakages
-    <div ref={container} className="pt-24 relative overflow-x-clip">
-      {/* CINEMATIC BACKGROUND IMAGE */}
+    <div ref={container} className="relative bg-bg-primary overflow-x-hidden pt-24">
+      {/* Background Elements */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <img
           src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=2500"
@@ -174,26 +188,12 @@ const Home: React.FC = () => {
           className="bg-img w-full h-full object-cover opacity-25 grayscale brightness-[0.25]"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-bg-primary via-transparent to-bg-primary"></div>
-
-        {/* Glowing Ambient Orbs */}
         <div className="ambient-orb-1 absolute top-[10%] left-[20%] w-[500px] h-[500px] bg-accent/5 blur-[120px] rounded-full"></div>
         <div className="ambient-orb-2 absolute bottom-[20%] right-[10%] w-[600px] h-[600px] bg-accent/5 blur-[150px] rounded-full"></div>
       </div>
 
-      {/* VERTICAL SIDEBAR TEXT */}
-      <div className="fixed left-0 top-0 h-full w-24 hidden xl:flex flex-col items-center justify-start z-20 pointer-events-none pt-24 overflow-hidden">
-        <div className="sidebar-text-cont pointer-events-auto opacity-0" style={{ writingMode: 'vertical-rl' }}>
-          <div className="sidebar-text rotate-180">GOLFWANG0X</div>
-        </div>
-      </div>
-      <div className="fixed right-0 bottom-0 h-full w-24 hidden xl:flex flex-col items-center justify-end z-20 pointer-events-none pb-24 overflow-hidden">
-        <div className="sidebar-text-cont pointer-events-auto opacity-0" style={{ writingMode: 'vertical-rl' }}>
-          <div className="sidebar-text">GOLFWANG0X</div>
-        </div>
-      </div>
-
-      {/* HERO SECTION */}
-      <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 xl:px-32 pt-12 pb-6 md:pb-24 z-10">
+      {/* Hero Section */}
+      <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 xl:px-32 pt-12 pb-6 md:pb-24 z-10 bg-bg-primary">
 
         {/* Role Tags */}
         <div className="role-tag absolute top-[10%] left-[8%] xl:left-32 hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full cursor-crosshair opacity-0">
@@ -233,7 +233,7 @@ const Home: React.FC = () => {
         </div>
 
         {/* About Me Card Showcase */}
-        <div className="architect-card opacity-0 relative w-full max-w-7xl px-4 flex flex-col items-center">
+        <div className="architect-card opacity-0 relative w-full max-w-7xl px-4 flex flex-col items-center z-10">
 
           <div className="relative block w-full aspect-square sm:aspect-[5/6] md:aspect-[16/9] lg:aspect-[21/9] rounded-[2rem] md:rounded-[3rem] overflow-hidden group shadow-2xl border border-glass-border transition-all duration-700 hover:border-accent/40 z-10 hover:z-[60]">
             <Link to="/about" className="absolute inset-0 z-20 cursor-pointer" aria-label="Go to About page"></Link>
@@ -264,19 +264,8 @@ const Home: React.FC = () => {
                   <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 md:px-8 md:py-3 bg-bg-primary/80 border border-accent text-accent text-[10px] md:text-sm font-black uppercase tracking-wider rounded-full hover:bg-accent/10 transition-colors flex items-center shadow-[0_0_15px_rgba(var(--accent-rgb),0.2)]">
                     <Twitter className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" /> X
                   </a>
-                  <div className="md:hidden p-1.5 bg-glass-bg border border-glass-border text-text-primary rounded-full flex items-center justify-center">
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
-                  <a href="https://t.me/mishdgr8" target="_blank" rel="noopener noreferrer" className="hidden md:flex p-3 glass border border-glass-border text-text-primary rounded-full hover:bg-glass-bg transition-colors items-center justify-center">
-                    <Send className="w-5 h-5" />
-                  </a>
                 </div>
               </div>
-
-              <Link to="/about" className="hidden md:flex pointer-events-auto px-8 py-4 bg-glass-bg backdrop-blur-md border border-glass-border text-text-primary hover:bg-accent hover:text-bg-primary hover:border-transparent transition-all duration-300 rounded-full items-center space-x-3 group/btn">
-                <span className="font-black tracking-[0.2em] uppercase text-xs">LEARN MORE</span>
-                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-              </Link>
             </div>
           </div>
 
@@ -309,217 +298,92 @@ const Home: React.FC = () => {
                   <p className="text-2xl font-black text-text-primary/90">119.9K</p>
                 </div>
               </div>
-
-              <div className="grid grid-cols-2 gap-8 pt-2">
-                <div>
-                  <p className="text-[8px] font-black text-text-primary/20 uppercase tracking-widest mb-1">REPOSTS</p>
-                  <p className="text-2xl font-black text-text-primary/90">10.9K</p>
-                </div>
-                <div>
-                  <p className="text-[8px] font-black text-text-primary/20 uppercase tracking-widest mb-1">RATE</p>
-                  <p className="text-2xl font-black text-accent">3.7%</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* SECONDARY MINI SHARD */}
-          <div className="telemetry-shard opacity-0 absolute -top-12 right-0 w-64 glass rounded-3xl p-8 hidden lg:flex flex-col border-glass-border z-20 shadow-2xl hover:rotate-0 transition-transform duration-500 cursor-default">
-            <div className="flex items-center space-x-2 mb-4">
-              <Sparkles className="w-4 h-4 text-accent" />
-              <span className="text-[9px] font-black opacity-30 uppercase tracking-widest">NETWORK_REACH</span>
-            </div>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-[9px] text-text-primary/40 font-black">VISITS</span>
-                <span className="text-xl font-black">36.9K</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-[9px] text-text-primary/40 font-black">FOLLOWERS</span>
-                <span className="text-xl font-black text-accent">3.1K</span>
-              </div>
             </div>
           </div>
         </div>
 
         <div className="hero-bottom-text opacity-0 w-full mt-8 md:mt-48 overflow-hidden border-t border-glass-border pt-4 md:pt-16">
-          <div>
-            <h2 className="text-huge text-center uppercase tracking-tighter">
-              GOLFWANG0X
-            </h2>
-          </div>
+          <h2 className="text-huge text-center uppercase tracking-tighter">GOLFWANG0X</h2>
         </div>
       </section>
 
-      {/* Global Telemetry Bar */}
-      <div className="scroll-panel opacity-0 max-w-7xl mx-auto px-6 xl:px-32 mb-24 hidden lg:flex justify-between items-start pt-12 border-t border-glass-border">
-        {[
-          { label: 'Replies', val: '42.7K', icon: MessageCircle },
-          { label: 'Bookmarks', val: '4.6K', icon: Zap },
-          { label: 'Verified', val: '939', icon: Sparkles },
-          { label: 'Shares', val: '522', icon: ArrowRight },
-          { label: 'Visits', val: '36.9K', icon: TrendingUp }
-        ].map((item, i) => (
-          <div key={i} className="panel-item opacity-0 group cursor-default">
-            <div className="flex items-center space-x-2 mb-2">
-              <item.icon className="w-3 h-3 text-text-faint group-hover:text-accent transition-colors" />
-              <p className="text-[9px] font-black text-text-faint uppercase tracking-[0.2em]">{item.label}</p>
-            </div>
-            <p className="text-3xl font-black tracking-tighter text-text-primary group-hover:text-accent transition-colors">{item.val}</p>
-          </div>
-        ))}
-      </div>
-
-      <style>{`
-        @keyframes scan {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(1000%); }
-        }
-      `}</style>
-
-      {/* 1. TOP SIGNAL TWEETS */}
-      <section id="top-signal" className="scroll-panel opacity-0 px-6 xl:px-32 py-20 relative z-10 border-t border-glass-border bg-bg-primary/60 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto">
-          <div className="panel-header opacity-0 flex justify-between items-end mb-16">
+      {/* HORIZONTALLY SCROLLING: TOP SIGNAL TWEETS */}
+      {/* 
+        This section uses a wrapper with 100vh. Inside, a track extends beyond 100vw.
+        GSAP will pin `#top-signal` and scroll `.signal-track` on the X axis.
+      */}
+      <section id="top-signal" className="w-full h-screen relative z-10 bg-bg-primary overflow-hidden border-t border-glass-border flex flex-col justify-center">
+        <div className="w-full px-6 xl:px-32 absolute top-16 left-0 right-0 z-20">
+          <div className="flex justify-between items-end mb-8">
             <div>
-              <div className="flex items-center space-x-3 mb-6">
+              <div className="flex items-center space-x-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
                   <Sparkles className="w-5 h-5 text-accent" />
                 </div>
                 <span className="text-[11px] font-black text-text-muted tracking-[0.4em] uppercase">High Performance Feed</span>
               </div>
-              <h2 className="text-3xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9]">Top Signal <br /><span className="text-text-faint">Archive.</span></h2>
+              <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-[0.9]">Top Signal <br /><span className="text-text-faint">Archive.</span></h2>
             </div>
             <Link to="/tweets" className="hidden md:flex items-center px-8 py-4 rounded-full border border-glass-border text-[11px] font-black text-text-muted hover:text-text-primary hover:border-accent/50 transition-all uppercase tracking-[0.3em] group backdrop-blur-md">
               ALL TRANSMISSIONS <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform text-accent" />
             </Link>
           </div>
+        </div>
 
-          <div className="grid grid-cols-1 md:hidden gap-6">
-            {topSignal.slice(0, 3).map((tweet, idx) => (
-              <Link
-                key={tweet.id}
-                to={`/content/${tweet.id}`}
-                className="panel-item opacity-0 group relative block"
-              >
-                <div className="glass p-6 rounded-[1.5rem] border border-glass-border hover-card h-full flex flex-col justify-between overflow-hidden relative min-h-[280px]">
-                  <div>
-                    <div className="flex justify-between items-start mb-6">
-                      <span className="text-4xl font-black text-accent/10 group-hover:text-accent transition-all duration-500">
-                        0{idx + 1}
-                      </span>
-                      <div className="w-10 h-10 rounded-xl bg-bg-secondary/20 group-hover:bg-accent flex items-center justify-center transition-all duration-500">
-                        <TrendingUp className="w-5 h-5 text-text-muted group-hover:text-bg-primary" />
-                      </div>
-                    </div>
-                    <h3 className="text-xl font-black mb-4 group-hover:text-accent transition-colors leading-[1.1] tracking-tighter uppercase">
-                      {tweet.title}
-                    </h3>
-                    <p className="text-text-muted mb-6 line-clamp-2 text-sm leading-relaxed font-medium">
-                      {tweet.excerpt}
-                    </p>
-                  </div>
-                  <div className="flex items-center space-x-4 pt-4 border-t border-glass-border mt-auto">
-                    {['Views', 'Likes'].map((label, i) => {
-                      const metric = tweet.metrics?.find(m => m.label === label);
-                      return metric ? (
-                        <div key={i}>
-                          <p className="text-[9px] uppercase tracking-wider text-text-faint font-black">{metric.label}</p>
-                          <p className="text-lg font-black text-text-secondary">{metric.value}</p>
-                        </div>
-                      ) : null;
-                    })}
-                  </div>
-                </div>
-              </Link>
-            ))}
+        {/* The Track that moves horizontally */}
+        {/* We make the track very wide based on how many items there are. Display 3 on desktop at a time. */}
+        <div className="signal-track flex gap-8 px-6 xl:px-32 w-max mt-32 min-w-full items-center pl-6 xl:pl-32">
+          {topSignal.map((tweet, idx) => (
             <Link
-              to="/tweets"
-              className="panel-item opacity-0 flex items-center justify-center py-4 px-6 glass border border-accent/30 rounded-2xl text-accent font-black uppercase text-sm tracking-wider hover:bg-accent/10 transition-colors"
+              key={tweet.id}
+              to={`/content/${tweet.id}`}
+              className="group relative block w-[85vw] md:w-[40vw] lg:w-[28vw] shrink-0"
             >
-              See All Signals <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
-          </div>
-
-          <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-            {topSignal.map((tweet, idx) => (
-              <Link
-                key={tweet.id}
-                to={`/content/${tweet.id}`}
-                className="panel-item opacity-0 group relative block"
-              >
-                <div className="glass p-10 md:p-12 rounded-[2.5rem] border border-glass-border hover-card h-full flex flex-col justify-between overflow-hidden relative min-h-[480px]">
-                  <div>
-                    <div className="flex justify-between items-start mb-10">
-                      <span className="text-6xl font-black text-accent/10 group-hover:text-accent transition-all duration-500">
-                        0{idx + 1}
-                      </span>
-                      <div className="w-14 h-14 rounded-2xl bg-bg-secondary/20 group-hover:bg-accent flex items-center justify-center transition-all duration-500 shadow-xl">
-                        <TrendingUp className="w-7 h-7 text-text-muted group-hover:text-bg-primary" />
-                      </div>
+              <div className="glass p-8 md:p-10 rounded-[2.5rem] border border-glass-border hover-card h-full flex flex-col justify-between overflow-hidden relative min-h-[400px]">
+                <div>
+                  <div className="flex justify-between items-start mb-10">
+                    <span className="text-6xl font-black text-accent/10 group-hover:text-accent transition-all duration-500">
+                      0{idx + 1}
+                    </span>
+                    <div className="w-12 h-12 rounded-2xl bg-bg-secondary/20 group-hover:bg-accent flex items-center justify-center transition-all duration-500">
+                      <TrendingUp className="w-6 h-6 text-text-muted group-hover:text-bg-primary" />
                     </div>
-                    <h3 className="text-3xl md:text-4xl font-black mb-8 group-hover:text-accent transition-colors leading-[1.1] tracking-tighter uppercase">
-                      {tweet.title}
-                    </h3>
-                    <p className="text-text-muted mb-12 line-clamp-3 text-lg leading-relaxed font-medium tracking-tight">
-                      {tweet.excerpt}
-                    </p>
                   </div>
-
-                  <div className="grid grid-cols-3 gap-8 pt-10 border-t border-glass-border mt-auto">
-                    {['Views', 'Likes', 'Replies'].map((label, i) => {
-                      const metric = tweet.metrics?.find(m => m.label === label);
-                      return metric ? (
-                        <div key={i}>
-                          <p className="text-[10px] uppercase tracking-[0.2em] text-text-faint mb-3 font-black truncate">{metric.label}</p>
-                          <p className="text-2xl font-black text-text-secondary group-hover:text-text-primary transition-colors tracking-tighter">{metric.value}</p>
-                        </div>
-                      ) : null;
-                    })}
-                  </div>
+                  <h3 className="text-2xl md:text-3xl font-black mb-6 group-hover:text-accent transition-colors leading-[1.1] tracking-tighter uppercase">
+                    {tweet.title}
+                  </h3>
+                  <p className="text-text-muted mb-8 line-clamp-3 text-sm md:text-base leading-relaxed font-medium tracking-tight">
+                    {tweet.excerpt}
+                  </p>
                 </div>
-              </Link>
-            ))}
-          </div>
+
+                <div className="grid grid-cols-3 gap-4 pt-6 mt-auto border-t border-glass-border">
+                  {['Views', 'Likes', 'Replies'].map((label, i) => {
+                    const metric = tweet.metrics?.find(m => m.label === label);
+                    return metric ? (
+                      <div key={i}>
+                        <p className="text-[9px] uppercase tracking-[0.2em] text-text-faint mb-2 font-black truncate">{metric.label}</p>
+                        <p className="text-xl font-black text-text-secondary group-hover:text-text-primary transition-colors tracking-tighter">{metric.value}</p>
+                      </div>
+                    ) : null;
+                  })}
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 
-      {/* 2. ANALYTICAL POSTS */}
-      <section id="analytical" className="scroll-panel opacity-0 px-6 xl:px-32 py-24 border-t border-glass-border relative z-10">
-        <div className="max-w-7xl mx-auto">
+      {/* STACKED PANEL 1: ANALYTICAL POSTS */}
+      {/* Minimum height 100vh, bg-bg-primary so it slides over the pinned section behind it */}
+      <section className="stacked-panel px-6 xl:px-32 py-24 border-t border-glass-border z-20 bg-bg-primary min-h-[100vh] shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
+        <div className="max-w-7xl mx-auto h-full flex flex-col justify-center">
           <div className="panel-header opacity-0 mb-16">
             <div className="flex items-center space-x-3 mb-6">
               <div className="w-16 h-[2px] bg-accent"></div>
               <span className="text-[11px] font-black text-text-muted tracking-[0.5em] uppercase">Intelligence Ledger</span>
             </div>
             <h2 className="text-3xl md:text-6xl font-black tracking-tighter uppercase leading-[0.85]">Analytical <br /><span className="text-text-faint">Breakdowns.</span></h2>
-          </div>
-
-          <div className="flex flex-col md:hidden">
-            {analyticalPosts.slice(0, 3).map((post, idx) => (
-              <Link
-                key={post.id}
-                to={`/content/${post.id}`}
-                className="panel-item opacity-0 group flex flex-col p-6 border-b border-glass-border hover:bg-glass-bg transition-all relative overflow-hidden"
-              >
-                <div className="absolute left-0 top-0 w-1 h-0 bg-accent group-hover:h-full transition-all duration-500"></div>
-                <span className="text-[10px] font-black text-text-faint tracking-widest uppercase mb-2 font-mono">
-                  GT-{idx + 1}
-                </span>
-                <h3 className="text-lg font-black text-text-primary group-hover:text-accent transition-all tracking-tighter mb-2 uppercase">
-                  {post.title}
-                </h3>
-                <p className="text-text-muted text-sm font-medium line-clamp-2">
-                  {post.excerpt}
-                </p>
-              </Link>
-            ))}
-            <Link
-              to="/tweets"
-              className="panel-item opacity-0 flex items-center justify-center py-4 px-6 mt-4 glass border border-accent/30 rounded-2xl text-accent font-black uppercase text-sm tracking-wider hover:bg-accent/10 transition-colors"
-            >
-              See All Breakdowns <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
           </div>
 
           <div className="hidden md:flex flex-col">
@@ -556,9 +420,9 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. MEDIUM RESEARCH */}
-      <section id="medium-research" className="scroll-panel opacity-0 px-6 xl:px-32 py-24 border-t border-glass-border relative z-10 bg-bg-primary/40">
-        <div className="max-w-7xl mx-auto">
+      {/* STACKED PANEL 2: MEDIUM RESEARCH */}
+      <section className="stacked-panel px-6 xl:px-32 py-24 border-t border-glass-border z-30 bg-[#080808] min-h-[100vh] flex flex-col justify-center shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
+        <div className="max-w-7xl mx-auto w-full">
           <div className="panel-header opacity-0 flex justify-between items-end mb-20">
             <div>
               <div className="flex items-center space-x-3 mb-6">
@@ -585,7 +449,7 @@ const Home: React.FC = () => {
                   <img
                     src={article.imageUrl}
                     alt={article.title}
-                    className="research-img w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-40 group-hover:opacity-100"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-40 group-hover:opacity-100"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/20 to-transparent"></div>
                 </div>
@@ -600,23 +464,6 @@ const Home: React.FC = () => {
                     <h3 className="text-3xl font-black group-hover:text-accent transition-colors leading-[1.1] tracking-tight mb-6 uppercase">
                       {article.title}
                     </h3>
-                    <p className="text-text-muted text-lg line-clamp-2 leading-relaxed mb-8 font-medium tracking-tight">
-                      {article.excerpt}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-10 border-t border-glass-border mt-auto">
-                    <div className="flex items-center space-x-10">
-                      {article.metrics?.slice(0, 2).map((m, i) => (
-                        <div key={i}>
-                          <p className="text-[9px] uppercase tracking-[0.3em] text-text-faint font-black mb-2">{m.label}</p>
-                          <p className="text-2xl font-black text-text-secondary">{m.value}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="w-14 h-14 rounded-full border border-glass-border flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all shadow-xl">
-                      <ExternalLink className="w-6 h-6 text-text-faint group-hover:text-bg-primary" />
-                    </div>
                   </div>
                 </div>
               </Link>
@@ -625,9 +472,11 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. DEV PORTFOLIO */}
-      <section id="dev-portfolio" className="scroll-panel opacity-0 px-6 xl:px-32 py-24 border-t border-glass-border relative z-10 bg-bg-secondary/30">
-        <div className="max-w-7xl mx-auto">
+      {/* STACKED PANEL 3: DEV PORTFOLIO & CONTACT */}
+      <section className="stacked-panel px-6 xl:px-32 py-24 border-t border-glass-border z-40 bg-bg-secondary min-h-[100vh] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col">
+
+        {/* DEV PORTFOLIO TOP HALF */}
+        <div className="max-w-7xl mx-auto w-full flex-1">
           <div className="panel-header opacity-0 flex justify-between items-end mb-20">
             <div>
               <div className="flex items-center space-x-3 mb-6">
@@ -643,7 +492,7 @@ const Home: React.FC = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 pb-32">
             {featuredProjects.map((project, idx) => (
               <Link
                 key={project.id}
@@ -678,51 +527,24 @@ const Home: React.FC = () => {
                     <h3 className="text-2xl md:text-3xl font-black group-hover:text-accent transition-colors leading-[1.1] tracking-tight mb-4 uppercase">
                       {project.title}
                     </h3>
-                    <p className="text-text-muted text-base line-clamp-2 leading-relaxed mb-6 font-medium tracking-tight">
-                      {project.excerpt}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-6 border-t border-glass-border mt-auto">
-                    <span className="text-[10px] uppercase font-black tracking-widest text-text-secondary">{project.date}</span>
-                    <div className="w-12 h-12 rounded-full border border-glass-border flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all shadow-xl">
-                      <ExternalLink className="w-5 h-5 text-text-faint group-hover:text-bg-primary" />
-                    </div>
                   </div>
                 </div>
               </Link>
             ))}
           </div>
-
-          <div className="mt-12 md:hidden flex justify-center">
-            <Link
-              to="/projects"
-              className="panel-item opacity-0 flex items-center justify-center py-4 px-8 glass border border-accent/30 rounded-full text-accent font-black uppercase text-xs tracking-widest hover:bg-accent/10 transition-colors w-full"
-            >
-              See All Projects <ArrowRight className="w-4 h-4 ml-3" />
-            </Link>
-          </div>
         </div>
-      </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="scroll-panel opacity-0 px-6 xl:px-32 py-32 md:py-48 relative overflow-hidden border-t border-glass-border z-10">
-        <div className="max-w-5xl mx-auto text-center relative z-10">
+        {/* CONTACT BOTTOM HALF */}
+        <div className="max-w-5xl mx-auto text-center relative mt-auto border-t border-glass-border pt-32 w-full">
           <div className="panel-item opacity-0 inline-block px-6 py-3 rounded-full bg-accent/10 border border-accent/30 text-[11px] font-black text-accent uppercase tracking-[0.4em] mb-12 animate-pulse">
             SYSTEMS ONLINE / OPEN_FOR_OPS
           </div>
           <h2 className="panel-header opacity-0 text-4xl md:text-6xl lg:text-7xl xl:text-9xl font-black tracking-tighter mb-12 md:mb-16 leading-[0.8] uppercase">
             Start the <br /> <span className="text-accent drop-shadow-[0_0_50px_rgba(var(--accent-rgb),0.4)]">Transmission.</span>
           </h2>
-          <p className="panel-item opacity-0 text-text-muted mb-16 md:mb-24 text-2xl md:text-4xl font-medium max-w-3xl mx-auto leading-tight italic tracking-tighter">
-            "The best way to predict the future is to encode it."
-          </p>
           <div className="flex flex-col sm:flex-row justify-center gap-8 md:gap-12">
             <a href="mailto:contact@golfwang0x.xyz" target="_blank" rel="noopener noreferrer" className="panel-item opacity-0 px-16 md:px-20 py-7 md:py-9 bg-accent text-bg-primary font-black rounded-[2rem] hover:scale-105 transition-all uppercase tracking-[0.3em] text-xs shadow-[0_0_50px_rgba(var(--accent-rgb),0.3)] text-center">
               ESTABLISH CONNECTION
-            </a>
-            <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="panel-item opacity-0 px-16 md:px-20 py-7 md:py-9 glass border border-glass-border text-text-primary font-black rounded-[2rem] hover:bg-glass-bg transition-all uppercase tracking-[0.3em] text-xs text-center backdrop-blur-md">
-              FOLLOW_FEED
             </a>
           </div>
         </div>
