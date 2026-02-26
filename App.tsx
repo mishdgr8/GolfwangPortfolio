@@ -124,6 +124,8 @@ export default function App() {
   const smootherRef = useRef<ScrollSmoother | null>(null);
 
   useEffect(() => {
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
     // Kill previous smoother instance on route change to avoid stacking
     if (smootherRef.current) {
       smootherRef.current.kill();
@@ -133,16 +135,21 @@ export default function App() {
     // Scroll to top on route change
     window.scrollTo(0, 0);
 
-    // Create ScrollSmoother after a short delay to let the new route render
-    const timer = setTimeout(() => {
-      smootherRef.current = ScrollSmoother.create({
-        wrapper: "#smooth-wrapper",
-        content: "#smooth-content",
-        smooth: 1.2,
-        effects: true,
-        normalizeScroll: true,
-      });
-    }, 100);
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    // Only create ScrollSmoother on desktop — it causes severe lag,
+    // scroll hijacking, and page reloads on mobile touch devices
+    if (!isMobile) {
+      timer = setTimeout(() => {
+        smootherRef.current = ScrollSmoother.create({
+          wrapper: "#smooth-wrapper",
+          content: "#smooth-content",
+          smooth: 1.2,
+          effects: true,
+          normalizeScroll: true,
+        });
+      }, 100);
+    }
 
     // Scroll progress bar
     const updateProgress = () => {
@@ -162,7 +169,7 @@ export default function App() {
     window.addEventListener('scroll', updateProgress);
 
     return () => {
-      clearTimeout(timer);
+      if (timer) clearTimeout(timer);
       window.removeEventListener('scroll', updateProgress);
       if (smootherRef.current) {
         smootherRef.current.kill();

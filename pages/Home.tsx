@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { portfolioData, projectsData } from '../data';
 import { ArrowRight, TrendingUp, Sparkles, BookOpen, ExternalLink, Terminal, Cpu, PenTool, BarChart, Twitter, Code } from 'lucide-react';
@@ -20,6 +20,16 @@ const parseViewCount = (value: string): number => {
 
 const Home: React.FC = () => {
   const container = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(max-width: 768px)').matches : false
+  );
+
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 768px)');
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
 
   const allTweets = portfolioData.filter(item => item.type === 'tweet');
   const sortedByViews = [...allTweets].sort((a, b) => {
@@ -34,9 +44,18 @@ const Home: React.FC = () => {
   const featuredProjects = projectsData.filter(item => item.featured).slice(0, 3);
 
   useGSAP(() => {
+    // ── MOBILE: skip all GSAP, just make hidden elements visible ──
+    if (isMobile) {
+      gsap.set(
+        '.sidebar-text-cont, .hero-headline-line, .hero-subtitle, .role-tag, .architect-card, .telemetry-shard',
+        { visibility: 'visible', opacity: 1, x: 0, y: 0, yPercent: 0, scale: 1, rotation: 0, clearProps: 'transform' }
+      );
+      return; // no animations, no ScrollTriggers, no pinning
+    }
+
+    // ── DESKTOP: full GSAP experience ──
+
     // 1. Initial Page Load Animations
-    // Immediately set all animated elements to their "from" state via GSAP.set()
-    // This prevents them from being visible in their final state before the animation runs (FOUC).
     gsap.set('.sidebar-text-cont', { opacity: 0, y: 50, visibility: 'visible' });
     gsap.set('.hero-headline-line', { yPercent: 100, opacity: 0, visibility: 'visible' });
     gsap.set('.hero-subtitle', { opacity: 0, x: 50, visibility: 'visible' });
@@ -138,7 +157,7 @@ const Home: React.FC = () => {
       }
     );
 
-  }, { scope: container });
+  }, { scope: container, dependencies: [isMobile] });
 
   return (
     <div ref={container} className="relative pt-24 min-h-screen">
@@ -267,9 +286,9 @@ const Home: React.FC = () => {
       </section>
 
       {/* HORIZONTAL SECTION 1: DEV PORTFOLIO */}
-      <section id="dev-portfolio" className="w-full h-screen relative z-20 bg-bg-primary border-t border-glass-border">
-        <div className="dev-wrapper w-full h-full relative overflow-clip flex flex-col justify-center">
-          <div className="w-full px-6 xl:px-32 absolute top-16 left-0 right-0 z-40">
+      <section id="dev-portfolio" className={`w-full relative z-20 bg-bg-primary border-t border-glass-border ${isMobile ? 'min-h-fit py-24' : 'h-screen'}`}>
+        <div className={`dev-wrapper w-full relative flex flex-col ${isMobile ? '' : 'h-full overflow-clip justify-center'}`}>
+          <div className={`w-full px-6 xl:px-32 z-40 ${isMobile ? 'relative mb-8' : 'absolute top-16 left-0 right-0'}`}>
             <div className="flex justify-between items-end mb-8">
               <div>
                 <div className="flex items-center space-x-3 mb-4">
@@ -286,12 +305,12 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          <div className="dev-track flex gap-8 px-6 xl:px-32 w-max mt-32 min-w-full items-center pl-6 xl:pl-32">
+          <div className={`dev-track px-6 xl:px-32 ${isMobile ? 'flex flex-col gap-6 w-full' : 'flex gap-8 w-max mt-32 min-w-full items-center pl-6 xl:pl-32'}`}>
             {featuredProjects.map((project, idx) => (
               <Link
                 key={project.id}
                 to="/projects"
-                className="group relative block w-[80vw] md:w-[42vw] lg:w-[40vw] shrink-0"
+                className={`group relative block ${isMobile ? 'w-full' : 'w-[80vw] md:w-[42vw] lg:w-[40vw] shrink-0'}`}
               >
                 <div className="glass overflow-hidden rounded-[2.5rem] border border-glass-border hover-card flex flex-col justify-between relative h-[560px]">
                   <div className="aspect-[16/9] overflow-hidden relative shrink-0 bg-[#0a0a0a]">
@@ -328,10 +347,6 @@ const Home: React.FC = () => {
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-between pt-6 border-t border-glass-border">
-                      <span className="text-[10px] uppercase font-black tracking-widest text-text-secondary">{project.date}</span>
-                      <ExternalLink className="w-5 h-5 text-text-faint group-hover:text-accent transition-colors" />
-                    </div>
                   </div>
                 </div>
               </Link>
@@ -341,9 +356,9 @@ const Home: React.FC = () => {
       </section>
 
       {/* HORIZONTAL SECTION 2: TOP SIGNAL */}
-      <section id="top-signal" className="w-full h-screen relative z-30 bg-bg-primary border-t border-glass-border">
-        <div className="signal-wrapper w-full h-full relative overflow-clip flex flex-col justify-center">
-          <div className="w-full px-6 xl:px-32 absolute top-16 left-0 right-0 z-40">
+      <section id="top-signal" className={`w-full relative z-30 bg-bg-primary border-t border-glass-border ${isMobile ? 'min-h-fit py-24' : 'h-screen'}`}>
+        <div className={`signal-wrapper w-full relative flex flex-col ${isMobile ? '' : 'h-full overflow-clip justify-center'}`}>
+          <div className={`w-full px-6 xl:px-32 z-40 ${isMobile ? 'relative mb-8' : 'absolute top-16 left-0 right-0'}`}>
             <div className="flex justify-between items-end mb-8">
               <div>
                 <div className="flex items-center space-x-3 mb-4">
@@ -360,12 +375,12 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          <div className="signal-track flex gap-8 px-6 xl:px-32 w-max mt-32 min-w-full items-center pl-6 xl:pl-32">
+          <div className={`signal-track px-6 xl:px-32 ${isMobile ? 'flex flex-col gap-6 w-full' : 'flex gap-8 w-max mt-32 min-w-full items-center pl-6 xl:pl-32'}`}>
             {topSignal.map((tweet, idx) => (
               <Link
                 key={tweet.id}
                 to={`/content/${tweet.id}`}
-                className="group relative block w-[85vw] md:w-[40vw] lg:w-[28vw] shrink-0"
+                className={`group relative block ${isMobile ? 'w-full' : 'w-[85vw] md:w-[40vw] lg:w-[28vw] shrink-0'}`}
               >
                 <div className="glass p-8 md:p-10 rounded-[2.5rem] border border-glass-border hover-card h-full flex flex-col justify-between overflow-hidden relative min-h-[450px]">
                   <div>
