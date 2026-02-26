@@ -36,7 +36,7 @@ const Research: React.FC = () => {
               className="group block p-1 border border-glass-border rounded-2xl hover:border-accent/30 transition-all duration-500 hover:bg-bg-tertiary relative overflow-hidden"
             >
               <div className="aspect-video rounded-xl overflow-hidden mb-8">
-                <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+                <img src={item.imageUrl} alt={item.title} loading="lazy" decoding="async" className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               <div className="px-8 pb-8">
                 <div className="flex items-center space-x-6 text-[10px] font-black text-accent uppercase tracking-widest mb-6">

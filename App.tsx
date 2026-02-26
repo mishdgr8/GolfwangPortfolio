@@ -1,14 +1,16 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import Home from './pages/Home';
-import ContentDetail from './pages/ContentDetail';
-import Tweets from './pages/Tweets';
-import Research from './pages/Research';
-import About from './pages/About';
-import Projects from './pages/Projects';
 import { Github, Twitter, MessageSquare, ArrowUpRight, Menu, X, Send, Sun, Moon } from 'lucide-react';
 import { useTheme } from './ThemeContext';
+
+// Route-level code splitting — each page loads on demand
+const Home = lazy(() => import('./pages/Home'));
+const ContentDetail = lazy(() => import('./pages/ContentDetail'));
+const Tweets = lazy(() => import('./pages/Tweets'));
+const Research = lazy(() => import('./pages/Research'));
+const About = lazy(() => import('./pages/About'));
+const Projects = lazy(() => import('./pages/Projects'));
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -137,8 +139,10 @@ export default function App() {
       {/* GLOBAL ATMOSPHERIC BACKGROUND */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=2500"
+          src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=40&w=1200&fm=webp"
           alt="Atmospheric Background"
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover opacity-10 grayscale brightness-[0.2]"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-bg-primary via-transparent to-bg-primary"></div>
@@ -148,14 +152,20 @@ export default function App() {
 
       <Navbar />
       <main className="relative z-10">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/tweets" element={<Tweets />} />
-          <Route path="/research" element={<Research />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/content/:id" element={<ContentDetail />} />
-        </Routes>
+        <Suspense fallback={
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        }>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/tweets" element={<Tweets />} />
+            <Route path="/research" element={<Research />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/content/:id" element={<ContentDetail />} />
+          </Routes>
+        </Suspense>
       </main>
       <Footer />
     </div>

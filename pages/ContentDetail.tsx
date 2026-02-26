@@ -36,6 +36,8 @@ const ContentDetail: React.FC = () => {
             <img
               src={item.imageUrl}
               alt={item.title}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover rounded-[1.8rem] opacity-70 hover:opacity-100 transition-opacity duration-700"
             />
           </div>

@@ -35,41 +35,44 @@ const Home: React.FC = () => {
 
   useGSAP(() => {
     // 1. Initial Page Load Animations
-    const tl = gsap.timeline();
+    // Immediately set all animated elements to their "from" state via GSAP.set()
+    // This prevents them from being visible in their final state before the animation runs (FOUC).
+    gsap.set('.sidebar-text-cont', { opacity: 0, y: 50, visibility: 'visible' });
+    gsap.set('.hero-headline-line', { yPercent: 100, opacity: 0, visibility: 'visible' });
+    gsap.set('.hero-subtitle', { opacity: 0, x: 50, visibility: 'visible' });
+    gsap.set('.role-tag', { opacity: 0, scale: 0.5, visibility: 'visible' });
+    gsap.set('.architect-card', { opacity: 0, y: 100, scale: 0.95, visibility: 'visible' });
+    gsap.set('.telemetry-shard', { opacity: 0, x: 100, rotation: 10, visibility: 'visible' });
 
-    tl.fromTo('.sidebar-text-cont',
-      { opacity: 0, y: 50 },
+    const tl = gsap.timeline({ defaults: { force3d: true } });
+
+    tl.to('.sidebar-text-cont',
       { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'power3.out' },
       0.2
     );
 
-    tl.fromTo('.hero-headline-line',
-      { yPercent: 100, opacity: 0 },
+    tl.to('.hero-headline-line',
       { yPercent: 0, opacity: 1, duration: 1, stagger: 0.15, ease: 'power4.out' },
       0.3
     );
 
-    tl.fromTo('.hero-subtitle',
-      { opacity: 0, x: 50 },
+    tl.to('.hero-subtitle',
       { opacity: 1, x: 0, duration: 1, ease: 'power3.out' },
       0.8
     );
 
-    tl.fromTo('.role-tag',
-      { opacity: 0, scale: 0.5 },
+    tl.to('.role-tag',
       { opacity: 1, scale: 1, duration: 0.8, stagger: 0.15, ease: 'back.out(1.7)' },
       1
     );
 
-    tl.fromTo('.architect-card',
-      { opacity: 0, y: 100, scale: 0.95 },
+    tl.to('.architect-card',
       { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'power3.out' },
       1.2
     );
 
-    tl.fromTo('.telemetry-shard',
-      { opacity: 0, x: 100, rotation: 10 },
-      { opacity: 1, x: 0, rotation: 2, duration: 1, stagger: 0.2, ease: 'power3.out', clearProps: "transform" },
+    tl.to('.telemetry-shard',
+      { opacity: 1, x: 0, rotation: 2, duration: 1, stagger: 0.2, ease: 'power3.out', clearProps: 'transform' },
       1.5
     );
 
@@ -142,7 +145,7 @@ const Home: React.FC = () => {
 
       {/* Cinematic Sidebar Text */}
       <div className="fixed left-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex">
-        <div className="sidebar-text-cont rotate-180 pointer-events-auto opacity-0" style={{ writingMode: 'vertical-rl' }}>
+        <div className="sidebar-text-cont rotate-180 pointer-events-auto" style={{ writingMode: 'vertical-rl', visibility: 'hidden' }}>
           <span className="text-[10px] font-black tracking-[0.4em] text-text-muted uppercase hover:text-accent transition-colors cursor-pointer">
             GOLFWANG0X // SYSTEMS ONLINE
           </span>
@@ -150,7 +153,7 @@ const Home: React.FC = () => {
       </div>
 
       <div className="fixed right-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex">
-        <div className="sidebar-text-cont pointer-events-auto opacity-0" style={{ writingMode: 'vertical-rl' }}>
+        <div className="sidebar-text-cont pointer-events-auto" style={{ writingMode: 'vertical-rl', visibility: 'hidden' }}>
           <span className="text-[10px] font-black tracking-[0.4em] text-text-muted uppercase hover:text-accent transition-colors cursor-pointer">
             GOLFWANG0X // EST. 2023
           </span>
@@ -159,19 +162,19 @@ const Home: React.FC = () => {
 
       {/* Hero Section */}
       <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 xl:px-32 pt-12 pb-6 md:pb-24 z-10 bg-bg-primary overflow-clip">
-        <div className="role-tag absolute top-[10%] left-[8%] xl:left-32 hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full cursor-crosshair opacity-0">
+        <div className="role-tag absolute top-[10%] left-[8%] xl:left-32 hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full cursor-crosshair" style={{ visibility: 'hidden' }}>
           <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
           <PenTool className="w-3 h-3 text-text-muted" />
           <span className="text-[11px] font-black text-text-secondary tracking-[0.2em] uppercase">CONTENT WRITER</span>
         </div>
 
-        <div className="role-tag absolute top-[18%] right-[5%] xl:right-32 hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full cursor-crosshair opacity-0">
+        <div className="role-tag absolute top-[18%] right-[5%] xl:right-32 hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full cursor-crosshair" style={{ visibility: 'hidden' }}>
           <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
           <Terminal className="w-3 h-3 text-text-muted" />
           <span className="text-[11px] font-black text-text-secondary tracking-[0.2em] uppercase">WEB DEVELOPER</span>
         </div>
 
-        <div className="role-tag absolute bottom-[25%] right-[8%] xl:right-32 hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full cursor-crosshair opacity-0">
+        <div className="role-tag absolute bottom-[25%] right-[8%] xl:right-32 hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full cursor-crosshair" style={{ visibility: 'hidden' }}>
           <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
           <Cpu className="w-3 h-3 text-text-muted" />
           <span className="text-[11px] font-black text-text-secondary tracking-[0.2em] uppercase">BLOCKCHAIN TECH</span>
@@ -180,13 +183,13 @@ const Home: React.FC = () => {
         <div className="max-w-7xl w-full flex flex-col md:flex-row items-start md:items-end justify-between mb-24 relative">
           <div>
             <h1 className="text-7xl md:text-9xl font-black tracking-tighter leading-[0.8] uppercase mb-8 flex flex-col">
-              <span className="overflow-hidden pb-2"><span className="hero-headline-line block opacity-0">SIGNAL</span></span>
-              <span className="overflow-hidden pb-2"><span className="hero-headline-line block text-text-faint opacity-0">OVER</span></span>
-              <span className="overflow-hidden pb-4 pt-2 -mt-2"><span className="hero-headline-line block text-accent drop-shadow-[0_0_40px_rgba(var(--accent-rgb),0.3)] opacity-0">NOISE.</span></span>
+              <span className="overflow-hidden pb-2"><span className="hero-headline-line block" style={{ visibility: 'hidden' }}>SIGNAL</span></span>
+              <span className="overflow-hidden pb-2"><span className="hero-headline-line block text-text-faint" style={{ visibility: 'hidden' }}>OVER</span></span>
+              <span className="overflow-hidden pb-4 pt-2 -mt-2"><span className="hero-headline-line block text-accent drop-shadow-[0_0_40px_rgba(var(--accent-rgb),0.3)]" style={{ visibility: 'hidden' }}>NOISE.</span></span>
             </h1>
           </div>
 
-          <div className="hero-subtitle max-w-md text-right self-end opacity-0">
+          <div className="hero-subtitle max-w-md text-right self-end" style={{ visibility: 'hidden' }}>
             <div className="w-20 h-1 bg-accent mb-8 ml-auto"></div>
             <p className="text-text-muted text-2xl md:text-3xl leading-relaxed font-medium italic tracking-tight">
               "Channeling my creativity and passion through my content and web development."
@@ -194,12 +197,14 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        <div className="architect-card opacity-0 relative w-full max-w-7xl px-4 flex flex-col items-center z-10">
+        <div className="architect-card relative w-full max-w-7xl px-4 flex flex-col items-center z-10" style={{ visibility: 'hidden' }}>
           <div className="relative block w-full aspect-square sm:aspect-[5/6] md:aspect-[16/9] lg:aspect-[21/9] rounded-[2rem] md:rounded-[3rem] overflow-hidden group shadow-2xl border border-glass-border transition-all duration-700 hover:border-accent/40 z-10 hover:z-[60]">
             <Link to="/about" className="absolute inset-0 z-20 cursor-pointer" aria-label="Go to About page"></Link>
             <img
-              src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000"
+              src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=40&w=800&fm=webp"
               alt="The Architect"
+              decoding="async"
+              fetchPriority="high"
               className="w-full h-full object-cover grayscale opacity-30 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/50 to-transparent"></div>
@@ -228,7 +233,7 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          <div className="telemetry-shard opacity-0 absolute -bottom-16 right-0 w-full max-w-md glass rounded-[2.5rem] p-10 hidden lg:flex flex-col justify-between border-accent/30 z-20 shadow-2xl hover:rotate-0 transition-transform duration-500 cursor-default">
+          <div className="telemetry-shard absolute -bottom-16 right-0 w-full max-w-md glass rounded-[2.5rem] p-10 hidden lg:flex flex-col justify-between border-accent/30 z-20 shadow-2xl hover:rotate-0 transition-transform duration-500 cursor-default" style={{ visibility: 'hidden' }}>
             <div className="flex justify-between items-start mb-8">
               <div className="flex items-center space-x-3">
                 <BarChart className="w-5 h-5 text-accent" />
@@ -301,6 +306,8 @@ const Home: React.FC = () => {
                       <img
                         src={project.imageUrl}
                         alt={project.title}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-60 group-hover:opacity-100"
                       />
                     )}
@@ -465,6 +472,8 @@ const Home: React.FC = () => {
                   <img
                     src={article.imageUrl}
                     alt={article.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-40 group-hover:opacity-100"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/20 to-transparent"></div>
