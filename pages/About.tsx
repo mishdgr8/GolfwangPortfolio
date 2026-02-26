@@ -6,11 +6,6 @@ import { ArrowLeft, Shield, Terminal, Zap, Cpu, Search, Fingerprint } from 'luci
 const About: React.FC = () => {
   return (
     <div className="pt-32 pb-48 px-6 reveal relative overflow-hidden">
-      {/* Background Decor */}
-      <div className="fixed inset-0 z-0 pointer-events-none opacity-20">
-        <div className="absolute top-[20%] left-[10%] w-[600px] h-[600px] bg-accent/10 blur-[150px] rounded-full"></div>
-      </div>
-
       <div className="max-w-5xl mx-auto relative z-10">
         <Link to="/" className="inline-flex items-center text-[10px] font-black tracking-widest text-text-muted hover:text-accent mb-16 group uppercase">
           <ArrowLeft className="w-3 h-3 mr-2 group-hover:-translate-x-1 transition-transform" />

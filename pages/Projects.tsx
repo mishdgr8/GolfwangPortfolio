@@ -5,19 +5,6 @@ import { projectsData } from '../data';
 const Projects: React.FC = () => {
     return (
         <div className="pt-24 pb-24 relative min-h-screen overflow-hidden">
-            {/* BACKGROUND IMAGE - Consistent with other pages */}
-            <div className="fixed inset-0 z-0 pointer-events-none">
-                <img
-                    src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=2500"
-                    alt="Atmospheric Background"
-                    className="w-full h-full object-cover opacity-10 grayscale brightness-[0.25]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-bg-primary via-transparent to-bg-primary"></div>
-                {/* Glowing Orbs */}
-                <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-accent/5 blur-[120px] rounded-full"></div>
-                <div className="absolute bottom-[10%] left-[10%] w-[400px] h-[400px] bg-accent/5 blur-[100px] rounded-full"></div>
-            </div>
-
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <div className="mb-20 reveal">
                     <div className="flex items-center space-x-3 mb-6">
@@ -43,15 +30,21 @@ const Projects: React.FC = () => {
                         >
                             {/* IMAGE WRAPPER */}
                             <div className="aspect-[16/10] overflow-hidden relative shrink-0 border-b border-glass-border">
-                                {/* Visual Preview or Live Iframe */}
                                 {project.demoUrl ? (
-                                    <iframe
-                                        src={project.demoUrl}
-                                        title={project.title}
-                                        className="w-[250%] h-[250%] pointer-events-none origin-top-left scale-[0.4] group-hover:scale-[0.42] transition-transform duration-1000"
-                                        loading="lazy"
-                                        sandbox="allow-scripts allow-same-origin"
-                                    />
+                                    <>
+                                        <div className="absolute inset-0 z-10 bg-bg-primary/40 group-hover:bg-transparent transition-colors duration-700 pointer-events-none flex items-center justify-center">
+                                            <div className="px-4 py-2 bg-accent/20 backdrop-blur-md border border-accent/40 rounded-full text-[8px] font-black text-accent uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                                                Interactive Preview
+                                            </div>
+                                        </div>
+                                        <iframe
+                                            src={project.demoUrl}
+                                            title={project.title}
+                                            className="w-[200%] h-[200%] origin-top-left scale-[0.5] group-hover:scale-[0.52] transition-transform duration-1000 border-none"
+                                            loading="lazy"
+                                            sandbox="allow-scripts allow-same-origin"
+                                        />
+                                    </>
                                 ) : (
                                     <img
                                         src={project.imageUrl}

@@ -13,6 +13,9 @@ import { useTheme } from './ThemeContext';
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { pathname } = useLocation();
+
+  const isActive = (path: string) => pathname === path ? "text-accent" : "hover:text-text-primary";
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 glass px-6 py-4 border-b border-glass-border">
@@ -25,15 +28,15 @@ const Navbar = () => {
         </Link>
 
         <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-text-secondary">
-          <Link to="/" className="hover:opacity-100 transition-opacity">HOME</Link>
-          <Link to="/tweets" className="hover:opacity-100 transition-opacity">TWEETS</Link>
-          <Link to="/research" className="hover:opacity-100 transition-opacity">RESEARCH</Link>
-          <Link to="/projects" className="hover:opacity-100 transition-opacity">PROJECTS</Link>
-          <Link to="/about" className="hover:opacity-100 transition-opacity">ABOUT</Link>
-          <a href="https://github.com/mishdgr8" target="_blank" rel="noopener noreferrer" className="hover:opacity-100 transition-opacity flex items-center">
+          <Link to="/" className={`transition-colors ${isActive('/')}`}>HOME</Link>
+          <Link to="/tweets" className={`transition-colors ${isActive('/tweets')}`}>TWEETS</Link>
+          <Link to="/research" className={`transition-colors ${isActive('/research')}`}>RESEARCH</Link>
+          <Link to="/projects" className={`transition-colors ${isActive('/projects')}`}>PROJECTS</Link>
+          <Link to="/about" className={`transition-colors ${isActive('/about')}`}>ABOUT</Link>
+          <a href="https://github.com/mishdgr8" target="_blank" rel="noopener noreferrer" className="hover:text-text-primary transition-colors flex items-center">
             GITHUB <Github className="w-3 h-3 ml-1" />
           </a>
-          <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="hover:opacity-100 transition-opacity flex items-center">
+          <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="hover:text-text-primary transition-colors flex items-center">
             X <ArrowUpRight className="w-3 h-3 ml-1" />
           </a>
           <button
@@ -76,7 +79,7 @@ const Navbar = () => {
 };
 
 const Footer = () => (
-  <footer className="py-20 px-6 border-t border-glass-border bg-bg-secondary">
+  <footer className="py-20 px-6 border-t border-glass-border bg-bg-secondary overflow-hidden">
     <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
       <div>
         <h3 className="text-3xl font-black tracking-tighter mb-2 text-text-primary">GOLFWANG0X</h3>
@@ -97,6 +100,11 @@ const Footer = () => (
         </a>
       </div>
     </div>
+
+    <div className="w-full mt-24 border-t border-glass-border pt-16">
+      <h2 className="text-huge text-center uppercase tracking-tighter">GOLFWANG0X</h2>
+    </div>
+
     <div className="max-w-7xl mx-auto mt-12 pt-8 flex flex-col md:flex-row justify-between text-xs uppercase tracking-widest gap-4 border-t border-glass-border text-text-faint">
       <p>© 2026 GOLFWANG0X STUDIO</p>
       <p>EST. 2023 • WEB3 RESEARCHER • CONTENT STRATEGIST</p>
@@ -109,12 +117,37 @@ export default function App() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    const updateProgress = () => {
+      const bar = document.getElementById('scroll-progress');
+      if (bar) {
+        const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+        bar.style.width = `${scrolled}%`;
+      }
+    };
+
+    window.addEventListener('scroll', updateProgress);
+    return () => window.removeEventListener('scroll', updateProgress);
   }, [pathname]);
 
   return (
-    <div className="min-h-screen transition-colors duration-300 bg-bg-primary">
+    <div className="min-h-screen transition-colors duration-300 bg-bg-primary relative">
+      <div className="fixed top-0 left-0 h-[2px] bg-accent z-[100] transition-all duration-300 pointer-events-none" id="scroll-progress"></div>
+
+      {/* GLOBAL ATMOSPHERIC BACKGROUND */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=2500"
+          alt="Atmospheric Background"
+          className="w-full h-full object-cover opacity-10 grayscale brightness-[0.2]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-bg-primary via-transparent to-bg-primary"></div>
+        <div className="absolute top-[10%] left-[20%] w-[500px] h-[500px] bg-accent/[0.03] blur-[120px] rounded-full"></div>
+        <div className="absolute bottom-[20%] right-[10%] w-[600px] h-[600px] bg-accent/[0.03] blur-[150px] rounded-full"></div>
+      </div>
+
       <Navbar />
-      <main>
+      <main className="relative z-10">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tweets" element={<Tweets />} />

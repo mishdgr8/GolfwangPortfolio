@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { portfolioData, projectsData } from '../data';
-import { ArrowRight, TrendingUp, Sparkles, Zap, BookOpen, ExternalLink, Terminal, Cpu, PenTool, BarChart3, MessageCircle, Twitter, Send, Code } from 'lucide-react';
+import { ArrowRight, TrendingUp, Sparkles, Zap, BookOpen, ExternalLink, Terminal, Cpu, PenTool, BarChart, MessageCircle, Twitter, Send, Code } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -100,18 +100,32 @@ const Home: React.FC = () => {
       1.5
     );
 
-    tl.fromTo('.hero-bottom-text',
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 1, ease: 'power3.out' },
-      1.8
-    );
 
-    // 3. HORIZONTAL SCROLL FOR TOP SIGNAL
+    // 3. HORIZONTAL SCROLL FOR DEV PORTFOLIO
+    const devTrack = document.querySelector('.dev-track') as HTMLElement;
+    if (devTrack) {
+      const getScrollDist = () => Math.max(0, devTrack.scrollWidth - window.innerWidth);
+      const getPinDuration = () => Math.max(window.innerHeight, getScrollDist() * 1.5);
+      gsap.to(devTrack, {
+        x: () => -getScrollDist(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#dev-portfolio',
+          pin: true,
+          scrub: 1,
+          start: 'top top',
+          end: () => `+=${getPinDuration()}`,
+          invalidateOnRefresh: true,
+          anticipatePin: 1,
+        }
+      });
+    }
+
+    // 4. HORIZONTAL SCROLL FOR TOP SIGNAL
     const signalTrack = document.querySelector('.signal-track') as HTMLElement;
     if (signalTrack) {
-      // Dynamic end value based on track width
-      const getScrollDist = () => signalTrack.scrollWidth - window.innerWidth + 150;
-
+      const getScrollDist = () => Math.max(0, signalTrack.scrollWidth - window.innerWidth);
+      const getPinDuration = () => Math.max(window.innerHeight, getScrollDist() * 1.5);
       gsap.to(signalTrack, {
         x: () => -getScrollDist(),
         ease: 'none',
@@ -119,81 +133,90 @@ const Home: React.FC = () => {
           trigger: '#top-signal',
           pin: true,
           scrub: 1,
-          start: 'top top', // Pin when hits top of screen
-          end: () => `+=${getScrollDist()}`,
-          invalidateOnRefresh: true, // Recalculates if window resizes
+          start: 'top top',
+          end: () => `+=${getPinDuration()}`,
+          invalidateOnRefresh: true,
+          anticipatePin: 1,
         }
       });
-
-      gsap.fromTo('#top-signal .signal-track',
-        { opacity: 0 },
-        { opacity: 1, duration: 1, scrollTrigger: { trigger: '#top-signal', start: 'top 70%' } }
-      );
     }
 
-    // 4. STACKED PINNED PANELS FOR THE REST OF THE PAGE
-    const stackedPanels = gsap.utils.toArray<HTMLElement>('.stacked-panel');
+    // 5. SLIDE-IN REVEAL FOR ANALYTICAL AND MEDIUM
+    // Set up Analytical Section ScrollTrigger (Pin at bottom)
+    ScrollTrigger.create({
+      trigger: '#analytical-section',
+      start: 'bottom bottom',
+      pin: true,
+      scrub: false,
+      end: "+=50vh", // Brief pause before unpinning to let UX breathe
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+    });
 
-    stackedPanels.forEach((panel, i) => {
-      // Pin all but the very last panel, which prevents scrolling bugs
-      if (i !== stackedPanels.length - 1) {
-        ScrollTrigger.create({
-          trigger: panel,
-          start: 'bottom bottom',   // Wait until the bottom of the panel reaches the bottom of the screen
-          pin: true,
-          pinSpacing: false,   // Crucial: allows the NEXT section to slide up *over* it
-        });
+    // Medium Section Slide-in
+    gsap.fromTo('#medium-section',
+      { y: '150px' }, // Start pushed down slightly, rather than 100% off-screen which makes it invisible
+      {
+        y: '0px',
+        ease: 'power3.out',
+        duration: 1,
+        scrollTrigger: {
+          trigger: '#medium-section',
+          start: 'top 95%', // Trigger slightly earlier so the slide in is visible upon scroll down
+          toggleActions: 'play none none reverse',
+        }
       }
+    );
 
-      // Animate interior elements of panels on enter
+    // Fade-in reveal for interior elements (from old logic)
+    const verticalPanels = gsap.utils.toArray<HTMLElement>('.stacked-panel');
+    verticalPanels.forEach((panel) => {
+      // Slide-in reveal for interior elements
       const header = panel.querySelector('.panel-header');
       const items = panel.querySelectorAll('.panel-item');
-
       const panelTl = gsap.timeline({
         scrollTrigger: {
           trigger: panel,
           start: 'top 80%',
-          toggleActions: "play none none reverse"
+          end: 'top 30%',
+          scrub: 1,
         }
       });
 
       if (header) {
         panelTl.fromTo(header,
-          { opacity: 0, y: 50 },
-          { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
+          { opacity: 0, y: 80 },
+          { opacity: 1, y: 0, duration: 1 }
         );
       }
-
       if (items.length > 0) {
         panelTl.fromTo(items,
           { opacity: 0, y: 50 },
-          { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'back.out(1.2)' },
-          "-=0.6"
+          { opacity: 1, y: 0, duration: 0.8, stagger: 0.15 },
+          "-=0.7"
         );
       }
     });
 
+    // Final refresh to catch all layout positions
+    window.addEventListener('load', () => {
+      setTimeout(() => ScrollTrigger.refresh(), 500);
+    });
+
+    // Refresh when images load
+    document.querySelectorAll('img').forEach(img => {
+      img.addEventListener('load', () => ScrollTrigger.refresh());
+    });
+
     setTimeout(() => {
       ScrollTrigger.refresh();
-    }, 500);
+    }, 2000);
 
   }, { scope: container });
 
   return (
     // REMOVED overflow-x-hidden which breaks GSAP ScrollTrigger pin
-    <div ref={container} className="relative bg-bg-primary pt-24 min-h-screen">
-
-      {/* Background Elements */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <img
-          src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=2500"
-          alt="Atmospheric Background"
-          className="bg-img w-full h-full object-cover opacity-25 grayscale brightness-[0.25]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-bg-primary via-transparent to-bg-primary"></div>
-        <div className="ambient-orb-1 absolute top-[10%] left-[20%] w-[500px] h-[500px] bg-accent/5 blur-[120px] rounded-full"></div>
-        <div className="ambient-orb-2 absolute bottom-[20%] right-[10%] w-[600px] h-[600px] bg-accent/5 blur-[150px] rounded-full"></div>
-      </div>
+    <div ref={container} className="relative pt-24 min-h-screen">
 
       {/* Cinematic Sidebar Text (RESTORED) */}
       <div className="fixed left-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex">
@@ -293,7 +316,7 @@ const Home: React.FC = () => {
           <div className="telemetry-shard opacity-0 absolute -bottom-16 right-0 w-full max-w-md glass rounded-[2.5rem] p-10 hidden lg:flex flex-col justify-between border-accent/30 z-20 shadow-2xl hover:rotate-0 transition-transform duration-500 cursor-default">
             <div className="flex justify-between items-start mb-8">
               <div className="flex items-center space-x-3">
-                <BarChart3 className="w-5 h-5 text-accent" />
+                <BarChart className="w-5 h-5 text-accent" />
                 <span className="text-[10px] font-black opacity-60 uppercase tracking-[0.3em]">X_IMPACT_TELEMETRY</span>
               </div>
               <div className="px-2 py-0.5 rounded-sm bg-accent text-[8px] text-bg-primary font-black uppercase">LIVE_STATS</div>
@@ -322,14 +345,81 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        <div className="hero-bottom-text opacity-0 w-full mt-8 md:mt-48 border-t border-glass-border pt-4 md:pt-16">
-          <h2 className="text-huge text-center uppercase tracking-tighter">GOLFWANG0X</h2>
+      </section>
+
+      {/* HORIZONTAL SECTION 1: DEV PORTFOLIO */}
+      <section id="dev-portfolio" className="w-full h-screen relative z-20 bg-bg-primary overflow-clip border-t border-glass-border flex flex-col justify-center">
+        <div className="w-full px-6 xl:px-32 absolute top-16 left-0 right-0 z-40">
+          <div className="panel-header flex justify-between items-end mb-8">
+            <div>
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                  <Code className="w-5 h-5 text-accent" />
+                </div>
+                <span className="text-[11px] font-black text-text-muted tracking-[0.5em] uppercase">Visual Interfaces</span>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-[0.9]">Dev <br /><span className="text-text-faint">Portfolio.</span></h2>
+            </div>
+            <Link to="/projects" className="hidden md:flex items-center px-8 py-4 rounded-full border border-glass-border text-[11px] font-black text-text-muted hover:text-text-primary hover:border-accent/50 transition-all uppercase tracking-[0.3em] group backdrop-blur-md">
+              ALL PROJECTS <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform text-accent" />
+            </Link>
+          </div>
+        </div>
+
+        <div className="dev-track flex gap-8 px-6 xl:px-32 w-max mt-32 min-w-full items-center pl-6 xl:pl-32">
+          {featuredProjects.map((project, idx) => (
+            <Link
+              key={project.id}
+              to="/projects"
+              className="group relative block w-[85vw] md:w-[45vw] lg:w-[35vw] shrink-0"
+            >
+              <div className="glass overflow-hidden rounded-[2.5rem] border border-glass-border hover-card h-full flex flex-col justify-between relative min-h-[500px]">
+                <div className="aspect-[16/9] overflow-hidden relative shrink-0 bg-[#0a0a0a]">
+                  {project.demoUrl ? (
+                    <iframe
+                      src={project.demoUrl}
+                      title={project.title}
+                      className="w-[200%] h-[200%] origin-top-left scale-[0.5] group-hover:scale-[0.52] transition-transform duration-1000 border-none"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <img
+                      src={project.imageUrl}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-60 group-hover:opacity-100"
+                    />
+                  )}
+                </div>
+
+                <div className="p-8 md:p-10 flex flex-col justify-between flex-1">
+                  <div>
+                    <div className="flex items-center space-x-4 mb-6 flex-wrap">
+                      {project.techStack.map(tech => (
+                        <span key={tech} className="text-[9px] font-black uppercase tracking-[0.3em] text-accent/80 bg-accent/5 px-2 py-1 rounded-sm border border-accent/10">{tech}</span>
+                      ))}
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-black group-hover:text-accent transition-colors leading-[1.1] tracking-tighter mb-4 uppercase">
+                      {project.title}
+                    </h3>
+                    <p className="text-text-muted text-sm md:text-base line-clamp-3 leading-relaxed mb-6 font-medium tracking-tight">
+                      {project.excerpt}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-6 border-t border-glass-border">
+                    <span className="text-[10px] uppercase font-black tracking-widest text-text-secondary">{project.date}</span>
+                    <ExternalLink className="w-5 h-5 text-text-faint group-hover:text-accent transition-colors" />
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 
-      {/* HORIZONTALLY SCROLLING: TOP SIGNAL TWEETS */}
-      <section id="top-signal" className="w-full h-screen relative z-10 bg-bg-primary overflow-clip border-t border-glass-border flex flex-col justify-center">
-        <div className="w-full px-6 xl:px-32 absolute top-16 left-0 right-0 z-20">
+      {/* HORIZONTAL SECTION 2: TOP SIGNAL */}
+      <section id="top-signal" className="w-full h-screen relative z-30 bg-bg-primary overflow-clip border-t border-glass-border flex flex-col justify-center">
+        <div className="w-full px-6 xl:px-32 absolute top-16 left-0 right-0 z-40">
           <div className="flex justify-between items-end mb-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
@@ -353,20 +443,18 @@ const Home: React.FC = () => {
               to={`/content/${tweet.id}`}
               className="group relative block w-[85vw] md:w-[40vw] lg:w-[28vw] shrink-0"
             >
-              <div className="glass p-8 md:p-10 rounded-[2.5rem] border border-glass-border hover-card h-full flex flex-col justify-between overflow-hidden relative min-h-[400px]">
+              <div className="glass p-8 md:p-10 rounded-[2.5rem] border border-glass-border hover-card h-full flex flex-col justify-between overflow-hidden relative min-h-[450px]">
                 <div>
                   <div className="flex justify-between items-start mb-10">
                     <span className="text-5xl md:text-6xl font-black text-accent/10 group-hover:text-accent transition-all duration-500">
                       0{idx + 1}
                     </span>
-                    <div className="w-12 h-12 rounded-2xl bg-bg-secondary/20 group-hover:bg-accent flex items-center justify-center transition-all duration-500">
-                      <TrendingUp className="w-6 h-6 text-text-muted group-hover:text-bg-primary" />
-                    </div>
+                    <TrendingUp className="w-6 h-6 text-text-muted group-hover:text-accent" />
                   </div>
                   <h3 className="text-2xl md:text-3xl font-black mb-6 group-hover:text-accent transition-colors leading-[1.1] tracking-tighter uppercase">
                     {tweet.title}
                   </h3>
-                  <p className="text-text-muted mb-8 line-clamp-3 text-sm md:text-base leading-relaxed font-medium tracking-tight">
+                  <p className="text-text-muted mb-8 line-clamp-4 text-sm md:text-base leading-relaxed font-medium tracking-tight">
                     {tweet.excerpt}
                   </p>
                 </div>
@@ -388,10 +476,10 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* STACKED PANEL 1: ANALYTICAL POSTS */}
-      <section className="stacked-panel px-6 xl:px-32 py-24 xl:py-32 border-t border-glass-border z-20 bg-bg-primary min-h-[100vh] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col">
+      {/* STACKED PANEL 3: ANALYTICAL POSTS */}
+      <section id="analytical-section" className="stacked-panel px-6 xl:px-32 py-24 xl:py-32 border-t border-glass-border bg-bg-primary shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col">
         <div className="max-w-7xl mx-auto w-full h-full flex flex-col">
-          <div className="panel-header opacity-0 mb-16">
+          <div className="panel-header mb-16">
             <div className="flex items-center space-x-3 mb-6">
               <div className="w-16 h-[2px] bg-accent"></div>
               <span className="text-[11px] font-black text-text-muted tracking-[0.5em] uppercase">Intelligence Ledger</span>
@@ -404,7 +492,7 @@ const Home: React.FC = () => {
               <Link
                 key={post.id}
                 to={`/content/${post.id}`}
-                className="panel-item opacity-0 group flex flex-col md:flex-row items-center justify-between p-12 md:p-16 border-b border-glass-border hover:bg-bg-secondary/20 transition-all relative overflow-hidden"
+                className="panel-item group flex flex-col md:flex-row items-center justify-between p-12 md:p-16 border-b border-glass-border hover:bg-bg-secondary/20 transition-all relative overflow-hidden"
               >
                 <div className="absolute left-0 top-0 w-2 h-0 bg-accent group-hover:h-full transition-all duration-500 shadow-[0_0_20px_var(--accent)]"></div>
 
@@ -433,10 +521,10 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* STACKED PANEL 2: MEDIUM RESEARCH */}
-      <section className="stacked-panel px-6 xl:px-32 py-24 xl:py-32 border-t border-glass-border z-30 bg-[#080808] min-h-[100vh] flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
+      {/* STACKED PANEL 4: MEDIUM RESEARCH */}
+      <section id="medium-section" className="stacked-panel px-6 xl:px-32 py-24 xl:py-32 border-t border-glass-border bg-bg-primary flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
         <div className="max-w-7xl mx-auto w-full flex flex-col">
-          <div className="panel-header opacity-0 flex justify-between items-end mb-20">
+          <div className="panel-header flex justify-between items-end mb-20">
             <div>
               <div className="flex items-center space-x-3 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
@@ -456,7 +544,7 @@ const Home: React.FC = () => {
               <Link
                 key={article.id}
                 to={`/content/${article.id}`}
-                className="panel-item opacity-0 group relative flex flex-col h-full overflow-hidden rounded-[3rem] glass border border-glass-border hover:border-accent/40 transition-all duration-700 hover:shadow-2xl"
+                className="panel-item group relative flex flex-col h-full overflow-hidden rounded-[3rem] glass border border-glass-border hover:border-accent/40 transition-all duration-700 hover:shadow-2xl"
               >
                 <div className="aspect-[16/10] overflow-hidden relative shrink-0">
                   <img
@@ -502,88 +590,8 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* STACKED PANEL 3: DEV PORTFOLIO */}
-      <section className="stacked-panel px-6 xl:px-32 py-24 xl:py-32 border-t border-glass-border z-40 bg-bg-secondary min-h-[100vh] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col">
-        <div className="max-w-7xl mx-auto w-full flex-1">
-          <div className="panel-header opacity-0 flex justify-between items-end mb-20">
-            <div>
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
-                  <Code className="w-6 h-6 text-accent" />
-                </div>
-                <span className="text-[11px] font-black text-text-muted tracking-[0.5em] uppercase">Visual Interfaces</span>
-              </div>
-              <h2 className="text-3xl md:text-6xl font-black tracking-tighter uppercase leading-[0.85]">Dev <br /><span className="text-text-faint">Portfolio.</span></h2>
-            </div>
-            <Link to="/projects" className="hidden md:flex items-center px-8 py-4 rounded-full border border-glass-border text-[11px] font-black text-text-muted hover:text-text-primary hover:border-accent/50 transition-all uppercase tracking-[0.3em] group backdrop-blur-md">
-              ALL PROJECTS <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform text-accent" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 pb-16 lg:pb-32">
-            {featuredProjects.map((project, idx) => (
-              <Link
-                key={project.id}
-                to="/projects"
-                className="panel-item opacity-0 group relative flex flex-col h-full overflow-hidden rounded-[2.5rem] glass border border-glass-border hover:border-accent/40 transition-all duration-700 hover:shadow-2xl"
-              >
-                <div className="aspect-[16/9] overflow-hidden relative shrink-0">
-                  {project.demoUrl ? (
-                    <iframe
-                      src={project.demoUrl}
-                      title={project.title}
-                      className="w-[250%] h-[250%] pointer-events-none origin-top-left scale-[0.4] group-hover:scale-[0.42] transition-transform duration-1000"
-                      loading="lazy"
-                      sandbox="allow-scripts allow-same-origin"
-                    />
-                  ) : (
-                    <img
-                      src={project.imageUrl}
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-60 group-hover:opacity-100"
-                    />
-                  )}
-                </div>
-
-                <div className="p-8 md:p-10 flex flex-col justify-between flex-1">
-                  <div>
-                    <div className="flex items-center space-x-5 mb-6 flex-wrap gap-y-2">
-                      {project.techStack.map(tech => (
-                        <span key={tech} className="text-[9px] font-black uppercase tracking-[0.3em] text-accent/80 bg-accent/5 px-3 py-1 rounded-sm border border-accent/10">{tech}</span>
-                      ))}
-                    </div>
-                    <h3 className="text-2xl md:text-3xl font-black group-hover:text-accent transition-colors leading-[1.1] tracking-tight mb-4 uppercase">
-                      {project.title}
-                    </h3>
-                    <p className="text-text-muted text-base line-clamp-2 leading-relaxed mb-6 font-medium tracking-tight">
-                      {project.excerpt}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-6 border-t border-glass-border mt-auto">
-                    <span className="text-[10px] uppercase font-black tracking-widest text-text-secondary">{project.date}</span>
-                    <div className="w-12 h-12 rounded-full border border-glass-border flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all shadow-xl">
-                      <ExternalLink className="w-5 h-5 text-text-faint group-hover:text-bg-primary" />
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          <div className="mt-12 md:hidden flex justify-center pb-24">
-            <Link
-              to="/projects"
-              className="panel-item opacity-0 flex items-center justify-center py-4 px-8 glass border border-accent/30 rounded-full text-accent font-black uppercase text-xs tracking-widest hover:bg-accent/10 transition-colors w-full"
-            >
-              See All Projects <ArrowRight className="w-4 h-4 ml-3" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* FINAL NOT PINNED SECTION: CONTACT */}
-      <section className="px-6 xl:px-32 py-32 md:py-48 relative overflow-hidden border-t border-glass-border z-10 bg-bg-primary">
+      <section className="px-6 xl:px-32 py-32 md:py-48 relative overflow-hidden border-t border-glass-border bg-bg-primary z-[60]">
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <div className="inline-block px-6 py-3 rounded-full bg-accent/10 border border-accent/30 text-[11px] font-black text-accent uppercase tracking-[0.4em] mb-12 animate-pulse">
             SYSTEMS ONLINE / OPEN_FOR_OPS
@@ -604,6 +612,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+
     </div>
   );
 };
