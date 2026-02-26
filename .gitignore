@@ -8,8 +8,6 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-node_modules 2/
-node_modules_temp/
 dist
 dist-ssr
 *.local
@@ -24,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Packages & Stores
+.npm_cache
+.pnpm-store
+
+# Local dev scripts
+checkSyntax.js
+find-missing-brackets.js
+fix-divs.js

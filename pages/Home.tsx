@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { portfolioData, projectsData } from '../data';
-import { ArrowRight, TrendingUp, Sparkles, Zap, BookOpen, ExternalLink, Terminal, Cpu, PenTool, BarChart, MessageCircle, Twitter, Send, Code } from 'lucide-react';
+import { ArrowRight, TrendingUp, Sparkles, BookOpen, ExternalLink, Terminal, Cpu, PenTool, BarChart, Twitter, Code } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -34,34 +34,7 @@ const Home: React.FC = () => {
   const featuredProjects = projectsData.filter(item => item.featured).slice(0, 3);
 
   useGSAP(() => {
-    // 1. Background Ambient Elements
-    gsap.to('.bg-img', {
-      scale: 1.1,
-      duration: 30,
-      repeat: -1,
-      yoyo: true,
-      ease: 'none'
-    });
-
-    gsap.to('.ambient-orb-1', {
-      x: 100,
-      y: 50,
-      duration: 15,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut'
-    });
-
-    gsap.to('.ambient-orb-2', {
-      x: -100,
-      y: -50,
-      duration: 18,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut'
-    });
-
-    // 2. Initial Page Load Animations (Hero Section + Sidebars)
+    // 1. Initial Page Load Animations
     const tl = gsap.timeline();
 
     tl.fromTo('.sidebar-text-cont',
@@ -100,125 +73,74 @@ const Home: React.FC = () => {
       1.5
     );
 
-
-    // 3. HORIZONTAL SCROLL FOR DEV PORTFOLIO
+    // 2. HORIZONTAL SCROLL FOR DEV PORTFOLIO
     const devTrack = document.querySelector('.dev-track') as HTMLElement;
     if (devTrack) {
-      const getScrollDist = () => Math.max(0, devTrack.scrollWidth - window.innerWidth);
-      const getPinDuration = () => Math.max(window.innerHeight, getScrollDist() * 1.5);
       gsap.to(devTrack, {
-        x: () => -getScrollDist(),
+        x: () => -(devTrack.scrollWidth - window.innerWidth),
         ease: 'none',
         scrollTrigger: {
           trigger: '#dev-portfolio',
           pin: true,
-          scrub: 1,
+          scrub: true,
           start: 'top top',
-          end: () => `+=${getPinDuration()}`,
+          end: () => `+=${devTrack.scrollWidth - window.innerWidth + 80}`,
           invalidateOnRefresh: true,
           anticipatePin: 1,
         }
       });
     }
 
-    // 4. HORIZONTAL SCROLL FOR TOP SIGNAL
+    // 3. HORIZONTAL SCROLL FOR TOP SIGNAL
     const signalTrack = document.querySelector('.signal-track') as HTMLElement;
     if (signalTrack) {
-      const getScrollDist = () => Math.max(0, signalTrack.scrollWidth - window.innerWidth);
-      const getPinDuration = () => Math.max(window.innerHeight, getScrollDist() * 1.5);
       gsap.to(signalTrack, {
-        x: () => -getScrollDist(),
+        x: () => -(signalTrack.scrollWidth - window.innerWidth),
         ease: 'none',
         scrollTrigger: {
           trigger: '#top-signal',
           pin: true,
-          scrub: 1,
+          scrub: true,
           start: 'top top',
-          end: () => `+=${getPinDuration()}`,
+          end: () => `+=${signalTrack.scrollWidth - window.innerWidth}`,
           invalidateOnRefresh: true,
           anticipatePin: 1,
         }
       });
     }
 
-    // 5. SLIDE-IN REVEAL FOR ANALYTICAL AND MEDIUM
-    // Set up Analytical Section ScrollTrigger (Pin at bottom)
+    // 4. ANALYTICAL SECTION (Pin bottom bottom — minimal extra scroll)
     ScrollTrigger.create({
       trigger: '#analytical-section',
       start: 'bottom bottom',
       pin: true,
-      scrub: false,
-      end: "+=50vh", // Brief pause before unpinning to let UX breathe
+      pinSpacing: false,
       anticipatePin: 1,
       invalidateOnRefresh: true,
     });
 
-    // Medium Section Slide-in
+    // 5. MEDIUM SECTION (Slide-in immediately after analytical unpins)
     gsap.fromTo('#medium-section',
-      { y: '150px' }, // Start pushed down slightly, rather than 100% off-screen which makes it invisible
+      { yPercent: 30 },
       {
-        y: '0px',
-        ease: 'power3.out',
-        duration: 1,
+        yPercent: 0,
+        ease: 'none',
         scrollTrigger: {
           trigger: '#medium-section',
-          start: 'top 95%', // Trigger slightly earlier so the slide in is visible upon scroll down
-          toggleActions: 'play none none reverse',
+          start: 'top bottom',
+          end: 'top 60%',
+          scrub: true,
+          invalidateOnRefresh: true,
         }
       }
     );
 
-    // Fade-in reveal for interior elements (from old logic)
-    const verticalPanels = gsap.utils.toArray<HTMLElement>('.stacked-panel');
-    verticalPanels.forEach((panel) => {
-      // Slide-in reveal for interior elements
-      const header = panel.querySelector('.panel-header');
-      const items = panel.querySelectorAll('.panel-item');
-      const panelTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: panel,
-          start: 'top 80%',
-          end: 'top 30%',
-          scrub: 1,
-        }
-      });
-
-      if (header) {
-        panelTl.fromTo(header,
-          { opacity: 0, y: 80 },
-          { opacity: 1, y: 0, duration: 1 }
-        );
-      }
-      if (items.length > 0) {
-        panelTl.fromTo(items,
-          { opacity: 0, y: 50 },
-          { opacity: 1, y: 0, duration: 0.8, stagger: 0.15 },
-          "-=0.7"
-        );
-      }
-    });
-
-    // Final refresh to catch all layout positions
-    window.addEventListener('load', () => {
-      setTimeout(() => ScrollTrigger.refresh(), 500);
-    });
-
-    // Refresh when images load
-    document.querySelectorAll('img').forEach(img => {
-      img.addEventListener('load', () => ScrollTrigger.refresh());
-    });
-
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 2000);
-
   }, { scope: container });
 
   return (
-    // REMOVED overflow-x-hidden which breaks GSAP ScrollTrigger pin
     <div ref={container} className="relative pt-24 min-h-screen">
 
-      {/* Cinematic Sidebar Text (RESTORED) */}
+      {/* Cinematic Sidebar Text */}
       <div className="fixed left-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex">
         <div className="sidebar-text-cont rotate-180 pointer-events-auto opacity-0" style={{ writingMode: 'vertical-rl' }}>
           <span className="text-[10px] font-black tracking-[0.4em] text-text-muted uppercase hover:text-accent transition-colors cursor-pointer">
@@ -237,8 +159,6 @@ const Home: React.FC = () => {
 
       {/* Hero Section */}
       <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 xl:px-32 pt-12 pb-6 md:pb-24 z-10 bg-bg-primary overflow-clip">
-
-        {/* Role Tags */}
         <div className="role-tag absolute top-[10%] left-[8%] xl:left-32 hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full cursor-crosshair opacity-0">
           <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
           <PenTool className="w-3 h-3 text-text-muted" />
@@ -257,7 +177,6 @@ const Home: React.FC = () => {
           <span className="text-[11px] font-black text-text-secondary tracking-[0.2em] uppercase">BLOCKCHAIN TECH</span>
         </div>
 
-        {/* Cinematic Header Text */}
         <div className="max-w-7xl w-full flex flex-col md:flex-row items-start md:items-end justify-between mb-24 relative">
           <div>
             <h1 className="text-7xl md:text-9xl font-black tracking-tighter leading-[0.8] uppercase mb-8 flex flex-col">
@@ -275,9 +194,7 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        {/* About Me Card Showcase */}
         <div className="architect-card opacity-0 relative w-full max-w-7xl px-4 flex flex-col items-center z-10">
-
           <div className="relative block w-full aspect-square sm:aspect-[5/6] md:aspect-[16/9] lg:aspect-[21/9] rounded-[2rem] md:rounded-[3rem] overflow-hidden group shadow-2xl border border-glass-border transition-all duration-700 hover:border-accent/40 z-10 hover:z-[60]">
             <Link to="/about" className="absolute inset-0 z-20 cursor-pointer" aria-label="Go to About page"></Link>
             <img
@@ -286,7 +203,6 @@ const Home: React.FC = () => {
               className="w-full h-full object-cover grayscale opacity-30 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/50 to-transparent"></div>
-
             <div className="absolute top-0 left-0 w-full h-[1px] bg-accent/50 shadow-[0_0_15px_var(--accent)] -translate-y-full group-hover:animate-[scan_4s_linear_infinite]"></div>
 
             <div className="absolute top-4 left-3 right-3 md:top-12 md:left-12 md:right-12 flex flex-col items-start gap-3 md:gap-8 z-30">
@@ -312,7 +228,6 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          {/* PERFORMANCE METRICS SHARD */}
           <div className="telemetry-shard opacity-0 absolute -bottom-16 right-0 w-full max-w-md glass rounded-[2.5rem] p-10 hidden lg:flex flex-col justify-between border-accent/30 z-20 shadow-2xl hover:rotate-0 transition-transform duration-500 cursor-default">
             <div className="flex justify-between items-start mb-8">
               <div className="flex items-center space-x-3">
@@ -344,135 +259,138 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
-
       </section>
 
       {/* HORIZONTAL SECTION 1: DEV PORTFOLIO */}
-      <section id="dev-portfolio" className="w-full h-screen relative z-20 bg-bg-primary overflow-clip border-t border-glass-border flex flex-col justify-center">
-        <div className="w-full px-6 xl:px-32 absolute top-16 left-0 right-0 z-40">
-          <div className="panel-header flex justify-between items-end mb-8">
-            <div>
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
-                  <Code className="w-5 h-5 text-accent" />
+      <section id="dev-portfolio" className="w-full h-screen relative z-20 bg-bg-primary border-t border-glass-border">
+        <div className="dev-wrapper w-full h-full relative overflow-clip flex flex-col justify-center">
+          <div className="w-full px-6 xl:px-32 absolute top-16 left-0 right-0 z-40">
+            <div className="flex justify-between items-end mb-8">
+              <div>
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                    <Code className="w-5 h-5 text-accent" />
+                  </div>
+                  <span className="text-[11px] font-black text-text-muted tracking-[0.5em] uppercase">Visual Interfaces</span>
                 </div>
-                <span className="text-[11px] font-black text-text-muted tracking-[0.5em] uppercase">Visual Interfaces</span>
+                <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-[0.9]">Dev <br /><span className="text-text-faint">Portfolio.</span></h2>
               </div>
-              <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-[0.9]">Dev <br /><span className="text-text-faint">Portfolio.</span></h2>
+              <Link to="/projects" className="hidden md:flex items-center px-8 py-4 rounded-full border border-glass-border text-[11px] font-black text-text-muted hover:text-text-primary hover:border-accent/50 transition-all uppercase tracking-[0.3em] group backdrop-blur-md">
+                ALL PROJECTS <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform text-accent" />
+              </Link>
             </div>
-            <Link to="/projects" className="hidden md:flex items-center px-8 py-4 rounded-full border border-glass-border text-[11px] font-black text-text-muted hover:text-text-primary hover:border-accent/50 transition-all uppercase tracking-[0.3em] group backdrop-blur-md">
-              ALL PROJECTS <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform text-accent" />
-            </Link>
           </div>
-        </div>
 
-        <div className="dev-track flex gap-8 px-6 xl:px-32 w-max mt-32 min-w-full items-center pl-6 xl:pl-32">
-          {featuredProjects.map((project, idx) => (
-            <Link
-              key={project.id}
-              to="/projects"
-              className="group relative block w-[85vw] md:w-[45vw] lg:w-[35vw] shrink-0"
-            >
-              <div className="glass overflow-hidden rounded-[2.5rem] border border-glass-border hover-card h-full flex flex-col justify-between relative min-h-[500px]">
-                <div className="aspect-[16/9] overflow-hidden relative shrink-0 bg-[#0a0a0a]">
-                  {project.demoUrl ? (
-                    <iframe
-                      src={project.demoUrl}
-                      title={project.title}
-                      className="w-[200%] h-[200%] origin-top-left scale-[0.5] group-hover:scale-[0.52] transition-transform duration-1000 border-none"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <img
-                      src={project.imageUrl}
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-60 group-hover:opacity-100"
-                    />
-                  )}
-                </div>
+          <div className="dev-track flex gap-8 px-6 xl:px-32 w-max mt-32 min-w-full items-center pl-6 xl:pl-32">
+            {featuredProjects.map((project, idx) => (
+              <Link
+                key={project.id}
+                to="/projects"
+                className="group relative block w-[80vw] md:w-[42vw] lg:w-[40vw] shrink-0"
+              >
+                <div className="glass overflow-hidden rounded-[2.5rem] border border-glass-border hover-card flex flex-col justify-between relative h-[560px]">
+                  <div className="aspect-[16/9] overflow-hidden relative shrink-0 bg-[#0a0a0a]">
+                    {project.demoUrl ? (
+                      <iframe
+                        src={project.demoUrl}
+                        title={project.title}
+                        className="w-[200%] h-[200%] origin-top-left scale-[0.5] group-hover:scale-[0.52] transition-transform duration-1000 border-none"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <img
+                        src={project.imageUrl}
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-60 group-hover:opacity-100"
+                      />
+                    )}
+                  </div>
 
-                <div className="p-8 md:p-10 flex flex-col justify-between flex-1">
-                  <div>
-                    <div className="flex items-center space-x-4 mb-6 flex-wrap">
-                      {project.techStack.map(tech => (
-                        <span key={tech} className="text-[9px] font-black uppercase tracking-[0.3em] text-accent/80 bg-accent/5 px-2 py-1 rounded-sm border border-accent/10">{tech}</span>
-                      ))}
+                  <div className="p-8 md:p-10 flex flex-col justify-between flex-1">
+                    <div>
+                      <div className="flex items-center space-x-4 mb-6 flex-wrap">
+                        {project.techStack.map(tech => (
+                          <span key={tech} className="text-[9px] font-black uppercase tracking-[0.3em] text-accent/80 bg-accent/5 px-2 py-1 rounded-sm border border-accent/10">{tech}</span>
+                        ))}
+                      </div>
+                      <h3 className="text-2xl md:text-3xl font-black group-hover:text-accent transition-colors leading-[1.1] tracking-tighter mb-4 uppercase">
+                        {project.title}
+                      </h3>
+                      <p className="text-text-muted text-sm md:text-base line-clamp-3 leading-relaxed mb-6 font-medium tracking-tight">
+                        {project.excerpt}
+                      </p>
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-black group-hover:text-accent transition-colors leading-[1.1] tracking-tighter mb-4 uppercase">
-                      {project.title}
-                    </h3>
-                    <p className="text-text-muted text-sm md:text-base line-clamp-3 leading-relaxed mb-6 font-medium tracking-tight">
-                      {project.excerpt}
-                    </p>
-                  </div>
 
-                  <div className="flex items-center justify-between pt-6 border-t border-glass-border">
-                    <span className="text-[10px] uppercase font-black tracking-widest text-text-secondary">{project.date}</span>
-                    <ExternalLink className="w-5 h-5 text-text-faint group-hover:text-accent transition-colors" />
+                    <div className="flex items-center justify-between pt-6 border-t border-glass-border">
+                      <span className="text-[10px] uppercase font-black tracking-widest text-text-secondary">{project.date}</span>
+                      <ExternalLink className="w-5 h-5 text-text-faint group-hover:text-accent transition-colors" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* HORIZONTAL SECTION 2: TOP SIGNAL */}
-      <section id="top-signal" className="w-full h-screen relative z-30 bg-bg-primary overflow-clip border-t border-glass-border flex flex-col justify-center">
-        <div className="w-full px-6 xl:px-32 absolute top-16 left-0 right-0 z-40">
-          <div className="flex justify-between items-end mb-8">
-            <div>
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-accent" />
-                </div>
-                <span className="text-[11px] font-black text-text-muted tracking-[0.4em] uppercase">High Performance Feed</span>
-              </div>
-              <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-[0.9]">Top Signal <br /><span className="text-text-faint">Archive.</span></h2>
-            </div>
-            <Link to="/tweets" className="hidden md:flex items-center px-8 py-4 rounded-full border border-glass-border text-[11px] font-black text-text-muted hover:text-text-primary hover:border-accent/50 transition-all uppercase tracking-[0.3em] group backdrop-blur-md">
-              ALL TRANSMISSIONS <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform text-accent" />
-            </Link>
-          </div>
-        </div>
-
-        <div className="signal-track flex gap-8 px-6 xl:px-32 w-max mt-32 min-w-full items-center pl-6 xl:pl-32">
-          {topSignal.map((tweet, idx) => (
-            <Link
-              key={tweet.id}
-              to={`/content/${tweet.id}`}
-              className="group relative block w-[85vw] md:w-[40vw] lg:w-[28vw] shrink-0"
-            >
-              <div className="glass p-8 md:p-10 rounded-[2.5rem] border border-glass-border hover-card h-full flex flex-col justify-between overflow-hidden relative min-h-[450px]">
-                <div>
-                  <div className="flex justify-between items-start mb-10">
-                    <span className="text-5xl md:text-6xl font-black text-accent/10 group-hover:text-accent transition-all duration-500">
-                      0{idx + 1}
-                    </span>
-                    <TrendingUp className="w-6 h-6 text-text-muted group-hover:text-accent" />
+      <section id="top-signal" className="w-full h-screen relative z-30 bg-bg-primary border-t border-glass-border">
+        <div className="signal-wrapper w-full h-full relative overflow-clip flex flex-col justify-center">
+          <div className="w-full px-6 xl:px-32 absolute top-16 left-0 right-0 z-40">
+            <div className="flex justify-between items-end mb-8">
+              <div>
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-accent" />
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-black mb-6 group-hover:text-accent transition-colors leading-[1.1] tracking-tighter uppercase">
-                    {tweet.title}
-                  </h3>
-                  <p className="text-text-muted mb-8 line-clamp-4 text-sm md:text-base leading-relaxed font-medium tracking-tight">
-                    {tweet.excerpt}
-                  </p>
+                  <span className="text-[11px] font-black text-text-muted tracking-[0.4em] uppercase">High Performance Feed</span>
                 </div>
-
-                <div className="grid grid-cols-3 gap-4 pt-6 mt-auto border-t border-glass-border">
-                  {['Views', 'Likes', 'Replies'].map((label, i) => {
-                    const metric = tweet.metrics?.find(m => m.label === label);
-                    return metric ? (
-                      <div key={i}>
-                        <p className="text-[9px] uppercase tracking-[0.2em] text-text-faint mb-2 font-black truncate">{metric.label}</p>
-                        <p className="text-xl font-black text-text-secondary group-hover:text-text-primary transition-colors tracking-tighter">{metric.value}</p>
-                      </div>
-                    ) : null;
-                  })}
-                </div>
+                <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-[0.9]">Top Signal <br /><span className="text-text-faint">Archive.</span></h2>
               </div>
-            </Link>
-          ))}
+              <Link to="/tweets" className="hidden md:flex items-center px-8 py-4 rounded-full border border-glass-border text-[11px] font-black text-text-muted hover:text-text-primary hover:border-accent/50 transition-all uppercase tracking-[0.3em] group backdrop-blur-md">
+                ALL TRANSMISSIONS <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform text-accent" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="signal-track flex gap-8 px-6 xl:px-32 w-max mt-32 min-w-full items-center pl-6 xl:pl-32">
+            {topSignal.map((tweet, idx) => (
+              <Link
+                key={tweet.id}
+                to={`/content/${tweet.id}`}
+                className="group relative block w-[85vw] md:w-[40vw] lg:w-[28vw] shrink-0"
+              >
+                <div className="glass p-8 md:p-10 rounded-[2.5rem] border border-glass-border hover-card h-full flex flex-col justify-between overflow-hidden relative min-h-[450px]">
+                  <div>
+                    <div className="flex justify-between items-start mb-10">
+                      <span className="text-5xl md:text-6xl font-black text-accent/10 group-hover:text-accent transition-all duration-500">
+                        0{idx + 1}
+                      </span>
+                      <TrendingUp className="w-6 h-6 text-text-muted group-hover:text-accent" />
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-black mb-6 group-hover:text-accent transition-colors leading-[1.1] tracking-tighter uppercase">
+                      {tweet.title}
+                    </h3>
+                    <p className="text-text-muted mb-8 line-clamp-4 text-sm md:text-base leading-relaxed font-medium tracking-tight">
+                      {tweet.excerpt}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4 pt-6 mt-auto border-t border-glass-border">
+                    {['Views', 'Likes', 'Replies'].map((label, i) => {
+                      const metric = tweet.metrics?.find(m => m.label === label);
+                      return metric ? (
+                        <div key={i}>
+                          <p className="text-[9px] uppercase tracking-[0.2em] text-text-faint mb-2 font-black truncate">{metric.label}</p>
+                          <p className="text-xl font-black text-text-secondary group-hover:text-text-primary transition-colors tracking-tighter">{metric.value}</p>
+                        </div>
+                      ) : null;
+                    })}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -487,30 +405,27 @@ const Home: React.FC = () => {
             <h2 className="text-3xl md:text-6xl font-black tracking-tighter uppercase leading-[0.85]">Analytical <br /><span className="text-text-faint">Breakdowns.</span></h2>
           </div>
 
-          <div className="hidden md:flex flex-col">
+          <div className="flex flex-col">
             {analyticalPosts.map((post, idx) => (
               <Link
                 key={post.id}
                 to={`/content/${post.id}`}
-                className="panel-item group flex flex-col md:flex-row items-center justify-between p-12 md:p-16 border-b border-glass-border hover:bg-bg-secondary/20 transition-all relative overflow-hidden"
+                className="panel-item group flex flex-col md:flex-row items-center justify-between p-8 md:p-16 border-b border-glass-border hover:bg-bg-secondary/20 transition-all relative overflow-hidden"
               >
                 <div className="absolute left-0 top-0 w-2 h-0 bg-accent group-hover:h-full transition-all duration-500 shadow-[0_0_20px_var(--accent)]"></div>
-
                 <div className="flex flex-col md:flex-row items-start md:items-center w-full">
                   <span className="text-[11px] font-black text-text-faint tracking-[0.4em] uppercase mb-6 md:mb-0 md:mr-20 lg:mr-32 shrink-0 font-mono">
                     LOG.TYPE / GT-{idx + 1}
                   </span>
-
                   <div className="max-w-4xl">
-                    <h3 className="text-xl md:text-3xl lg:text-4xl font-black text-text-primary group-hover:text-accent transition-all tracking-tighter mb-6 leading-[0.9] uppercase">
+                    <h3 className="text-xl md:text-3xl lg:text-4xl font-black text-text-primary group-hover:text-accent transition-all tracking-tighter mb-4 md:mb-6 leading-tight md:leading-[0.9] uppercase">
                       {post.title}
                     </h3>
-                    <p className="text-text-muted text-xl md:text-2xl font-medium tracking-tight leading-relaxed">
+                    <p className="text-text-muted text-base md:text-2xl font-medium tracking-tight leading-relaxed">
                       {post.excerpt}
                     </p>
                   </div>
                 </div>
-
                 <div className="mt-12 md:mt-0 flex items-center space-x-4 text-[11px] font-black tracking-[0.4em] uppercase text-text-faint group-hover:text-text-primary transition-colors">
                   <span>DECODE_SIGNAL</span>
                   <ArrowRight className="w-6 h-6 group-hover:translate-x-3 transition-transform text-accent" />
@@ -534,7 +449,7 @@ const Home: React.FC = () => {
               </div>
               <h2 className="text-3xl md:text-6xl font-black tracking-tighter uppercase leading-[0.85]">Medium <br /><span className="text-text-faint">Research.</span></h2>
             </div>
-            <Link to="/research" className="hidden md:flex items-center px-8 py-4 rounded-full border border-glass-border text-[11px] font-black text-text-muted hover:text-text-primary hover:border-accent/50 transition-all uppercase tracking-[0.3em] group backdrop-blur-md">
+            <Link to="/research" className="flex items-center px-6 py-3 md:px-8 md:py-4 rounded-full border border-glass-border text-[10px] md:text-[11px] font-black text-text-muted hover:text-text-primary hover:border-accent/50 transition-all uppercase tracking-[0.3em] group backdrop-blur-md">
               VIEW ARCHIVE <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform text-accent" />
             </Link>
           </div>
@@ -555,23 +470,23 @@ const Home: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/20 to-transparent"></div>
                 </div>
 
-                <div className="p-10 md:p-12 flex flex-col justify-between flex-1 relative z-10">
+                <div className="p-6 md:p-12 flex flex-col justify-between flex-1 relative z-10">
                   <div>
                     <div className="flex items-center space-x-5 mb-8">
                       {article.tags.map(tag => (
                         <span key={tag} className="text-[10px] font-black uppercase tracking-[0.3em] text-accent/80 bg-accent/5 px-3 py-1 rounded-sm border border-accent/10">#{tag}</span>
                       ))}
                     </div>
-                    <h3 className="text-3xl font-black group-hover:text-accent transition-colors leading-[1.1] tracking-tight mb-6 uppercase">
+                    <h3 className="text-xl md:text-3xl font-black group-hover:text-accent transition-colors leading-tight md:leading-[1.1] tracking-tight mb-4 md:mb-6 uppercase">
                       {article.title}
                     </h3>
-                    <p className="text-text-muted text-lg line-clamp-2 leading-relaxed mb-8 font-medium tracking-tight">
+                    <p className="text-text-muted text-sm md:text-lg line-clamp-2 leading-relaxed mb-6 md:mb-8 font-medium tracking-tight">
                       {article.excerpt}
                     </p>
                   </div>
 
                   <div className="flex items-center justify-between pt-10 border-t border-glass-border mt-auto">
-                    <div className="flex items-center space-x-10">
+                    <div className="flex items-center space-x-6 md:space-x-10">
                       {article.metrics?.slice(0, 2).map((m, i) => (
                         <div key={i}>
                           <p className="text-[9px] uppercase tracking-[0.3em] text-text-faint font-black mb-2">{m.label}</p>
