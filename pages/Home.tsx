@@ -144,7 +144,7 @@ const Home: React.FC = () => {
     <div ref={container} className="relative pt-24 min-h-screen">
 
       {/* Cinematic Sidebar Text */}
-      <div className="fixed left-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex">
+      <div className="absolute left-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex">
         <div className="sidebar-text-cont rotate-180 pointer-events-auto" style={{ writingMode: 'vertical-rl', visibility: 'hidden' }}>
           <span className="text-[10px] font-black tracking-[0.4em] text-text-muted uppercase hover:text-accent transition-colors cursor-pointer">
             GOLFWANG0X // SYSTEMS ONLINE
@@ -152,7 +152,7 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      <div className="fixed right-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex">
+      <div className="absolute right-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex">
         <div className="sidebar-text-cont pointer-events-auto" style={{ writingMode: 'vertical-rl', visibility: 'hidden' }}>
           <span className="text-[10px] font-black tracking-[0.4em] text-text-muted uppercase hover:text-accent transition-colors cursor-pointer">
             GOLFWANG0X // EST. 2023

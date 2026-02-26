@@ -1,8 +1,13 @@
 
-import React, { useEffect, Suspense, lazy } from 'react';
+import React, { useEffect, useRef, Suspense, lazy } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Github, Twitter, MessageSquare, ArrowUpRight, Menu, X, Send, Sun, Moon } from 'lucide-react';
 import { useTheme } from './ThemeContext';
+import gsap from 'gsap';
+import { ScrollSmoother } from 'gsap/ScrollSmoother';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 // Route-level code splitting — each page loads on demand
 const Home = lazy(() => import('./pages/Home'));
@@ -116,24 +121,61 @@ const Footer = () => (
 
 export default function App() {
   const { pathname } = useLocation();
+  const smootherRef = useRef<ScrollSmoother | null>(null);
 
   useEffect(() => {
+    // Kill previous smoother instance on route change to avoid stacking
+    if (smootherRef.current) {
+      smootherRef.current.kill();
+      smootherRef.current = null;
+    }
+
+    // Scroll to top on route change
     window.scrollTo(0, 0);
 
+    // Create ScrollSmoother after a short delay to let the new route render
+    const timer = setTimeout(() => {
+      smootherRef.current = ScrollSmoother.create({
+        wrapper: "#smooth-wrapper",
+        content: "#smooth-content",
+        smooth: 1.2,
+        effects: true,
+        normalizeScroll: true,
+      });
+    }, 100);
+
+    // Scroll progress bar
     const updateProgress = () => {
       const bar = document.getElementById('scroll-progress');
       if (bar) {
-        const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-        bar.style.width = `${scrolled}%`;
+        const smoother = smootherRef.current;
+        if (smoother) {
+          const progress = smoother.progress;
+          bar.style.width = `${progress * 100}%`;
+        } else {
+          const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+          bar.style.width = `${scrolled}%`;
+        }
       }
     };
 
     window.addEventListener('scroll', updateProgress);
-    return () => window.removeEventListener('scroll', updateProgress);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', updateProgress);
+      if (smootherRef.current) {
+        smootherRef.current.kill();
+        smootherRef.current = null;
+      }
+      // Clean up all ScrollTriggers to prevent stale references
+      ScrollTrigger.getAll().forEach(st => st.kill());
+    };
   }, [pathname]);
 
   return (
-    <div className="min-h-screen transition-colors duration-300 bg-bg-primary relative">
+    <>
+      {/* FIXED OVERLAYS — outside smooth wrapper so position:fixed works */}
       <div className="fixed top-0 left-0 h-[2px] bg-accent z-[100] transition-all duration-300 pointer-events-none" id="scroll-progress"></div>
 
       {/* GLOBAL ATMOSPHERIC BACKGROUND */}
@@ -151,23 +193,30 @@ export default function App() {
       </div>
 
       <Navbar />
-      <main className="relative z-10">
-        <Suspense fallback={
-          <div className="min-h-screen flex items-center justify-center">
-            <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
-          </div>
-        }>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/tweets" element={<Tweets />} />
-            <Route path="/research" element={<Research />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/content/:id" element={<ContentDetail />} />
-          </Routes>
-        </Suspense>
-      </main>
-      <Footer />
-    </div>
+
+      {/* SMOOTH-SCROLLED CONTENT */}
+      <div id="smooth-wrapper">
+        <div id="smooth-content" className="bg-bg-primary">
+          <main className="relative z-10">
+            <Suspense fallback={
+              <div className="min-h-screen flex items-center justify-center">
+                <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            }>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/tweets" element={<Tweets />} />
+                <Route path="/research" element={<Research />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/content/:id" element={<ContentDetail />} />
+              </Routes>
+            </Suspense>
+          </main>
+          <Footer />
+        </div>
+      </div>
+    </>
   );
 }
+
