@@ -63,6 +63,18 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
+        /* Force scroll on mobile - prevents hijack/lock from GSAP or iframes */
+        @media (max-width: 768px) {
+
+            html,
+            body {
+                overflow: auto !important;
+                height: auto !important;
+                position: relative !important;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
         /* Vertical Sidebar Text Styling - Restored to original subtle state */
         .sidebar-text {
             font-size: 10vh;
@@ -178,11 +190,13 @@
             z-index: 99;
         }
 
-        /* ScrollSmoother wrapper/content */
-        #smooth-wrapper {
-            position: fixed;
-            inset: 0;
-            overflow: hidden;
+        /* ScrollSmoother wrapper/content - only fixed on desktop */
+        @media (min-width: 769px) {
+            #smooth-wrapper {
+                position: fixed;
+                inset: 0;
+                overflow: hidden;
+            }
         }
 
         #smooth-content {
