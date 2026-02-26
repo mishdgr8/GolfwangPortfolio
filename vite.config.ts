@@ -45,14 +45,7 @@ export default defineConfig(({ mode }) => {
           assetFileNames: 'assets/[name]-[hash:8].[ext]',
         }
       },
-      // Enable minification
-      minify: 'terser',
-      terserOptions: {
-        compress: {
-          drop_console: true,  // Remove console.log in production
-          drop_debugger: true,
-        },
-      },
+      minify: 'esbuild',
     },
   };
 });
