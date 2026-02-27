@@ -150,13 +150,13 @@ const Home: React.FC = () => {
         scrollTrigger: {
           trigger: '#medium-section',
           start: 'top bottom',
-          end: 'top 80%',
-          scrub: 1, // Smoothed scrub latency instead of 1:1 raw lock
+          end: 'top 15%', // Stop earlier so the "MEDIUM RESEARCH" text remains perfectly framed mid-screen
+          scrub: true, // 1:1 response gives perfect control to the user
           snap: {
-            snapTo: (progress) => progress > 0.15 ? 1 : 0, // Heavily bias showing the section if they scroll slightly into it
-            duration: { min: 1.0, max: 2.5 }, // Wait longer on average
-            delay: 0.6, // Patiently wait 600ms after user pauses scroll to avoid stealing control
-            ease: 'sine.inOut' // Very gentle, native-feeling easing curve
+            snapTo: [0, 1],
+            duration: { min: 1.0, max: 2.0 }, // Smooth, controlled glide
+            delay: 0.15, // Tiny wait before taking over
+            ease: 'sine.inOut' // Very gentle, consistent movement
           },
           invalidateOnRefresh: true,
         }
@@ -292,7 +292,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* HORIZONTAL SECTION 1: DEV PORTFOLIO */}
-      <section id="dev-portfolio" className={`w-full relative z-20 bg-bg-primary border-t border-glass-border ${isMobile ? 'min-h-fit py-24' : 'h-screen'}`}>
+      <section id="dev-portfolio" className={`w-full relative z-20 bg-bg-primary border-t border-glass-border ${isMobile ? 'min-h-fit py-24' : 'h-[100svh] min-h-[800px]'}`}>
         <div className={`dev-wrapper w-full relative flex flex-col ${isMobile ? '' : 'h-full overflow-clip justify-center pt-24 pb-12'}`}>
           <div className={`w-full px-6 xl:px-32 z-40 shrink-0 ${isMobile ? 'mb-6' : 'mb-10 xl:mb-16'}`}>
             <div className="flex justify-between items-end mb-8">
@@ -311,15 +311,22 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          <div className={`dev-track px-6 xl:px-32 ${isMobile ? 'flex flex-col gap-6 w-full' : 'flex gap-8 w-max min-w-full items-center pl-6 xl:pl-32'}`}>
+          <div className={`dev-track px-6 xl:px-32 ${isMobile ? 'flex flex-col gap-6 w-full' : 'flex gap-8 w-max min-w-full items-stretch pl-6 xl:pl-32 py-4'}`}>
             {featuredProjects.map((project, idx) => (
-              <Link
+              <div
                 key={project.id}
-                to="/projects"
-                className={`group relative block ${isMobile ? 'w-full' : 'w-[80vw] md:w-[42vw] lg:w-[40vw] shrink-0'}`}
+                className={`group relative flex flex-col ${isMobile ? 'w-full' : 'w-[80vw] md:w-[42vw] lg:w-[40vw] max-w-[800px] shrink-0'}`}
               >
-                <div className="glass overflow-hidden rounded-[2.5rem] border border-glass-border hover-card flex flex-col justify-between relative h-[560px]">
-                  <div className="aspect-[16/9] overflow-hidden relative shrink-0 bg-[#0a0a0a]">
+                <div className="glass overflow-hidden rounded-[2.5rem] border border-glass-border hover-card flex flex-col justify-between relative h-[65vh] md:h-full md:min-h-[560px]">
+
+                  <div className="flex-1 md:flex-none md:h-[350px] xl:h-[380px] 2xl:flex-1 2xl:h-auto overflow-hidden relative shrink-0 bg-[#0a0a0a] w-full">
+                    {project.demoUrl && (
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none group-hover:opacity-0 transition-opacity duration-500">
+                        <div className="bg-bg-primary/90 backdrop-blur-md border border-glass-border text-accent text-[10px] md:text-[11px] font-black uppercase tracking-[0.4em] px-6 py-3 rounded-full drop-shadow-2xl whitespace-nowrap shadow-[0_0_20px_rgba(var(--accent-rgb),0.3)]">
+                          Interactive Demo
+                        </div>
+                      </div>
+                    )}
                     {project.demoUrl ? (
                       <iframe
                         src={project.demoUrl}
@@ -328,41 +335,43 @@ const Home: React.FC = () => {
                         loading="lazy"
                       />
                     ) : (
-                      <img
-                        src={project.imageUrl}
-                        alt={project.title}
-                        loading="lazy"
-                        decoding="async"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-60 group-hover:opacity-100"
-                      />
+                      <>
+                        <Link to="/projects" className="absolute inset-0 z-20" aria-label={`View ${project.title}`} />
+                        <img
+                          src={project.imageUrl}
+                          alt={project.title}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-60 group-hover:opacity-100"
+                        />
+                      </>
                     )}
                   </div>
 
-                  <div className="p-8 md:p-10 flex flex-col justify-between flex-1">
-                    <div>
-                      <div className="flex items-center space-x-4 mb-6 flex-wrap">
+                  <Link to="/projects" className="px-6 py-4 md:px-8 md:py-6 flex flex-col justify-end flex-initial md:flex-1 2xl:hidden bg-bg-primary/40 backdrop-blur-sm z-10 border-t border-glass-border">
+                    <div className="flex flex-col justify-center h-full">
+                      <div className="flex items-center space-x-4 mb-3 md:mb-4 flex-wrap">
                         {project.techStack.map(tech => (
-                          <span key={tech} className="text-[9px] font-black uppercase tracking-[0.3em] text-accent/80 bg-accent/5 px-2 py-1 rounded-sm border border-accent/10">{tech}</span>
+                          <span key={tech} className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.3em] text-accent/80 bg-accent/5 px-2 py-1 rounded-sm border border-accent/10 mb-1">{tech}</span>
                         ))}
                       </div>
-                      <h3 className="text-2xl md:text-3xl font-black group-hover:text-accent transition-colors leading-[1.1] tracking-tighter mb-4 uppercase">
+                      <h3 className="text-xl md:text-3xl font-black group-hover:text-accent transition-colors leading-[1.1] tracking-tighter uppercase text-left">
                         {project.title}
                       </h3>
-                      <p className="text-text-muted text-sm md:text-base line-clamp-3 leading-relaxed mb-6 font-medium tracking-tight">
+                      <p className="text-text-muted text-sm md:text-base line-clamp-3 leading-relaxed mt-2 md:mt-3 font-medium tracking-tight text-left">
                         {project.excerpt}
                       </p>
                     </div>
-
-                  </div>
+                  </Link>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* HORIZONTAL SECTION 2: TOP SIGNAL */}
-      <section id="top-signal" className={`w-full relative z-30 bg-bg-primary border-t border-glass-border ${isMobile ? 'min-h-fit py-24' : 'h-screen'}`}>
+      <section id="top-signal" className={`w-full relative z-30 bg-bg-primary border-t border-glass-border ${isMobile ? 'min-h-fit py-24' : 'h-[100svh] min-h-[800px]'}`}>
         <div className={`signal-wrapper w-full relative flex flex-col ${isMobile ? '' : 'h-full overflow-clip justify-center pt-24 pb-12'}`}>
           <div className={`w-full px-6 xl:px-32 z-40 shrink-0 ${isMobile ? 'mb-6' : 'mb-10 xl:mb-16'}`}>
             <div className="flex justify-between items-end mb-8">
@@ -381,12 +390,12 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          <div className={`signal-track px-6 xl:px-32 ${isMobile ? 'flex flex-col gap-6 w-full' : 'flex gap-8 w-max min-w-full items-center pl-6 xl:pl-32'}`}>
+          <div className={`signal-track px-6 xl:px-32 ${isMobile ? 'flex flex-col gap-6 w-full' : 'flex gap-8 w-max min-w-full items-stretch pl-6 xl:pl-32 py-4'}`}>
             {topSignal.map((tweet, idx) => (
               <Link
                 key={tweet.id}
                 to={`/content/${tweet.id}`}
-                className={`group relative block ${isMobile ? 'w-full' : 'w-[85vw] md:w-[40vw] lg:w-[28vw] shrink-0'}`}
+                className={`group relative flex flex-col ${isMobile ? 'w-full' : 'w-[85vw] md:w-[40vw] lg:w-[28vw] max-w-[550px] shrink-0'}`}
               >
                 <div className="glass p-8 md:p-10 rounded-[2.5rem] border border-glass-border hover-card h-full flex flex-col justify-between overflow-hidden relative min-h-[450px]">
                   <div>
