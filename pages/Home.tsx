@@ -150,8 +150,14 @@ const Home: React.FC = () => {
         scrollTrigger: {
           trigger: '#medium-section',
           start: 'top bottom',
-          end: 'top 60%',
-          scrub: true,
+          end: 'top 80%',
+          scrub: 1, // Smoothed scrub latency instead of 1:1 raw lock
+          snap: {
+            snapTo: (progress) => progress > 0.15 ? 1 : 0, // Heavily bias showing the section if they scroll slightly into it
+            duration: { min: 1.0, max: 2.5 }, // Wait longer on average
+            delay: 0.6, // Patiently wait 600ms after user pauses scroll to avoid stealing control
+            ease: 'sine.inOut' // Very gentle, native-feeling easing curve
+          },
           invalidateOnRefresh: true,
         }
       }
@@ -287,8 +293,8 @@ const Home: React.FC = () => {
 
       {/* HORIZONTAL SECTION 1: DEV PORTFOLIO */}
       <section id="dev-portfolio" className={`w-full relative z-20 bg-bg-primary border-t border-glass-border ${isMobile ? 'min-h-fit py-24' : 'h-screen'}`}>
-        <div className={`dev-wrapper w-full relative flex flex-col ${isMobile ? '' : 'h-full overflow-clip justify-center'}`}>
-          <div className={`w-full px-6 xl:px-32 z-40 ${isMobile ? 'relative mb-8' : 'absolute top-16 left-0 right-0'}`}>
+        <div className={`dev-wrapper w-full relative flex flex-col ${isMobile ? '' : 'h-full overflow-clip justify-center pt-24 pb-12'}`}>
+          <div className={`w-full px-6 xl:px-32 z-40 shrink-0 ${isMobile ? 'mb-6' : 'mb-10 xl:mb-16'}`}>
             <div className="flex justify-between items-end mb-8">
               <div>
                 <div className="flex items-center space-x-3 mb-4">
@@ -305,7 +311,7 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          <div className={`dev-track px-6 xl:px-32 ${isMobile ? 'flex flex-col gap-6 w-full' : 'flex gap-8 w-max mt-32 min-w-full items-center pl-6 xl:pl-32'}`}>
+          <div className={`dev-track px-6 xl:px-32 ${isMobile ? 'flex flex-col gap-6 w-full' : 'flex gap-8 w-max min-w-full items-center pl-6 xl:pl-32'}`}>
             {featuredProjects.map((project, idx) => (
               <Link
                 key={project.id}
@@ -357,8 +363,8 @@ const Home: React.FC = () => {
 
       {/* HORIZONTAL SECTION 2: TOP SIGNAL */}
       <section id="top-signal" className={`w-full relative z-30 bg-bg-primary border-t border-glass-border ${isMobile ? 'min-h-fit py-24' : 'h-screen'}`}>
-        <div className={`signal-wrapper w-full relative flex flex-col ${isMobile ? '' : 'h-full overflow-clip justify-center'}`}>
-          <div className={`w-full px-6 xl:px-32 z-40 ${isMobile ? 'relative mb-8' : 'absolute top-16 left-0 right-0'}`}>
+        <div className={`signal-wrapper w-full relative flex flex-col ${isMobile ? '' : 'h-full overflow-clip justify-center pt-24 pb-12'}`}>
+          <div className={`w-full px-6 xl:px-32 z-40 shrink-0 ${isMobile ? 'mb-6' : 'mb-10 xl:mb-16'}`}>
             <div className="flex justify-between items-end mb-8">
               <div>
                 <div className="flex items-center space-x-3 mb-4">
@@ -375,7 +381,7 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          <div className={`signal-track px-6 xl:px-32 ${isMobile ? 'flex flex-col gap-6 w-full' : 'flex gap-8 w-max mt-32 min-w-full items-center pl-6 xl:pl-32'}`}>
+          <div className={`signal-track px-6 xl:px-32 ${isMobile ? 'flex flex-col gap-6 w-full' : 'flex gap-8 w-max min-w-full items-center pl-6 xl:pl-32'}`}>
             {topSignal.map((tweet, idx) => (
               <Link
                 key={tweet.id}
@@ -390,7 +396,7 @@ const Home: React.FC = () => {
                       </span>
                       <TrendingUp className="w-6 h-6 text-text-muted group-hover:text-accent" />
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-black mb-6 group-hover:text-accent transition-colors leading-[1.1] tracking-tighter uppercase">
+                    <h3 className="text-2xl md:text-3xl font-black mb-6 group-hover:text-accent transition-colors leading-[1.1] tracking-tighter uppercase line-clamp-3">
                       {tweet.title}
                     </h3>
                     <p className="text-text-muted mb-8 line-clamp-4 text-sm md:text-base leading-relaxed font-medium tracking-tight">
@@ -417,8 +423,8 @@ const Home: React.FC = () => {
       </section>
 
       {/* STACKED PANEL 3: ANALYTICAL POSTS */}
-      <section id="analytical-section" className="stacked-panel px-6 xl:px-32 py-24 xl:py-32 border-t border-glass-border bg-bg-primary shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col">
-        <div className="max-w-7xl mx-auto w-full h-full flex flex-col">
+      <section id="analytical-section" className="stacked-panel px-6 xl:px-32 pt-24 pb-0 xl:pt-32 xl:pb-0 border-t border-glass-border bg-bg-primary shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col">
+        <div className="max-w-7xl mx-auto w-full flex flex-col">
           <div className="panel-header mb-16">
             <div className="flex items-center space-x-3 mb-6">
               <div className="w-16 h-[2px] bg-accent"></div>
@@ -432,7 +438,7 @@ const Home: React.FC = () => {
               <Link
                 key={post.id}
                 to={`/content/${post.id}`}
-                className="panel-item group flex flex-col md:flex-row items-center justify-between p-8 md:p-16 border-b border-glass-border hover:bg-bg-secondary/20 transition-all relative overflow-hidden"
+                className="panel-item group flex flex-col md:flex-row items-center justify-between p-6 md:p-10 border-b border-glass-border hover:bg-bg-secondary/20 transition-all relative overflow-hidden"
               >
                 <div className="absolute left-0 top-0 w-2 h-0 bg-accent group-hover:h-full transition-all duration-500 shadow-[0_0_20px_var(--accent)]"></div>
                 <div className="flex flex-col md:flex-row items-start md:items-center w-full">
@@ -440,10 +446,10 @@ const Home: React.FC = () => {
                     LOG.TYPE / GT-{idx + 1}
                   </span>
                   <div className="max-w-4xl">
-                    <h3 className="text-xl md:text-3xl lg:text-4xl font-black text-text-primary group-hover:text-accent transition-all tracking-tighter mb-4 md:mb-6 leading-tight md:leading-[0.9] uppercase">
+                    <h3 className="text-lg md:text-2xl lg:text-3xl font-black text-text-primary group-hover:text-accent transition-all tracking-tighter mb-3 md:mb-4 leading-tight uppercase">
                       {post.title}
                     </h3>
-                    <p className="text-text-muted text-base md:text-2xl font-medium tracking-tight leading-relaxed">
+                    <p className="text-text-muted text-sm md:text-lg font-medium tracking-tight leading-relaxed">
                       {post.excerpt}
                     </p>
                   </div>
@@ -460,7 +466,7 @@ const Home: React.FC = () => {
 
       {/* STACKED PANEL 4: MEDIUM RESEARCH */}
       <section id="medium-section" className="stacked-panel px-6 xl:px-32 py-24 xl:py-32 border-t border-glass-border bg-bg-primary flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
-        <div className="max-w-7xl mx-auto w-full flex flex-col">
+        <div className="max-w-[1600px] mx-auto w-full flex flex-col">
           <div className="panel-header flex justify-between items-end mb-20">
             <div>
               <div className="flex items-center space-x-3 mb-6">
