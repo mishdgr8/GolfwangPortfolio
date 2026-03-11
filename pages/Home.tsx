@@ -24,6 +24,7 @@ const Home: React.FC = () => {
     typeof window !== 'undefined' ? window.matchMedia('(max-width: 768px)').matches : false
   );
   const [activeDemo, setActiveDemo] = useState<string | null>(null);
+  const magneticCtaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const mql = window.matchMedia('(max-width: 768px)');
@@ -214,6 +215,38 @@ const Home: React.FC = () => {
       }
     );
 
+    // 5. MAGNETIC CTA EFFECT
+    const mBtn = magneticCtaRef.current;
+    if (mBtn && !isMobile) {
+      const handleMouseMove = (e: MouseEvent) => {
+        const rect = mBtn.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const distanceX = e.clientX - centerX;
+        const distanceY = e.clientY - centerY;
+
+        // Influence area (pixels)
+        if (Math.abs(distanceX) < 200 && Math.abs(distanceY) < 200) {
+          gsap.to(mBtn, {
+            x: distanceX * 0.25,
+            y: distanceY * 0.25,
+            duration: 0.4,
+            ease: 'power2.out',
+          });
+        } else {
+          gsap.to(mBtn, {
+            x: 0,
+            y: 0,
+            duration: 0.6,
+            ease: 'elastic.out(1, 0.3)',
+          });
+        }
+      };
+
+      window.addEventListener('mousemove', handleMouseMove);
+      return () => window.removeEventListener('mousemove', handleMouseMove);
+    }
+
   }, { scope: container, dependencies: [isMobile] });
 
   return (
@@ -239,20 +272,21 @@ const Home: React.FC = () => {
       {/* Hero Section */}
       <section id="hero-section" className="relative h-[100vh] flex flex-col justify-between px-6 xl:px-32 pt-32 pb-6 md:pb-12 z-10 bg-bg-primary overflow-hidden">
 
-        {/* Background Spline Layer */}
+        {/* Background Video Layer (Previously Spline - Faster & Silkier) */}
         <div className="absolute inset-0 z-0" aria-hidden="true">
-          <div className="w-full h-full opacity-80 transition-opacity duration-1000 overflow-hidden relative">
-            {/* @ts-ignore */}
-            <spline-viewer
-              url="https://prod.spline.design/t-4Z-KY6Y6CSBcYF/scene.splinecode"
-              className="w-full h-full scale-[1.1] origin-center opacity-70 grayscale"
-              hint="false"
-            />
-            {/* Subtle Logo Mask - Blended into bottom corner */}
-            <div className="absolute bottom-4 right-4 w-32 h-10 bg-bg-primary/95 blur-xl z-10 pointer-events-none rounded-full"></div>
-            <div className="absolute bottom-0 right-0 w-40 h-12 bg-bg-primary z-10 pointer-events-none"></div>
+          <div className="w-full h-full opacity-40 transition-opacity duration-1000 overflow-hidden relative">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover scale-[1.05] grayscale brightness-50 contrast-125"
+            >
+              <source src="https://assets.mixkit.co/videos/preview/mixkit-tech-digital-data-movement-background-32770-large.mp4" type="video/mp4" />
+            </video>
+            {/* Subtle Gradient Overlays */}
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-bg-primary via-bg-primary/50 to-transparent"></div>
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-bg-primary/60 via-transparent to-bg-primary"></div>
         </div>
 
         {/* Hero Top Content */}
@@ -326,16 +360,22 @@ const Home: React.FC = () => {
           </h1>
         </div>
 
-        {/* Call to Action - Floating on right bottom */}
-        <div className="absolute right-6 md:right-32 bottom-12 z-30">
-          <Link to="/projects" className="group flex items-center space-x-6">
-            <div className="flex flex-col items-end">
-              <span className="text-[10px] font-black text-text-secondary uppercase tracking-[0.4em] mb-1">Explore Work</span>
-              <span className="text-xl md:text-2xl font-black text-text-primary uppercase tracking-tighter">See All Projects</span>
+        {/* Premium Magnetic CTA */}
+        <div ref={magneticCtaRef} className="absolute right-6 md:right-32 bottom-12 z-30">
+          <Link to="/about" className="group flex flex-col items-end">
+            <div className="flex items-center space-x-3 mb-6">
+              <span className="flex h-2 w-2 rounded-full bg-accent animate-pulse"></span>
+              <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.5em]">AVAILABILITY: Q2 2026_OPEN</span>
             </div>
-            <div className="w-12 h-12 md:w-20 md:h-20 rounded-full border border-glass-border flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all duration-500 shadow-2xl relative overflow-hidden">
-              <div className="absolute inset-0 bg-accent scale-0 group-hover:scale-100 transition-transform duration-500 origin-center rounded-full"></div>
-              <ArrowRight className="w-6 h-6 md:w-8 md:h-8 text-text-primary group-hover:text-bg-primary relative z-10 group-hover:translate-x-1 transition-transform" />
+            <div className="flex items-center space-x-8">
+              <div className="flex flex-col items-end">
+                <span className="text-[11px] font-black text-accent uppercase tracking-[0.4em] mb-2 font-mono">INITIATE_BUILD</span>
+                <span className="text-2xl md:text-3xl font-black text-text-primary uppercase tracking-tighter leading-none group-hover:text-accent transition-colors">WORK WITH US.</span>
+              </div>
+              <div className="w-16 h-16 md:w-24 md:h-24 rounded-full border border-glass-border flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all duration-500 shadow-2xl relative overflow-hidden group-hover:scale-110">
+                <div className="absolute inset-0 bg-accent scale-0 group-hover:scale-100 transition-transform duration-500 origin-center rounded-full"></div>
+                <ArrowRight className="w-8 h-8 md:w-10 md:h-10 text-text-primary group-hover:text-bg-primary relative z-10 group-hover:rotate-[-45deg] transition-transform duration-500" />
+              </div>
             </div>
           </Link>
         </div>
