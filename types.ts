@@ -25,7 +25,7 @@ export interface ProjectItem {
   excerpt: string;
   longDescription?: string;
   techStack: string[];
-  imageUrl: string;
+
   demoUrl?: string;
   repoUrl?: string;
   date: string;

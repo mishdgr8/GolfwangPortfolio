@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { portfolioData, projectsData } from '../data';
-import { ArrowRight, TrendingUp, Sparkles, BookOpen, ExternalLink, Terminal, Cpu, PenTool, BarChart, Twitter, Code } from 'lucide-react';
+import { ArrowRight, TrendingUp, Sparkles, BookOpen, ExternalLink, Terminal, Cpu, PenTool, BarChart, Twitter, Code, X, Monitor, Activity } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -410,53 +410,82 @@ const Home: React.FC = () => {
                 <div className="glass overflow-hidden rounded-[2.5rem] border border-glass-border hover-card flex flex-col justify-between relative h-[65vh] md:h-full md:min-h-[560px]">
 
                   <div className="flex-1 md:flex-none md:h-[350px] xl:h-[380px] 2xl:flex-1 2xl:h-auto overflow-hidden relative shrink-0 bg-[#0a0a0a] w-full">
-                    {project.demoUrl && (
-                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none group-hover:opacity-0 transition-opacity duration-500">
-                        <div className="bg-bg-primary/90 backdrop-blur-md border border-glass-border text-accent text-[10px] md:text-[11px] font-black uppercase tracking-[0.4em] px-6 py-3 rounded-full drop-shadow-2xl whitespace-nowrap shadow-[0_0_20px_rgba(var(--accent-rgb),0.3)]">
-                          Interactive Demo
-                        </div>
-                      </div>
-                    )}
                     {project.demoUrl ? (
                       <div
-                        className="w-full h-full"
-                        onMouseEnter={() => setActiveDemo(project.id)}
-                        onMouseLeave={() => setActiveDemo(null)}
+                        className="w-full h-full cursor-pointer relative"
+                        onClick={() => setActiveDemo(activeDemo === project.id ? null : (project.id || null))}
                       >
                         {activeDemo === project.id && !isMobile ? (
-                          <iframe
-                            src={project.demoUrl}
-                            title={project.title}
-                            className="w-[200%] h-[200%] origin-top-left scale-[0.5] group-hover:scale-[0.52] transition-transform duration-1000 border-none"
-                          />
-                        ) : (
-                          <>
-                            <Link to="/projects" className="absolute inset-0 z-20" aria-label={`View ${project.title}`} />
-                            <img
-                              src={project.imageUrl}
-                              alt={project.title}
-                              loading="lazy"
-                              decoding="async"
-                              width="800"
-                              height="600"
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-60 group-hover:opacity-100"
+                          <div className="w-full h-full relative group/iframe">
+                            <iframe
+                              src={project.demoUrl}
+                              title={project.title}
+                              className="w-[200%] h-[200%] origin-top-left scale-[0.5] transition-transform duration-1000 border-none relative z-10"
                             />
-                          </>
+                            {/* Close Button Overlay */}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveDemo(null);
+                              }}
+                              className="absolute top-6 right-6 z-50 bg-bg-primary/90 hover:bg-accent hover:text-bg-primary text-accent border border-accent/20 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.3em] flex items-center space-x-2 transition-all shadow-[0_0_20px_rgba(var(--accent-rgb),0.2)]"
+                            >
+                              <X className="w-3 h-3" />
+                              <span>Exit Interface</span>
+                            </button>
+                            {/* Active Scanline Overlay */}
+                            <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden opacity-10">
+                              <div className="w-full h-[2px] bg-accent/30 animate-scanline"></div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center bg-[#050505] relative group/launcher overflow-hidden">
+                            {/* Backgrid Pattern */}
+                            <div className="absolute inset-0 opacity-10 pointer-events-none"
+                              style={{ backgroundImage: 'radial-gradient(var(--accent) 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
+
+                            <div className="relative z-10 flex flex-col items-center">
+                              <div className="w-20 h-20 md:w-28 md:h-28 rounded-full border border-glass-border flex items-center justify-center mb-6 group-hover/launcher:border-accent/40 group-hover/launcher:scale-110 transition-all duration-700 bg-bg-primary/50 relative">
+                                <Activity className="w-8 h-8 md:w-12 md:h-12 text-text-faint group-hover/launcher:text-accent transition-colors" />
+                                <div className="absolute inset-0 rounded-full border border-accent/0 group-hover/launcher:border-accent/20 animate-ping opacity-0 group-hover/launcher:opacity-100"></div>
+                              </div>
+
+                              <h3 className="text-xl md:text-2xl font-black text-text-primary tracking-tighter uppercase mb-2 group-hover/launcher:text-accent transition-colors text-center px-4">
+                                {project.title}
+                              </h3>
+
+                              <div className="flex items-center space-x-3">
+                                <div className="flex space-x-1">
+                                  <div className="w-1 h-1 bg-accent/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                                  <div className="w-1 h-1 bg-accent/40 rounded-full animate-bounce" style={{ animationDelay: '200ms' }}></div>
+                                  <div className="w-1 h-1 bg-accent/40 rounded-full animate-bounce" style={{ animationDelay: '400ms' }}></div>
+                                </div>
+                                <span className="text-[9px] md:text-[10px] font-black text-text-muted uppercase tracking-[0.5em] font-mono group-hover/launcher:text-text-secondary transition-colors">
+                                  INITIATE_PREVIEW_
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Corner Accents */}
+                            <div className="absolute top-8 left-8 w-4 h-4 border-t border-l border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
+                            <div className="absolute top-8 right-8 w-4 h-4 border-t border-r border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
+                            <div className="absolute bottom-8 left-8 w-4 h-4 border-b border-l border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
+                            <div className="absolute bottom-8 right-8 w-4 h-4 border-b border-r border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
+
+                            {/* Telemetry data overlay */}
+                            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full px-12 flex justify-between opacity-0 group-hover/launcher:opacity-100 transition-opacity duration-500">
+                              <span className="text-[8px] font-mono text-text-faint uppercase">SYS.STATUS: RDY</span>
+                              <span className="text-[8px] font-mono text-text-faint uppercase">ID: {project.id?.split('-').pop()}</span>
+                            </div>
+                          </div>
                         )}
                       </div>
                     ) : (
-                      <>
-                        <Link to="/projects" className="absolute inset-0 z-20" aria-label={`View ${project.title}`} />
-                        <img
-                          src={project.imageUrl}
-                          alt={project.title}
-                          loading="lazy"
-                          decoding="async"
-                          width="800"
-                          height="600"
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-60 group-hover:opacity-100"
-                        />
-                      </>
+                      <div className="w-full h-full flex flex-col items-center justify-center bg-[#050505] relative overflow-hidden px-8 text-center">
+                        <Monitor className="w-12 h-12 text-text-faint mb-4 opacity-50" />
+                        <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.3em] font-mono mb-2">Internal_Interface</span>
+                        <h3 className="text-lg font-black text-text-secondary uppercase tracking-tight">{project.title}</h3>
+                      </div>
                     )}
                   </div>
 
