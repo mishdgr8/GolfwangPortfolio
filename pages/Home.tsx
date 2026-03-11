@@ -109,7 +109,7 @@ const Home: React.FC = () => {
           trigger: '#hero-section',
           start: '5% top', // Start shortly after scroll begins
           end: '60% top', // Reach full state quickly
-          scrub: 1,
+          scrub: 0.6,
         }
       }
     );
@@ -126,7 +126,7 @@ const Home: React.FC = () => {
           trigger: '#hero-section',
           start: 'top top',
           end: 'bottom top',
-          scrub: 1,
+          scrub: 0.6,
           immediateRender: false, // CRITICAL: Only start controlling after entrance timeline
         }
       }
@@ -139,7 +139,7 @@ const Home: React.FC = () => {
         trigger: '#hero-section',
         start: 'top top',
         end: '50% top',
-        scrub: true,
+        scrub: 0.6,
       }
     });
 
@@ -152,7 +152,7 @@ const Home: React.FC = () => {
         scrollTrigger: {
           trigger: '#dev-portfolio',
           pin: true,
-          scrub: true,
+          scrub: 0.6,
           start: 'top top',
           end: () => `+=${devTrack.scrollWidth - window.innerWidth + 80}`,
           invalidateOnRefresh: true,
@@ -170,7 +170,7 @@ const Home: React.FC = () => {
         scrollTrigger: {
           trigger: '#top-signal',
           pin: true,
-          scrub: true,
+          scrub: 0.6,
           start: 'top top',
           end: () => `+=${signalTrack.scrollWidth - window.innerWidth}`,
           invalidateOnRefresh: true,
@@ -189,6 +189,9 @@ const Home: React.FC = () => {
       invalidateOnRefresh: true,
     });
 
+    // GPU acceleration hints for high-frequency elements
+    gsap.set('.dev-track, .signal-track, .hero-massive-bg', { willChange: 'transform' });
+
     // 5. MEDIUM SECTION (Slide-in immediately after analytical unpins)
     gsap.fromTo('#medium-section',
       { yPercent: 30 },
@@ -199,7 +202,7 @@ const Home: React.FC = () => {
           trigger: '#medium-section',
           start: 'top bottom',
           end: 'top 15%', // Stop earlier so the "MEDIUM RESEARCH" text remains perfectly framed mid-screen
-          scrub: true, // 1:1 response gives perfect control to the user
+          scrub: 0.6, // Weighted response for silky smooth control
           snap: {
             snapTo: [0, 1],
             duration: { min: 1.0, max: 2.0 }, // Smooth, controlled glide

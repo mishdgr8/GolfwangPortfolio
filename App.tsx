@@ -4,10 +4,9 @@ import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Github, Twitter, MessageSquare, ArrowUpRight, Menu, X, Send, Sun, Moon } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import gsap from 'gsap';
-import { ScrollSmoother } from 'gsap/ScrollSmoother';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+gsap.registerPlugin(ScrollTrigger);
 
 // Route-level code splitting — each page loads on demand
 const Home = lazy(() => import('./pages/Home'));
@@ -116,61 +115,56 @@ const Footer = () => (
 
 export default function App() {
   const { pathname } = useLocation();
-  const smootherRef = useRef<ScrollSmoother | null>(null);
 
   useEffect(() => {
-    const isMobile = window.matchMedia('(max-width: 768px)').matches;
-
-    // Kill previous smoother instance on route change to avoid stacking
-    if (smootherRef.current) {
-      smootherRef.current.kill();
-      smootherRef.current = null;
-    }
-
     // Scroll to top on route change
     window.scrollTo(0, 0);
 
-    let timer: ReturnType<typeof setTimeout> | undefined;
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
-    // Only create ScrollSmoother on desktop — it causes severe lag,
-    // scroll hijacking, and page reloads on mobile touch devices
-    if (!isMobile) {
-      timer = setTimeout(() => {
-        smootherRef.current = ScrollSmoother.create({
-          wrapper: "#smooth-wrapper",
-          content: "#smooth-content",
-          smooth: 1.2,
-          effects: true,
-          normalizeScroll: true,
-        });
-      }, 100);
+    // We expect Lenis to be available via CDN script in index.html
+    const Lenis = (window as any).Lenis;
+    let lenis: any;
+
+    if (Lenis && !isMobile) {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 2,
+        infinite: false,
+      });
+
+      // Sync Lenis with GSAP ScrollTrigger
+      lenis.on('scroll', ScrollTrigger.update);
+
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+
+      gsap.ticker.lagSmoothing(0);
     }
 
-    // Scroll progress bar
+    // Scroll progress bar logic
     const updateProgress = () => {
       const bar = document.getElementById('scroll-progress');
       if (bar) {
-        const smoother = smootherRef.current;
-        if (smoother) {
-          const progress = smoother.progress;
-          bar.style.width = `${progress * 100}%`;
-        } else {
-          const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-          bar.style.width = `${scrolled}%`;
-        }
+        const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+        bar.style.width = `${scrolled}%`;
       }
     };
 
     window.addEventListener('scroll', updateProgress);
 
     return () => {
-      if (timer) clearTimeout(timer);
       window.removeEventListener('scroll', updateProgress);
-      if (smootherRef.current) {
-        smootherRef.current.kill();
-        smootherRef.current = null;
+      if (lenis) {
+        lenis.destroy();
+        gsap.ticker.remove(lenis.raf);
       }
-      // Clean up all ScrollTriggers to prevent stale references
       ScrollTrigger.getAll().forEach(st => st.kill());
     };
   }, [pathname]);
