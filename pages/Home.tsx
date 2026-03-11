@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { portfolioData, projectsData } from '../data';
 import { ArrowRight, TrendingUp, Sparkles, BookOpen, ExternalLink, Terminal, Cpu, PenTool, BarChart, Twitter, Code, X, Monitor, Activity } from 'lucide-react';
+import { useTheme } from '../ThemeContext';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -20,11 +21,17 @@ const parseViewCount = (value: string): number => {
 
 const Home: React.FC = () => {
   const container = useRef<HTMLDivElement>(null);
+  const [activeDemo, setActiveDemo] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia('(max-width: 768px)').matches : false
   );
-  const [activeDemo, setActiveDemo] = useState<string | null>(null);
+  const { theme } = useTheme();
   const magneticCtaRef = useRef<HTMLDivElement>(null);
+
+  const sonarColor = theme === 'dark' ? 'var(--accent)' : 'black';
+  const sonarBorder = theme === 'dark' ? 'border-accent/60' : 'border-black/50';
+  const sonarSweep = theme === 'dark' ? 'via-accent' : 'via-black';
+  const sonarGrid = theme === 'dark' ? 'border-accent/10' : 'border-black/10';
 
   useEffect(() => {
     const mql = window.matchMedia('(max-width: 768px)');
@@ -273,24 +280,25 @@ const Home: React.FC = () => {
       <section id="hero-section" className="relative h-[100vh] flex flex-col justify-between px-6 xl:px-32 pt-32 pb-6 md:pb-12 z-10 bg-bg-primary overflow-hidden">
 
         {/* Sonar / Radar SVG Background */}
-        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none" aria-hidden="true"
-          style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, var(--accent) 0.5px, transparent 0.5px)', backgroundSize: '60px 60px', opacity: '0.05' }}>
+        <div className="absolute inset-0 z-0 opacity-100 pointer-events-none" aria-hidden="true">
+          <div className="absolute inset-0 opacity-[0.1]"
+            style={{ backgroundImage: `radial-gradient(circle at 50% 50%, ${sonarColor} 1px, transparent 1px)`, backgroundSize: '60px 60px' }}></div>
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="relative w-full h-full max-w-4xl max-h-4xl flex items-center justify-center">
-              {/* Sonar Rings */}
-              <div className="absolute w-[20%] aspect-square rounded-full border border-accent/20 animate-sonar" style={{ animationDelay: '0s' }}></div>
-              <div className="absolute w-[40%] aspect-square rounded-full border border-accent/20 animate-sonar" style={{ animationDelay: '1s' }}></div>
-              <div className="absolute w-[60%] aspect-square rounded-full border border-accent/20 animate-sonar" style={{ animationDelay: '2s' }}></div>
-              <div className="absolute w-[80%] aspect-square rounded-full border border-accent/20 animate-sonar" style={{ animationDelay: '3s' }}></div>
+              {/* Sonar Rings - Very Visible */}
+              <div className={`absolute w-[20%] aspect-square rounded-full border ${sonarBorder} animate-sonar shadow-[0_0_15px_rgba(var(--accent-rgb),0.1)]`} style={{ animationDelay: '0s' }}></div>
+              <div className={`absolute w-[40%] aspect-square rounded-full border ${sonarBorder} animate-sonar shadow-[0_0_15px_rgba(var(--accent-rgb),0.1)]`} style={{ animationDelay: '1s' }}></div>
+              <div className={`absolute w-[60%] aspect-square rounded-full border ${sonarBorder} animate-sonar shadow-[0_0_15px_rgba(var(--accent-rgb),0.1)]`} style={{ animationDelay: '2s' }}></div>
+              <div className={`absolute w-[80%] aspect-square rounded-full border ${sonarBorder} animate-sonar shadow-[0_0_15px_rgba(var(--accent-rgb),0.1)]`} style={{ animationDelay: '3s' }}></div>
 
-              {/* Radar Sweep */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-30">
-                <div className="w-[80%] h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent animate-radar-sweep"></div>
+              {/* Radar Sweep - Bright & Sharp */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-80">
+                <div className={`w-[80%] h-[2px] bg-gradient-to-r from-transparent ${sonarSweep} to-transparent animate-radar-sweep shadow-[0_0_20px_rgba(var(--accent-rgb),0.3)]`}></div>
               </div>
 
               {/* Grid Lines */}
-              <div className="absolute inset-0 border-x border-accent/5"></div>
-              <div className="absolute inset-0 border-y border-accent/5"></div>
+              <div className={`absolute inset-0 border-x ${sonarGrid}`}></div>
+              <div className={`absolute inset-0 border-y ${sonarGrid}`}></div>
             </div>
           </div>
           {/* Subtle Gradient Overlays */}

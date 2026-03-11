@@ -41,16 +41,17 @@
         }
 
         :root.light {
-            --accent: #558B2F;
-            --accent-rgb: 85, 139, 47;
-            --bg-primary: #f8f9fa;
-            --bg-secondary: #ffffff;
-            --bg-tertiary: #e9ecef;
+            --accent: #1B5E20;
+            /* Much darker green for visibility: Forest Green */
+            --accent-rgb: 27, 94, 32;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f0f2f5;
+            --bg-tertiary: #e1e4e8;
             --text-primary: #000000;
             --text-secondary: rgba(0, 0, 0, 0.9);
             --text-muted: rgba(0, 0, 0, 0.8);
-            --text-faint: rgba(0, 0, 0, 0.5);
-            --glass-bg: rgba(0, 0, 0, 0.03);
+            --text-faint: rgba(0, 0, 0, 0.6);
+            --glass-bg: rgba(0, 0, 0, 0.05);
             --glass-border: rgba(0, 0, 0, 0.15);
             --card-hover-bg: rgba(0, 0, 0, 0.08);
             --scrollbar-thumb: rgba(0, 0, 0, 0.25);
@@ -58,7 +59,7 @@
 
         :root.light .sidebar-text,
         :root.light .text-huge {
-            -webkit-text-stroke: 1px rgba(var(--accent-rgb), 0.6);
+            -webkit-text-stroke: 1.5px rgba(var(--accent-rgb), 0.8);
         }
 
         :root.light .sidebar-text:hover,

@@ -115,6 +115,7 @@ const Footer = () => (
 
 export default function App() {
   const { pathname } = useLocation();
+  const { theme } = useTheme();
 
   useEffect(() => {
     // Scroll to top on route change
@@ -185,11 +186,11 @@ export default function App() {
           alt=""
           loading="lazy"
           decoding="async"
-          className="w-full h-full object-cover opacity-10 grayscale brightness-[0.2]"
+          className={`w-full h-full object-cover grayscale transition-all duration-700 ${theme === 'dark' ? 'opacity-10 brightness-[0.2]' : 'opacity-[0.05] brightness-150'}`}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-bg-primary via-transparent to-bg-primary"></div>
-        <div className="absolute top-[10%] left-[20%] w-[500px] h-[500px] bg-accent/[0.03] blur-[120px] rounded-full"></div>
-        <div className="absolute bottom-[20%] right-[10%] w-[600px] h-[600px] bg-accent/[0.03] blur-[150px] rounded-full"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-bg-primary via-bg-primary/50 to-bg-primary"></div>
+        <div className={`absolute top-[10%] left-[20%] w-[500px] h-[500px] blur-[120px] rounded-full transition-colors duration-700 ${theme === 'dark' ? 'bg-accent/[0.03]' : 'bg-accent/[0.08]'}`}></div>
+        <div className={`absolute bottom-[20%] right-[10%] w-[600px] h-[600px] blur-[150px] rounded-full transition-colors duration-700 ${theme === 'dark' ? 'bg-accent/[0.03]' : 'bg-accent/[0.08]'}`}></div>
       </div>
 
       <Navbar />
