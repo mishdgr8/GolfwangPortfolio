@@ -272,21 +272,29 @@ const Home: React.FC = () => {
       {/* Hero Section */}
       <section id="hero-section" className="relative h-[100vh] flex flex-col justify-between px-6 xl:px-32 pt-32 pb-6 md:pb-12 z-10 bg-bg-primary overflow-hidden">
 
-        {/* Background Video Layer (Previously Spline - Faster & Silkier) */}
-        <div className="absolute inset-0 z-0" aria-hidden="true">
-          <div className="w-full h-full opacity-40 transition-opacity duration-1000 overflow-hidden relative">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover scale-[1.05] grayscale brightness-50 contrast-125"
-            >
-              <source src="https://assets.mixkit.co/videos/preview/mixkit-tech-digital-data-movement-background-32770-large.mp4" type="video/mp4" />
-            </video>
-            {/* Subtle Gradient Overlays */}
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-bg-primary via-bg-primary/50 to-transparent"></div>
+        {/* Sonar / Radar SVG Background */}
+        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none" aria-hidden="true"
+          style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, var(--accent) 0.5px, transparent 0.5px)', backgroundSize: '60px 60px', opacity: '0.05' }}>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="relative w-full h-full max-w-4xl max-h-4xl flex items-center justify-center">
+              {/* Sonar Rings */}
+              <div className="absolute w-[20%] aspect-square rounded-full border border-accent/20 animate-sonar" style={{ animationDelay: '0s' }}></div>
+              <div className="absolute w-[40%] aspect-square rounded-full border border-accent/20 animate-sonar" style={{ animationDelay: '1s' }}></div>
+              <div className="absolute w-[60%] aspect-square rounded-full border border-accent/20 animate-sonar" style={{ animationDelay: '2s' }}></div>
+              <div className="absolute w-[80%] aspect-square rounded-full border border-accent/20 animate-sonar" style={{ animationDelay: '3s' }}></div>
+
+              {/* Radar Sweep */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-30">
+                <div className="w-[80%] h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent animate-radar-sweep"></div>
+              </div>
+
+              {/* Grid Lines */}
+              <div className="absolute inset-0 border-x border-accent/5"></div>
+              <div className="absolute inset-0 border-y border-accent/5"></div>
+            </div>
           </div>
+          {/* Subtle Gradient Overlays */}
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-bg-primary via-bg-primary/50 to-transparent"></div>
         </div>
 
         {/* Hero Top Content */}
@@ -449,12 +457,12 @@ const Home: React.FC = () => {
                                 style={{ backgroundImage: 'radial-gradient(var(--accent) 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
 
                               <div className="relative z-10 flex flex-col items-center">
-                                <div className="w-20 h-20 md:w-28 md:h-28 rounded-full border border-glass-border flex items-center justify-center mb-6 group-hover/launcher:border-accent/40 group-hover/launcher:scale-110 transition-all duration-700 bg-bg-primary/50 relative">
-                                  <Activity className="w-8 h-8 md:w-12 md:h-12 text-text-faint group-hover/launcher:text-accent transition-colors" />
+                                <div className="w-20 h-20 md:w-28 md:h-28 rounded-full border border-zinc-800 flex items-center justify-center mb-6 group-hover/launcher:border-accent/40 group-hover/launcher:scale-110 transition-all duration-700 bg-zinc-900/50 relative">
+                                  <Activity className="w-8 h-8 md:w-12 md:h-12 text-zinc-500 group-hover/launcher:text-accent transition-colors" />
                                   <div className="absolute inset-0 rounded-full border border-accent/0 group-hover/launcher:border-accent/20 animate-ping opacity-0 group-hover/launcher:opacity-100"></div>
                                 </div>
 
-                                <h3 className="text-xl md:text-2xl font-black text-text-primary tracking-tighter uppercase mb-2 group-hover/launcher:text-accent transition-colors text-center px-4">
+                                <h3 className="text-xl md:text-2xl font-black text-zinc-100 tracking-tighter uppercase mb-2 group-hover/launcher:text-accent transition-colors text-center px-4">
                                   {project.title}
                                 </h3>
 
@@ -462,22 +470,22 @@ const Home: React.FC = () => {
                                   <div className="flex space-x-1">
                                     <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
                                   </div>
-                                  <span className="text-[10px] md:text-[11px] font-black text-accent uppercase tracking-[0.4em] font-mono group-hover/launcher:text-text-primary transition-colors">
+                                  <span className="text-[10px] md:text-[11px] font-black text-accent uppercase tracking-[0.4em] font-mono group-hover/launcher:text-white transition-colors">
                                     CLICK_TO_INITIATE_PREVIEW_
                                   </span>
                                 </div>
                               </div>
 
                               {/* Corner Accents */}
-                              <div className="absolute top-8 left-8 w-4 h-4 border-t border-l border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
-                              <div className="absolute top-8 right-8 w-4 h-4 border-t border-r border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
-                              <div className="absolute bottom-8 left-8 w-4 h-4 border-b border-l border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
-                              <div className="absolute bottom-8 right-8 w-4 h-4 border-b border-r border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
+                              <div className="absolute top-8 left-8 w-4 h-4 border-t border-l border-white/10 group-hover/launcher:border-accent/30 transition-colors"></div>
+                              <div className="absolute top-8 right-8 w-4 h-4 border-t border-r border-white/10 group-hover/launcher:border-accent/30 transition-colors"></div>
+                              <div className="absolute bottom-8 left-8 w-4 h-4 border-b border-l border-white/10 group-hover/launcher:border-accent/30 transition-colors"></div>
+                              <div className="absolute bottom-8 right-8 w-4 h-4 border-b border-r border-white/10 group-hover/launcher:border-accent/30 transition-colors"></div>
 
                               {/* Telemetry data overlay */}
                               <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full px-12 flex justify-between opacity-0 group-hover/launcher:opacity-100 transition-opacity duration-500">
-                                <span className="text-[8px] font-mono text-text-faint uppercase">SYS.STATUS: RDY</span>
-                                <span className="text-[8px] font-mono text-text-faint uppercase">ID: {project.id?.split('-').pop()}</span>
+                                <span className="text-[8px] font-mono text-zinc-600 uppercase">SYS.STATUS: RDY</span>
+                                <span className="text-[8px] font-mono text-zinc-600 uppercase">ID: {project.id?.split('-').pop()}</span>
                               </div>
                             </div>
                           </div>
