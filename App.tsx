@@ -79,39 +79,83 @@ const Navbar = () => {
   );
 };
 
-const Footer = () => (
-  <footer className="py-20 px-6 border-t border-glass-border bg-bg-secondary overflow-hidden">
-    <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-      <div>
-        <h3 className="text-3xl font-black tracking-tighter mb-2 text-text-primary">GOLFWANG0X</h3>
-        <p className="text-sm text-text-muted">Smart research. Seamless alpha.</p>
-      </div>
-      <div className="flex space-x-6">
-        <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass transition-colors text-text-primary" aria-label="X (Twitter)">
-          <Twitter className="w-5 h-5" aria-hidden="true" />
-        </a>
-        <a href="https://github.com/mishdgr8" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass transition-colors text-text-primary" aria-label="Github">
-          <Github className="w-5 h-5" aria-hidden="true" />
-        </a>
-        <a href="https://t.me/mishdgr8" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass transition-colors text-text-primary" aria-label="Telegram">
-          <Send className="w-5 h-5" aria-hidden="true" />
-        </a>
-        <a href="mailto:golfwang0x@gmail.com" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass transition-colors text-text-primary" aria-label="Email">
-          <MessageSquare className="w-5 h-5" aria-hidden="true" />
-        </a>
-      </div>
-    </div>
+const Footer = () => {
+  const { theme } = useTheme();
 
-    <div className="w-full mt-24 border-t border-glass-border pt-16" aria-hidden="true">
-      <h2 className="text-huge text-center uppercase tracking-tighter">GOLFWANG0X</h2>
-    </div>
+  return (
+    <footer className="relative py-24 px-6 border-t border-glass-border bg-bg-secondary overflow-hidden">
+      {/* Top Section: Navigation Grid */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+        <div>
+          <h3 className="text-2xl font-black tracking-tighter mb-6 text-text-primary">GOLFWANG0X</h3>
+          <p className="text-sm text-text-secondary leading-relaxed max-w-xs">
+            Pushing the boundaries of web development, research, and technical strategy.
+            Smart insights. Seamless experiences.
+          </p>
+          <div className="mt-8 flex gap-4">
+            <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer"
+              className="p-2 rounded hover:bg-white/10 transition-colors text-text-secondary hover:text-accent">
+              <Twitter className="w-5 h-5" />
+            </a>
+            <a href="https://github.com/mishdgr8" target="_blank" rel="noopener noreferrer"
+              className="p-2 rounded hover:bg-white/10 transition-colors text-text-secondary hover:text-accent">
+              <Github className="w-5 h-5" />
+            </a>
+            <a href="https://t.me/mishdgr8" target="_blank" rel="noopener noreferrer"
+              className="p-2 rounded hover:bg-white/10 transition-colors text-text-secondary hover:text-accent">
+              <Send className="w-5 h-5" />
+            </a>
+          </div>
+        </div>
 
-    <div className="max-w-7xl mx-auto mt-12 pt-8 flex flex-col md:flex-row justify-between text-xs uppercase tracking-widest gap-4 border-t border-glass-border text-text-faint">
-      <p>© 2026 GOLFWANG0X STUDIO</p>
-      <p>EST. 2023 • WEB3 RESEARCHER • CONTENT STRATEGIST</p>
-    </div>
-  </footer>
-);
+        <div>
+          <h4 className="text-xs font-bold uppercase tracking-widest mb-6 text-accent">NAVIGATE</h4>
+          <ul className="space-y-4 text-sm font-medium">
+            <li><Link to="/" className="text-text-secondary hover:text-accent transition-colors">HOME</Link></li>
+            <li><Link to="/projects" className="text-text-secondary hover:text-accent transition-colors">WORK</Link></li>
+            <li><Link to="/research" className="text-text-secondary hover:text-accent transition-colors">RESEARCH</Link></li>
+            <li><Link to="/about" className="text-text-secondary hover:text-accent transition-colors">ABOUT</Link></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-xs font-bold uppercase tracking-widest mb-6 text-accent">OFFERINGS</h4>
+          <ul className="space-y-4 text-sm font-medium">
+            <li className="text-text-secondary">WEB DEVELOPMENT</li>
+            <li className="text-text-secondary">UI/UX DESIGN</li>
+            <li className="text-text-secondary">CONTENT STRATEGY</li>
+            <li className="text-text-secondary">WEB3 CONSULTING</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-xs font-bold uppercase tracking-widest mb-6 text-accent">ENQUIRIES</h4>
+          <p className="text-sm text-text-secondary mb-4 font-medium">Have an ambitious project in mind?</p>
+          <a href="mailto:golfwang0x@gmail.com" className="text-lg font-bold text-text-primary hover:text-accent transition-colors block">
+            golfwang0x@gmail.com
+          </a>
+          <p className="text-xs text-text-muted mt-4 uppercase">© 2026 GOLFWANG0X STUDIO</p>
+        </div>
+      </div>
+
+      {/* Massive Brand Footer Decoration */}
+      <div className="w-full border-t border-glass-border pt-12 overflow-hidden" aria-hidden="true">
+        <h2 className={`text-huge text-center uppercase tracking-tighter transition-all duration-700 select-none ${theme === 'dark' ? 'text-white/5' : 'text-black/5'}`}>
+          GOLFWANG0X
+        </h2>
+      </div>
+
+      {/* Bottom Minimal Bar */}
+      <div className="max-w-7xl mx-auto mt-8 flex flex-col md:flex-row justify-between text-[10px] uppercase tracking-[0.2em] text-text-muted">
+        <p className="font-semibold">MADE WITH PRECISION FOR THE OPEN WEB</p>
+        <div className="flex gap-8">
+          <p>EST. 2023</p>
+          <p>UTC +1</p>
+        </div>
+      </div>
+    </footer>
+  );
+};
 
 export default function App() {
   const { pathname } = useLocation();
