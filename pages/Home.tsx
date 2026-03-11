@@ -339,7 +339,7 @@ const Home: React.FC = () => {
         </div>
 
         {/* Floating Play Reel Card */}
-        <div className="floating-reel-card absolute left-6 md:left-32 bottom-[10%] md:bottom-[15%] w-[190px] md:w-[340px] z-30 group cursor-pointer">
+        <div className="floating-reel-card absolute left-6 md:left-32 bottom-[10%] md:bottom-[15%] w-[190px] md:w-[340px] z-30 group cursor-pointer hidden md:block">
           <div className="relative aspect-[3/4] rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-glass-border shadow-2xl glass transition-transform duration-700 group-hover:scale-[1.02]">
             <img
               src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=800"
@@ -372,16 +372,16 @@ const Home: React.FC = () => {
         </div>
 
         {/* Premium Magnetic CTA */}
-        <div ref={magneticCtaRef} className="absolute right-6 md:right-32 bottom-12 z-30">
-          <Link to="/about" className="group flex flex-col items-end">
+        <div ref={magneticCtaRef} className="absolute left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-32 bottom-12 z-30 w-full md:w-auto px-6 md:px-0">
+          <Link to="/about" className="group flex flex-col items-center md:items-end w-full">
             <div className="flex items-center space-x-3 mb-6">
               <span className="flex h-2 w-2 rounded-full bg-accent animate-pulse"></span>
               <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.5em]">AVAILABILITY: Q2 2026_OPEN</span>
             </div>
-            <div className="flex items-center space-x-8">
-              <div className="flex flex-col items-end">
+            <div className="flex items-center space-x-4 md:space-x-8">
+              <div className="flex flex-col items-center md:items-end">
                 <span className="text-[11px] font-black text-accent uppercase tracking-[0.4em] mb-2 font-mono">INITIATE_BUILD</span>
-                <span className="text-2xl md:text-3xl font-black text-text-primary uppercase tracking-tighter leading-none group-hover:text-accent transition-colors">WORK WITH US.</span>
+                <span className="text-2xl md:text-3xl font-black text-text-primary uppercase tracking-tighter leading-none group-hover:text-accent transition-colors whitespace-nowrap">WORK WITH US.</span>
               </div>
               <div className="w-16 h-16 md:w-24 md:h-24 rounded-full border border-glass-border flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all duration-500 shadow-2xl relative overflow-hidden group-hover:scale-110">
                 <div className="absolute inset-0 bg-accent scale-0 group-hover:scale-100 transition-transform duration-500 origin-center rounded-full"></div>
@@ -426,7 +426,7 @@ const Home: React.FC = () => {
                         className="w-full h-full cursor-pointer relative"
                         onClick={() => setActiveDemo(activeDemo === project.id ? null : (project.id || null))}
                       >
-                        {activeDemo === project.id && !isMobile ? (
+                        {activeDemo === project.id ? (
                           <div className="w-full h-full relative group/iframe">
                             <iframe
                               src={project.demoUrl}
