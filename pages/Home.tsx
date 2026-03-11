@@ -28,10 +28,9 @@ const Home: React.FC = () => {
   const { theme } = useTheme();
   const magneticCtaRef = useRef<HTMLDivElement>(null);
 
-  const sonarColor = theme === 'dark' ? 'var(--accent)' : 'black';
-  const sonarBorder = theme === 'dark' ? 'border-accent/60' : 'border-black/50';
-  const sonarSweep = theme === 'dark' ? 'via-accent' : 'via-black';
-  const sonarGrid = theme === 'dark' ? 'border-accent/10' : 'border-black/10';
+  const sonarColor = 'var(--accent)';
+  const sonarBorder = theme === 'dark' ? 'border-accent/60' : 'border-accent/40';
+  const sonarSweep = 'via-accent';
 
   useEffect(() => {
     const mql = window.matchMedia('(max-width: 768px)');
@@ -295,10 +294,6 @@ const Home: React.FC = () => {
               <div className="absolute inset-0 flex items-center justify-center opacity-80">
                 <div className={`w-[80%] h-[2px] bg-gradient-to-r from-transparent ${sonarSweep} to-transparent animate-radar-sweep shadow-[0_0_20px_rgba(var(--accent-rgb),0.3)]`}></div>
               </div>
-
-              {/* Grid Lines */}
-              <div className={`absolute inset-0 border-x ${sonarGrid}`}></div>
-              <div className={`absolute inset-0 border-y ${sonarGrid}`}></div>
             </div>
           </div>
           {/* Subtle Gradient Overlays */}
