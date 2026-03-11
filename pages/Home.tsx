@@ -29,7 +29,7 @@ const Home: React.FC = () => {
   const magneticCtaRef = useRef<HTMLDivElement>(null);
 
   const sonarColor = 'var(--accent)';
-  const sonarBorder = theme === 'dark' ? 'border-accent/60' : 'border-accent/40';
+  const sonarBorder = 'border-accent';
   const sonarSweep = 'via-accent';
 
   useEffect(() => {
@@ -285,10 +285,10 @@ const Home: React.FC = () => {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="relative w-full h-full max-w-4xl max-h-4xl flex items-center justify-center">
               {/* Sonar Rings - Very Visible */}
-              <div className={`absolute w-[20%] aspect-square rounded-full border ${sonarBorder} animate-sonar shadow-[0_0_15px_rgba(var(--accent-rgb),0.1)]`} style={{ animationDelay: '0s' }}></div>
-              <div className={`absolute w-[40%] aspect-square rounded-full border ${sonarBorder} animate-sonar shadow-[0_0_15px_rgba(var(--accent-rgb),0.1)]`} style={{ animationDelay: '1s' }}></div>
-              <div className={`absolute w-[60%] aspect-square rounded-full border ${sonarBorder} animate-sonar shadow-[0_0_15px_rgba(var(--accent-rgb),0.1)]`} style={{ animationDelay: '2s' }}></div>
-              <div className={`absolute w-[80%] aspect-square rounded-full border ${sonarBorder} animate-sonar shadow-[0_0_15px_rgba(var(--accent-rgb),0.1)]`} style={{ animationDelay: '3s' }}></div>
+              <div className={`absolute w-[20%] aspect-square rounded-full border ${sonarBorder} animate-sonar shadow-[0_0_20px_rgba(var(--accent-rgb),0.3)]`} style={{ animationDelay: '0s' }}></div>
+              <div className={`absolute w-[40%] aspect-square rounded-full border ${sonarBorder} animate-sonar shadow-[0_0_20px_rgba(var(--accent-rgb),0.3)]`} style={{ animationDelay: '1s' }}></div>
+              <div className={`absolute w-[60%] aspect-square rounded-full border ${sonarBorder} animate-sonar shadow-[0_0_20px_rgba(var(--accent-rgb),0.3)]`} style={{ animationDelay: '2s' }}></div>
+              <div className={`absolute w-[80%] aspect-square rounded-full border ${sonarBorder} animate-sonar shadow-[0_0_20px_rgba(var(--accent-rgb),0.3)]`} style={{ animationDelay: '3s' }}></div>
 
               {/* Radar Sweep - Bright & Sharp */}
               <div className="absolute inset-0 flex items-center justify-center opacity-80">
