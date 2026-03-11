@@ -439,43 +439,46 @@ const Home: React.FC = () => {
                             </div>
                           </div>
                         ) : (
-                          <div className="w-full h-full flex flex-col items-center justify-center bg-[#050505] relative group/launcher overflow-hidden">
-                            {/* Backgrid Pattern */}
-                            <div className="absolute inset-0 opacity-10 pointer-events-none"
-                              style={{ backgroundImage: 'radial-gradient(var(--accent) 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
+                          <div className="w-full h-full border-beam-container group/launcher">
+                            {/* The Revolving Beam */}
+                            <div className="border-beam"></div>
+                            {/* Inner Mask/Content Wrapper */}
+                            <div className="border-beam-mask flex flex-col items-center justify-center p-8 overflow-hidden">
+                              {/* Backgrid Pattern */}
+                              <div className="absolute inset-0 opacity-10 pointer-events-none"
+                                style={{ backgroundImage: 'radial-gradient(var(--accent) 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
 
-                            <div className="relative z-10 flex flex-col items-center">
-                              <div className="w-20 h-20 md:w-28 md:h-28 rounded-full border border-glass-border flex items-center justify-center mb-6 group-hover/launcher:border-accent/40 group-hover/launcher:scale-110 transition-all duration-700 bg-bg-primary/50 relative">
-                                <Activity className="w-8 h-8 md:w-12 md:h-12 text-text-faint group-hover/launcher:text-accent transition-colors" />
-                                <div className="absolute inset-0 rounded-full border border-accent/0 group-hover/launcher:border-accent/20 animate-ping opacity-0 group-hover/launcher:opacity-100"></div>
-                              </div>
-
-                              <h3 className="text-xl md:text-2xl font-black text-text-primary tracking-tighter uppercase mb-2 group-hover/launcher:text-accent transition-colors text-center px-4">
-                                {project.title}
-                              </h3>
-
-                              <div className="flex items-center space-x-3">
-                                <div className="flex space-x-1">
-                                  <div className="w-1 h-1 bg-accent/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                                  <div className="w-1 h-1 bg-accent/40 rounded-full animate-bounce" style={{ animationDelay: '200ms' }}></div>
-                                  <div className="w-1 h-1 bg-accent/40 rounded-full animate-bounce" style={{ animationDelay: '400ms' }}></div>
+                              <div className="relative z-10 flex flex-col items-center">
+                                <div className="w-20 h-20 md:w-28 md:h-28 rounded-full border border-glass-border flex items-center justify-center mb-6 group-hover/launcher:border-accent/40 group-hover/launcher:scale-110 transition-all duration-700 bg-bg-primary/50 relative">
+                                  <Activity className="w-8 h-8 md:w-12 md:h-12 text-text-faint group-hover/launcher:text-accent transition-colors" />
+                                  <div className="absolute inset-0 rounded-full border border-accent/0 group-hover/launcher:border-accent/20 animate-ping opacity-0 group-hover/launcher:opacity-100"></div>
                                 </div>
-                                <span className="text-[9px] md:text-[10px] font-black text-text-muted uppercase tracking-[0.5em] font-mono group-hover/launcher:text-text-secondary transition-colors">
-                                  INITIATE_PREVIEW_
-                                </span>
+
+                                <h3 className="text-xl md:text-2xl font-black text-text-primary tracking-tighter uppercase mb-2 group-hover/launcher:text-accent transition-colors text-center px-4">
+                                  {project.title}
+                                </h3>
+
+                                <div className="flex items-center space-x-3">
+                                  <div className="flex space-x-1">
+                                    <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
+                                  </div>
+                                  <span className="text-[10px] md:text-[11px] font-black text-accent uppercase tracking-[0.4em] font-mono group-hover/launcher:text-text-primary transition-colors">
+                                    CLICK_TO_INITIATE_PREVIEW_
+                                  </span>
+                                </div>
                               </div>
-                            </div>
 
-                            {/* Corner Accents */}
-                            <div className="absolute top-8 left-8 w-4 h-4 border-t border-l border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
-                            <div className="absolute top-8 right-8 w-4 h-4 border-t border-r border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
-                            <div className="absolute bottom-8 left-8 w-4 h-4 border-b border-l border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
-                            <div className="absolute bottom-8 right-8 w-4 h-4 border-b border-r border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
+                              {/* Corner Accents */}
+                              <div className="absolute top-8 left-8 w-4 h-4 border-t border-l border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
+                              <div className="absolute top-8 right-8 w-4 h-4 border-t border-r border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
+                              <div className="absolute bottom-8 left-8 w-4 h-4 border-b border-l border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
+                              <div className="absolute bottom-8 right-8 w-4 h-4 border-b border-r border-white/5 group-hover/launcher:border-accent/30 transition-colors"></div>
 
-                            {/* Telemetry data overlay */}
-                            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full px-12 flex justify-between opacity-0 group-hover/launcher:opacity-100 transition-opacity duration-500">
-                              <span className="text-[8px] font-mono text-text-faint uppercase">SYS.STATUS: RDY</span>
-                              <span className="text-[8px] font-mono text-text-faint uppercase">ID: {project.id?.split('-').pop()}</span>
+                              {/* Telemetry data overlay */}
+                              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full px-12 flex justify-between opacity-0 group-hover/launcher:opacity-100 transition-opacity duration-500">
+                                <span className="text-[8px] font-mono text-text-faint uppercase">SYS.STATUS: RDY</span>
+                                <span className="text-[8px] font-mono text-text-faint uppercase">ID: {project.id?.split('-').pop()}</span>
+                              </div>
                             </div>
                           </div>
                         )}
