@@ -25,34 +25,30 @@ const Navbar = () => {
   const isActive = (path: string) => pathname === path ? "text-accent" : "hover:text-text-primary";
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 glass px-6 py-4 border-b border-glass-border">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
+    <nav className="fixed top-0 left-0 w-full z-50 px-6 py-3 md:px-32 glass border-b border-glass-border">
+      <div className="flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-2 group">
-          <div className="w-8 h-8 rounded-sm flex items-center justify-center group-hover:rotate-12 transition-transform bg-text-primary">
-            <div className="w-4 h-4 rounded-full bg-bg-primary"></div>
-          </div>
-          <span className="font-bold tracking-tighter text-xl text-text-primary">GOLFWANG0X</span>
+          <span className="font-black tracking-[-0.1em] text-2xl text-text-primary uppercase">GOLFWANG0X</span>
         </Link>
 
-        <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-text-secondary">
-          <Link to="/" className={`transition-colors ${isActive('/')}`}>HOME</Link>
-          <Link to="/tweets" className={`transition-colors ${isActive('/tweets')}`}>TWEETS</Link>
-          <Link to="/research" className={`transition-colors ${isActive('/research')}`}>RESEARCH</Link>
-          <Link to="/projects" className={`transition-colors ${isActive('/projects')}`}>PROJECTS</Link>
-          <Link to="/about" className={`transition-colors ${isActive('/about')}`}>ABOUT</Link>
-          <a href="https://github.com/mishdgr8" target="_blank" rel="noopener noreferrer" className="hover:text-text-primary transition-colors flex items-center">
-            GITHUB <Github className="w-3 h-3 ml-1" />
-          </a>
-          <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="hover:text-text-primary transition-colors flex items-center">
-            X <ArrowUpRight className="w-3 h-3 ml-1" />
-          </a>
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-full transition-all hover:scale-110 bg-glass-bg border border-glass-border"
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? <Sun className="w-4 h-4 text-accent" /> : <Moon className="w-4 h-4 text-text-primary" />}
-          </button>
+        <div className="hidden md:flex items-center space-x-12 text-[12px] font-black tracking-[0.4em] text-text-muted uppercase">
+          <Link to="/projects" className={`transition-colors py-2 ${isActive('/projects')}`}>Work</Link>
+          <Link to="/research" className={`transition-colors py-2 ${isActive('/research')}`}>Research</Link>
+          <Link to="/tweets" className={`transition-colors py-2 ${isActive('/tweets')}`}>Tweets</Link>
+          <Link to="/about" className={`transition-colors py-2 ${isActive('/about')}`}>About</Link>
+
+          <div className="flex items-center space-x-8 pl-8 border-l border-glass-border">
+            <a href="mailto:golfwang0x@gmail.com" className="text-text-primary hover:text-accent transition-colors underline decoration-2 underline-offset-8 decoration-accent py-2">
+              Start a project
+            </a>
+            <button
+              onClick={toggleTheme}
+              className="transition-all hover:scale-110"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <Sun className="w-4 h-4 text-accent" aria-hidden="true" /> : <Moon className="w-4 h-4 text-text-primary" aria-hidden="true" />}
+            </button>
+          </div>
         </div>
 
         <div className="flex items-center space-x-4 md:hidden">
@@ -61,24 +57,23 @@ const Navbar = () => {
             className="p-2 rounded-full bg-glass-bg border border-glass-border"
             aria-label="Toggle theme"
           >
-            {theme === 'dark' ? <Sun className="w-4 h-4 text-accent" /> : <Moon className="w-4 h-4 text-text-primary" />}
+            {theme === 'dark' ? <Sun className="w-4 h-4 text-accent" aria-hidden="true" /> : <Moon className="w-4 h-4 text-text-primary" aria-hidden="true" />}
           </button>
-          <button onClick={() => setIsOpen(!isOpen)} className="text-text-primary">
-            {isOpen ? <X /> : <Menu />}
+          <button onClick={() => setIsOpen(!isOpen)} className="text-text-primary" aria-label={isOpen ? "Close menu" : "Open menu"}>
+            {isOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 w-full p-6 flex flex-col space-y-4 md:hidden bg-bg-secondary border-b border-glass-border text-text-primary">
-          <Link to="/" onClick={() => setIsOpen(false)}>HOME</Link>
-          <Link to="/tweets" onClick={() => setIsOpen(false)}>TWEETS</Link>
-          <Link to="/research" onClick={() => setIsOpen(false)}>RESEARCH</Link>
-          <Link to="/projects" onClick={() => setIsOpen(false)}>PROJECTS</Link>
-          <Link to="/about" onClick={() => setIsOpen(false)}>ABOUT</Link>
-          <a href="https://github.com/mishdgr8" target="_blank" rel="noopener noreferrer" className="flex items-center">GITHUB <Github className="w-3 h-3 ml-1" /></a>
-          <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="flex items-center">X <ArrowUpRight className="w-3 h-3 ml-1" /></a>
+        <div className="absolute top-full left-0 w-full p-8 flex flex-col space-y-6 md:hidden bg-bg-secondary border-b border-glass-border text-text-primary font-black tracking-[0.1em] text-sm">
+          <Link to="/" onClick={() => setIsOpen(false)} className="hover:text-accent transition-colors p-2">HOME</Link>
+          <Link to="/projects" onClick={() => setIsOpen(false)} className="hover:text-accent transition-colors p-2">WORK</Link>
+          <Link to="/research" onClick={() => setIsOpen(false)} className="hover:text-accent transition-colors p-2">RESEARCH</Link>
+          <Link to="/tweets" onClick={() => setIsOpen(false)} className="hover:text-accent transition-colors p-2">TWEETS</Link>
+          <Link to="/about" onClick={() => setIsOpen(false)} className="hover:text-accent transition-colors p-2">ABOUT</Link>
+          <a href="mailto:golfwang0x@gmail.com" onClick={() => setIsOpen(false)} className="text-accent underline p-2">START A PROJECT</a>
         </div>
       )}
     </nav>
@@ -93,22 +88,22 @@ const Footer = () => (
         <p className="text-sm text-text-muted">Smart research. Seamless alpha.</p>
       </div>
       <div className="flex space-x-6">
-        <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass transition-colors text-text-primary">
-          <Twitter className="w-5 h-5" />
+        <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass transition-colors text-text-primary" aria-label="X (Twitter)">
+          <Twitter className="w-5 h-5" aria-hidden="true" />
         </a>
-        <a href="https://github.com/mishdgr8" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass transition-colors text-text-primary">
-          <Github className="w-5 h-5" />
+        <a href="https://github.com/mishdgr8" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass transition-colors text-text-primary" aria-label="Github">
+          <Github className="w-5 h-5" aria-hidden="true" />
         </a>
-        <a href="https://t.me/mishdgr8" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass transition-colors text-text-primary">
-          <Send className="w-5 h-5" />
+        <a href="https://t.me/mishdgr8" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass transition-colors text-text-primary" aria-label="Telegram">
+          <Send className="w-5 h-5" aria-hidden="true" />
         </a>
-        <a href="mailto:golfwang0x@gmail.com" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass transition-colors text-text-primary">
-          <MessageSquare className="w-5 h-5" />
+        <a href="mailto:golfwang0x@gmail.com" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass transition-colors text-text-primary" aria-label="Email">
+          <MessageSquare className="w-5 h-5" aria-hidden="true" />
         </a>
       </div>
     </div>
 
-    <div className="w-full mt-24 border-t border-glass-border pt-16">
+    <div className="w-full mt-24 border-t border-glass-border pt-16" aria-hidden="true">
       <h2 className="text-huge text-center uppercase tracking-tighter">GOLFWANG0X</h2>
     </div>
 
@@ -182,14 +177,18 @@ export default function App() {
 
   return (
     <>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-black focus:rounded-full focus:font-bold">
+        Skip to main content
+      </a>
+
       {/* FIXED OVERLAYS — outside smooth wrapper so position:fixed works */}
       <div className="fixed top-0 left-0 h-[2px] bg-accent z-[100] transition-all duration-300 pointer-events-none" id="scroll-progress"></div>
 
       {/* GLOBAL ATMOSPHERIC BACKGROUND */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <img
-          src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=40&w=1200&fm=webp"
-          alt="Atmospheric Background"
+          src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=30&w=800&fm=webp"
+          alt=""
           loading="lazy"
           decoding="async"
           className="w-full h-full object-cover opacity-10 grayscale brightness-[0.2]"
@@ -204,7 +203,7 @@ export default function App() {
       {/* SMOOTH-SCROLLED CONTENT */}
       <div id="smooth-wrapper">
         <div id="smooth-content" className="bg-bg-primary">
-          <main className="relative z-10">
+          <main id="main-content" className="relative z-10 outline-none">
             <Suspense fallback={
               <div className="min-h-screen flex items-center justify-center">
                 <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>

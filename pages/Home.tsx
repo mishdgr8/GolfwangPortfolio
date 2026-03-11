@@ -23,6 +23,7 @@ const Home: React.FC = () => {
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia('(max-width: 768px)').matches : false
   );
+  const [activeDemo, setActiveDemo] = useState<string | null>(null);
 
   useEffect(() => {
     const mql = window.matchMedia('(max-width: 768px)');
@@ -57,43 +58,90 @@ const Home: React.FC = () => {
 
     // 1. Initial Page Load Animations
     gsap.set('.sidebar-text-cont', { opacity: 0, y: 50, visibility: 'visible' });
-    gsap.set('.hero-headline-line', { yPercent: 100, opacity: 0, visibility: 'visible' });
-    gsap.set('.hero-subtitle', { opacity: 0, x: 50, visibility: 'visible' });
-    gsap.set('.role-tag', { opacity: 0, scale: 0.5, visibility: 'visible' });
-    gsap.set('.architect-card', { opacity: 0, y: 100, scale: 0.95, visibility: 'visible' });
-    gsap.set('.telemetry-shard', { opacity: 0, x: 100, rotation: 10, visibility: 'visible' });
+    gsap.set('.hero-reveal-line span', { yPercent: 100 });
+    gsap.set('.hero-subtitle-box', { opacity: 0, y: 30 });
+    gsap.set('.hero-label', { opacity: 0, x: -20 });
+    gsap.set('.hero-massive-bg', { opacity: 0, y: 300, scale: 0.8 });
+    gsap.set('.floating-reel-card', { opacity: 0, x: -600, rotation: -15 });
 
-    const tl = gsap.timeline({ defaults: { force3d: true } });
+    const tl = gsap.timeline({
+      defaults: { ease: 'expo.out' },
+      onComplete: () => {
+        // Re-enable scroll if it was locked (optional, depends on if we add a loader)
+      }
+    });
+
+    tl.to('.hero-reveal-line span', {
+      yPercent: 0,
+      duration: 1.8,
+      stagger: 0.1,
+    }, 0.5);
+
+    tl.to('.floating-reel-card', {
+      opacity: 1,
+      x: 0,
+      rotation: 0,
+      duration: 2,
+      ease: 'expo.out'
+    }, 1.2);
+
+    tl.to('.hero-label, .hero-subtitle-box', {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      duration: 1,
+      stagger: 0.1,
+    }, 1.5);
 
     tl.to('.sidebar-text-cont',
-      { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'power3.out' },
-      0.2
+      { opacity: 1, y: 0, duration: 1, stagger: 0.2 },
+      1.8
     );
 
-    tl.to('.hero-headline-line',
-      { yPercent: 0, opacity: 1, duration: 1, stagger: 0.15, ease: 'power4.out' },
-      0.3
+    // GOLF text: Glides up quickly as soon as scroll begins
+    gsap.fromTo('.hero-massive-bg',
+      { opacity: 0, y: 150 },
+      {
+        y: 0,
+        scale: 1,
+        opacity: 0.9,
+        scrollTrigger: {
+          trigger: '#hero-section',
+          start: '5% top', // Start shortly after scroll begins
+          end: '60% top', // Reach full state quickly
+          scrub: 1,
+        }
+      }
     );
 
-    tl.to('.hero-subtitle',
-      { opacity: 1, x: 0, duration: 1, ease: 'power3.out' },
-      0.8
+    // Reel Card Exit: We use a separate tween that starts AFTER the entrance, or use overwrite: 'auto'
+    // To ensure it comes back, we use fromTo so it always knows its 'center' state
+    gsap.fromTo('.floating-reel-card',
+      { x: 0, rotation: 0, opacity: 1 },
+      {
+        x: -500,
+        rotation: -20,
+        opacity: 0.2,
+        scrollTrigger: {
+          trigger: '#hero-section',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+          immediateRender: false, // CRITICAL: Only start controlling after entrance timeline
+        }
+      }
     );
 
-    tl.to('.role-tag',
-      { opacity: 1, scale: 1, duration: 0.8, stagger: 0.15, ease: 'back.out(1.7)' },
-      1
-    );
-
-    tl.to('.architect-card',
-      { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'power3.out' },
-      1.2
-    );
-
-    tl.to('.telemetry-shard',
-      { opacity: 1, x: 0, rotation: 2, duration: 1, stagger: 0.2, ease: 'power3.out', clearProps: 'transform' },
-      1.5
-    );
+    gsap.to('.hero-content-inner', {
+      opacity: 0,
+      y: -100,
+      scrollTrigger: {
+        trigger: '#hero-section',
+        start: 'top top',
+        end: '50% top',
+        scrub: true,
+      }
+    });
 
     // 2. HORIZONTAL SCROLL FOR DEV PORTFOLIO
     const devTrack = document.querySelector('.dev-track') as HTMLElement;
@@ -166,128 +214,127 @@ const Home: React.FC = () => {
   }, { scope: container, dependencies: [isMobile] });
 
   return (
-    <div ref={container} className="relative pt-24 min-h-screen">
+    <div ref={container} className="relative min-h-screen">
 
       {/* Cinematic Sidebar Text */}
-      <div className="absolute left-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex">
+      <div className="absolute left-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex" aria-hidden="true">
         <div className="sidebar-text-cont rotate-180 pointer-events-auto" style={{ writingMode: 'vertical-rl', visibility: 'hidden' }}>
-          <span className="text-[10px] font-black tracking-[0.4em] text-text-muted uppercase hover:text-accent transition-colors cursor-pointer">
+          <span className="text-[10px] font-black tracking-[0.4em] text-text-secondary uppercase hover:text-accent transition-colors cursor-pointer">
             GOLFWANG0X // SYSTEMS ONLINE
           </span>
         </div>
       </div>
 
-      <div className="absolute right-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex">
+      <div className="absolute right-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex" aria-hidden="true">
         <div className="sidebar-text-cont pointer-events-auto" style={{ writingMode: 'vertical-rl', visibility: 'hidden' }}>
-          <span className="text-[10px] font-black tracking-[0.4em] text-text-muted uppercase hover:text-accent transition-colors cursor-pointer">
+          <span className="text-[10px] font-black tracking-[0.4em] text-text-secondary uppercase hover:text-accent transition-colors cursor-pointer">
             GOLFWANG0X // EST. 2023
           </span>
         </div>
       </div>
 
       {/* Hero Section */}
-      <section className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 xl:px-32 pt-12 pb-6 md:pb-24 z-10 bg-bg-primary overflow-clip">
-        <div className="role-tag absolute top-[10%] left-[8%] xl:left-32 hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full cursor-crosshair" style={{ visibility: 'hidden' }}>
-          <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
-          <PenTool className="w-3 h-3 text-text-muted" />
-          <span className="text-[11px] font-black text-text-secondary tracking-[0.2em] uppercase">CONTENT WRITER</span>
-        </div>
+      <section id="hero-section" className="relative h-[100vh] flex flex-col justify-between px-6 xl:px-32 pt-32 pb-6 md:pb-12 z-10 bg-bg-primary overflow-hidden">
 
-        <div className="role-tag absolute top-[18%] right-[5%] xl:right-32 hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full cursor-crosshair" style={{ visibility: 'hidden' }}>
-          <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
-          <Terminal className="w-3 h-3 text-text-muted" />
-          <span className="text-[11px] font-black text-text-secondary tracking-[0.2em] uppercase">WEB DEVELOPER</span>
-        </div>
-
-        <div className="role-tag absolute bottom-[25%] right-[8%] xl:right-32 hidden lg:flex items-center space-x-3 bg-glass-bg backdrop-blur-xl border border-glass-border px-5 py-2 rounded-full cursor-crosshair" style={{ visibility: 'hidden' }}>
-          <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
-          <Cpu className="w-3 h-3 text-text-muted" />
-          <span className="text-[11px] font-black text-text-secondary tracking-[0.2em] uppercase">BLOCKCHAIN TECH</span>
-        </div>
-
-        <div className="max-w-7xl w-full flex flex-col md:flex-row items-start md:items-end justify-between mb-24 relative">
-          <div>
-            <h1 className="text-7xl md:text-9xl font-black tracking-tighter leading-[0.8] uppercase mb-8 flex flex-col">
-              <span className="overflow-hidden pb-2"><span className="hero-headline-line block" style={{ visibility: 'hidden' }}>SIGNAL</span></span>
-              <span className="overflow-hidden pb-2"><span className="hero-headline-line block text-text-faint" style={{ visibility: 'hidden' }}>OVER</span></span>
-              <span className="overflow-hidden pb-4 pt-2 -mt-2"><span className="hero-headline-line block text-accent drop-shadow-[0_0_40px_rgba(var(--accent-rgb),0.3)]" style={{ visibility: 'hidden' }}>NOISE.</span></span>
-            </h1>
-          </div>
-
-          <div className="hero-subtitle max-w-md text-right self-end" style={{ visibility: 'hidden' }}>
-            <div className="w-20 h-1 bg-accent mb-8 ml-auto"></div>
-            <p className="text-text-muted text-2xl md:text-3xl leading-relaxed font-medium italic tracking-tight">
-              "Channeling my creativity and passion through my content and web development."
-            </p>
-          </div>
-        </div>
-
-        <div className="architect-card relative w-full max-w-7xl px-4 flex flex-col items-center z-10" style={{ visibility: 'hidden' }}>
-          <div className="relative block w-full aspect-square sm:aspect-[5/6] md:aspect-[16/9] lg:aspect-[21/9] rounded-[2rem] md:rounded-[3rem] overflow-hidden group shadow-2xl border border-glass-border transition-all duration-700 hover:border-accent/40 z-10 hover:z-[60]">
-            <Link to="/about" className="absolute inset-0 z-20 cursor-pointer" aria-label="Go to About page"></Link>
-            <img
-              src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=40&w=800&fm=webp"
-              alt="The Architect"
-              decoding="async"
-              fetchPriority="high"
-              className="w-full h-full object-cover grayscale opacity-30 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
+        {/* Background Spline Layer */}
+        <div className="absolute inset-0 z-0" aria-hidden="true">
+          <div className="w-full h-full opacity-80 transition-opacity duration-1000 overflow-hidden relative">
+            {/* @ts-ignore */}
+            <spline-viewer
+              url="https://prod.spline.design/t-4Z-KY6Y6CSBcYF/scene.splinecode"
+              className="w-full h-full scale-[1.1] origin-center opacity-70 grayscale"
+              hint="false"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/50 to-transparent"></div>
-            <div className="absolute top-0 left-0 w-full h-[1px] bg-accent/50 shadow-[0_0_15px_var(--accent)] -translate-y-full group-hover:animate-[scan_4s_linear_infinite]"></div>
+            {/* Subtle Logo Mask - Blended into bottom corner */}
+            <div className="absolute bottom-4 right-4 w-32 h-10 bg-bg-primary/95 blur-xl z-10 pointer-events-none rounded-full"></div>
+            <div className="absolute bottom-0 right-0 w-40 h-12 bg-bg-primary z-10 pointer-events-none"></div>
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-bg-primary/60 via-transparent to-bg-primary"></div>
+        </div>
 
-            <div className="absolute top-4 left-3 right-3 md:top-12 md:left-12 md:right-12 flex flex-col items-start gap-3 md:gap-8 z-30">
-              <div className="max-w-2xl text-left">
-                <div className="flex items-center space-x-2 mb-2 md:mb-4">
-                  <span className="text-accent text-[8px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.4em] uppercase bg-bg-primary/80 backdrop-blur-md px-2 py-1 md:px-4 md:py-1.5 rounded-full border border-accent/20">
-                    ABOUT_ME
-                  </span>
+        {/* Hero Top Content */}
+        <div className="hero-content-inner relative z-20 w-full flex flex-col md:flex-row justify-between items-start">
+          <div className="flex flex-col space-y-1 md:space-y-2">
+            <div className="hero-label flex items-center space-x-2">
+              <span className="text-[10px] md:text-[11px] font-black text-accent tracking-[0.4em] uppercase">(01)</span>
+              <span className="h-[1px] w-8 md:w-12 bg-text-muted opacity-30"></span>
+              <span className="text-[10px] md:text-[12px] font-black text-text-muted tracking-[0.4em] uppercase">Software Engineer</span>
+            </div>
+            <div className="hero-label flex items-center space-x-2">
+              <span className="text-[10px] md:text-[11px] font-black text-accent tracking-[0.4em] uppercase">(02)</span>
+              <span className="h-[1px] w-8 md:w-12 bg-text-muted opacity-30"></span>
+              <span className="text-[10px] md:text-[12px] font-black text-text-muted tracking-[0.4em] uppercase">Blockchain Developer</span>
+            </div>
+            <div className="hero-label flex items-center space-x-2">
+              <span className="text-[10px] md:text-[11px] font-black text-accent tracking-[0.4em] uppercase">(03)</span>
+              <span className="h-[1px] w-8 md:w-12 bg-text-muted opacity-30"></span>
+              <span className="text-[10px] md:text-[12px] font-black text-text-muted tracking-[0.4em] uppercase">Technical Writer</span>
+            </div>
+            <div className="hero-label flex items-center space-x-2">
+              <span className="text-[10px] md:text-[11px] font-black text-accent tracking-[0.4em] uppercase">(04)</span>
+              <span className="h-[1px] w-8 md:w-12 bg-text-muted opacity-30"></span>
+              <span className="text-[10px] md:text-[12px] font-black text-text-muted tracking-[0.4em] uppercase">Engineer</span>
+            </div>
+          </div>
+
+          <div className="hero-subtitle-box max-w-xl self-end mt-12 md:mt-0">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tighter uppercase hero-reveal-line overflow-hidden">
+              <span className="block">Channeling Creativity</span>
+            </h2>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tighter uppercase hero-reveal-line overflow-hidden">
+              <span className="block">& Passion Through My</span>
+            </h2>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tighter uppercase hero-reveal-line overflow-hidden">
+              <span className="block text-accent">Web Dev & Technical Writing.</span>
+            </h2>
+          </div>
+        </div>
+
+        {/* Floating Play Reel Card */}
+        <div className="floating-reel-card absolute left-6 md:left-32 bottom-[10%] md:bottom-[15%] w-[190px] md:w-[340px] z-30 group cursor-pointer">
+          <div className="relative aspect-[3/4] rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-glass-border shadow-2xl glass transition-transform duration-700 group-hover:scale-[1.02]">
+            <img
+              src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=800"
+              alt="Play Showreel"
+              fetchPriority="high"
+              width="800"
+              height="1067"
+              className="w-full h-full object-cover grayscale brightness-50 contrast-125 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700"
+            />
+            <div className="absolute inset-0 bg-accent/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="absolute inset-x-0 bottom-0 p-4 md:p-8 bg-gradient-to-t from-black/80 to-transparent">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] mb-1">Play Reel</p>
+                  <p className="text-[10px] font-black text-white uppercase tracking-[0.3em]">(00:33)</p>
                 </div>
-                <h3 className="text-xl sm:text-2xl md:text-6xl font-black text-text-primary leading-tight tracking-tighter mb-2 md:mb-4 uppercase">
-                  The Architect <br /> behind the Signal
-                </h3>
-                <p className="text-text-muted text-sm md:text-xl font-medium max-w-lg leading-relaxed mb-3 md:mb-6">Web3 researcher, technical content strategist, and security analyst dedicated to the modular endgame.</p>
-                <div className="flex flex-wrap items-center gap-2 md:gap-4 relative z-40 pointer-events-auto">
-                  <a href="mailto:golfwang0x@gmail.com" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 md:px-8 md:py-3 bg-accent text-bg-primary text-[10px] md:text-sm font-black uppercase tracking-wider rounded-full hover:scale-105 transition-transform flex items-center shadow-[0_0_20px_rgba(var(--accent-rgb),0.3)]">
-                    Contact
-                  </a>
-                  <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 md:px-8 md:py-3 bg-bg-primary/80 border border-accent text-accent text-[10px] md:text-sm font-black uppercase tracking-wider rounded-full hover:bg-accent/10 transition-colors flex items-center shadow-[0_0_15px_rgba(var(--accent-rgb),0.2)]">
-                    <Twitter className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" /> X
-                  </a>
+                <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center text-black shadow-xl group-hover:scale-110 transition-transform">
+                  <ArrowRight className="w-4 h-4 md:w-6 md:h-6" />
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="telemetry-shard absolute -bottom-16 right-0 w-full max-w-md glass rounded-[2.5rem] p-10 hidden lg:flex flex-col justify-between border-accent/30 z-20 shadow-2xl hover:rotate-0 transition-transform duration-500 cursor-default" style={{ visibility: 'hidden' }}>
-            <div className="flex justify-between items-start mb-8">
-              <div className="flex items-center space-x-3">
-                <BarChart className="w-5 h-5 text-accent" />
-                <span className="text-[10px] font-black opacity-60 uppercase tracking-[0.3em]">X_IMPACT_TELEMETRY</span>
-              </div>
-              <div className="px-2 py-0.5 rounded-sm bg-accent text-[8px] text-bg-primary font-black uppercase">LIVE_STATS</div>
+        {/* Massive Background Text */}
+        <div className="hero-massive-bg absolute bottom-[-10%] md:bottom-[-20%] left-0 w-full z-10 pointer-events-none select-none opacity-0" aria-hidden="true">
+          <h1 className="text-[25vw] md:text-[35vw] font-black italic leading-[0.7] tracking-[-0.08em] text-text-primary uppercase flex justify-center translate-y-[20%]">
+            GOLF
+          </h1>
+        </div>
+
+        {/* Call to Action - Floating on right bottom */}
+        <div className="absolute right-6 md:right-32 bottom-12 z-30">
+          <Link to="/projects" className="group flex items-center space-x-6">
+            <div className="flex flex-col items-end">
+              <span className="text-[10px] font-black text-text-secondary uppercase tracking-[0.4em] mb-1">Explore Work</span>
+              <span className="text-xl md:text-2xl font-black text-text-primary uppercase tracking-tighter">See All Projects</span>
             </div>
-
-            <div className="space-y-6">
-              <div className="flex justify-between items-end border-b border-text-primary/10 pb-4">
-                <div>
-                  <p className="text-[9px] font-black text-text-primary/20 uppercase tracking-widest mb-1">IMPRESSIONS</p>
-                  <p className="text-4xl font-black text-text-primary tracking-tighter">10.5M</p>
-                </div>
-                <TrendingUp className="w-6 h-6 text-accent mb-1" />
-              </div>
-
-              <div className="grid grid-cols-2 gap-8">
-                <div>
-                  <p className="text-[8px] font-black text-text-primary/20 uppercase tracking-widest mb-1">ENGAGEMENTS</p>
-                  <p className="text-2xl font-black text-text-primary/90">396.6K</p>
-                </div>
-                <div>
-                  <p className="text-[8px] font-black text-text-primary/20 uppercase tracking-widest mb-1">LIKES</p>
-                  <p className="text-2xl font-black text-text-primary/90">119.9K</p>
-                </div>
-              </div>
+            <div className="w-12 h-12 md:w-20 md:h-20 rounded-full border border-glass-border flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all duration-500 shadow-2xl relative overflow-hidden">
+              <div className="absolute inset-0 bg-accent scale-0 group-hover:scale-100 transition-transform duration-500 origin-center rounded-full"></div>
+              <ArrowRight className="w-6 h-6 md:w-8 md:h-8 text-text-primary group-hover:text-bg-primary relative z-10 group-hover:translate-x-1 transition-transform" />
             </div>
-          </div>
+          </Link>
         </div>
       </section>
 
@@ -328,12 +375,32 @@ const Home: React.FC = () => {
                       </div>
                     )}
                     {project.demoUrl ? (
-                      <iframe
-                        src={project.demoUrl}
-                        title={project.title}
-                        className="w-[200%] h-[200%] origin-top-left scale-[0.5] group-hover:scale-[0.52] transition-transform duration-1000 border-none"
-                        loading="lazy"
-                      />
+                      <div
+                        className="w-full h-full"
+                        onMouseEnter={() => setActiveDemo(project.id)}
+                        onMouseLeave={() => setActiveDemo(null)}
+                      >
+                        {activeDemo === project.id && !isMobile ? (
+                          <iframe
+                            src={project.demoUrl}
+                            title={project.title}
+                            className="w-[200%] h-[200%] origin-top-left scale-[0.5] group-hover:scale-[0.52] transition-transform duration-1000 border-none"
+                          />
+                        ) : (
+                          <>
+                            <Link to="/projects" className="absolute inset-0 z-20" aria-label={`View ${project.title}`} />
+                            <img
+                              src={project.imageUrl}
+                              alt={project.title}
+                              loading="lazy"
+                              decoding="async"
+                              width="800"
+                              height="600"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-60 group-hover:opacity-100"
+                            />
+                          </>
+                        )}
+                      </div>
                     ) : (
                       <>
                         <Link to="/projects" className="absolute inset-0 z-20" aria-label={`View ${project.title}`} />
@@ -342,6 +409,8 @@ const Home: React.FC = () => {
                           alt={project.title}
                           loading="lazy"
                           decoding="async"
+                          width="800"
+                          height="600"
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-60 group-hover:opacity-100"
                         />
                       </>
@@ -504,6 +573,8 @@ const Home: React.FC = () => {
                     alt={article.title}
                     loading="lazy"
                     decoding="async"
+                    width="1600"
+                    height="1000"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-40 group-hover:opacity-100"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/20 to-transparent"></div>

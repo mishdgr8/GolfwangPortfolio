@@ -6,10 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Golfwang0x | Web3 Research & Content</title>
 
+    <meta name="description"
+        content="GOLFWANG0X - Technical Writer, Blockchain Researcher, and Software Engineer specializing in high-signal insights and seamless Web3 experiences.">
+    <meta name="theme-color" content="#050505">
+
     <!-- Resource hints for faster external connections -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://images.unsplash.com">
     <link rel="dns-prefetch" href="https://images.unsplash.com">
 
     <!-- Fonts: swap ensures text is visible while font loads -->
@@ -25,9 +28,12 @@
             --bg-secondary: #0a0a0a;
             --bg-tertiary: #111111;
             --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.6);
-            --text-muted: rgba(255, 255, 255, 0.4);
-            --text-faint: rgba(255, 255, 255, 0.2);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            /* Improved contrast from 0.6 */
+            --text-muted: rgba(255, 255, 255, 0.55);
+            /* Improved contrast from 0.4 to pass AA */
+            --text-faint: rgba(255, 255, 255, 0.45);
+            /* Improved contrast from 0.2 to pass AA */
             --glass-bg: rgba(255, 255, 255, 0.02);
             --glass-border: rgba(255, 255, 255, 0.05);
             --card-hover-bg: rgba(255, 255, 255, 0.04);
@@ -35,24 +41,29 @@
         }
 
         :root.light {
-            --accent: #8BC34A;
-            --accent-rgb: 139, 195, 74;
+            --accent: #558B2F;
+            --accent-rgb: 85, 139, 47;
             --bg-primary: #f8f9fa;
             --bg-secondary: #ffffff;
             --bg-tertiary: #e9ecef;
-            --text-primary: #111111;
-            --text-secondary: rgba(0, 0, 0, 0.7);
-            --text-muted: rgba(0, 0, 0, 0.5);
-            --text-faint: rgba(0, 0, 0, 0.25);
-            --glass-bg: rgba(0, 0, 0, 0.02);
-            --glass-border: rgba(0, 0, 0, 0.08);
-            --card-hover-bg: rgba(0, 0, 0, 0.04);
-            --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+            --text-primary: #000000;
+            --text-secondary: rgba(0, 0, 0, 0.9);
+            --text-muted: rgba(0, 0, 0, 0.8);
+            --text-faint: rgba(0, 0, 0, 0.5);
+            --glass-bg: rgba(0, 0, 0, 0.03);
+            --glass-border: rgba(0, 0, 0, 0.15);
+            --card-hover-bg: rgba(0, 0, 0, 0.08);
+            --scrollbar-thumb: rgba(0, 0, 0, 0.25);
         }
 
         :root.light .sidebar-text,
         :root.light .text-huge {
-            -webkit-text-stroke: 1px #000000;
+            -webkit-text-stroke: 1px rgba(var(--accent-rgb), 0.6);
+        }
+
+        :root.light .sidebar-text:hover,
+        :root.light .text-huge:hover {
+            color: rgba(var(--accent-rgb), 0.1);
         }
 
         body {
@@ -221,6 +232,7 @@
             background: var(--accent);
         }
     </style>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.72/build/spline-viewer.js"></script>
     <script>
         tailwind.config = {
             theme: {
