@@ -1,6 +1,7 @@
 {
   "name": "golfwang0x-portfolio",
   "private": true,
+  "homepage": "https://golfwang0x.com",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
