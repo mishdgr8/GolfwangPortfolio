@@ -41,18 +41,18 @@ const Navbar = () => {
   const isActive = (path: string) => pathname === path ? "text-accent" : "hover:text-text-primary";
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 px-6 py-3 md:px-32 glass border-b border-glass-border">
+    <nav className="fixed top-0 left-0 w-full z-50 px-6 py-3 lg:px-12 xl:px-24 glass border-b border-glass-border">
       <div className="flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-3 group">
           <img src="/favicon.svg" alt="" className="w-8 h-8 rounded-lg group-hover:scale-110 transition-transform hidden md:block" />
-          <span ref={brandRef} className="font-black tracking-[-0.1em] text-2xl text-text-primary uppercase overflow-hidden py-1 flex md:hidden lg:flex">
+          <span ref={brandRef} className="font-black tracking-[-0.1em] text-2xl text-text-primary uppercase overflow-hidden py-1 flex md:hidden xl:flex">
             {"GOLFWANG0X".split("").map((char, i) => (
               <span key={i} className="char inline-block translate-y-full">{char === " " ? "\u00A0" : char}</span>
             ))}
           </span>
         </Link>
 
-        <div className="hidden lg:flex items-center space-x-12 text-[12px] font-black tracking-[0.4em] text-text-muted uppercase">
+        <div className="hidden xl:flex items-center space-x-8 xl:space-x-12 text-[12px] font-black tracking-[0.2em] xl:tracking-[0.4em] text-text-muted uppercase">
           <Link to="/projects" className={`transition-colors py-2 ${isActive('/projects')}`}>Work</Link>
           <Link to="/research" className={`transition-colors py-2 ${isActive('/research')}`}>Research</Link>
           <Link to="/tweets" className={`transition-colors py-2 ${isActive('/tweets')}`}>Tweets</Link>
@@ -72,7 +72,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="flex items-center space-x-4 lg:hidden">
+        <div className="flex items-center space-x-4 xl:hidden">
           <button
             onClick={toggleTheme}
             className="p-2 rounded-full bg-glass-bg border border-glass-border"
@@ -88,7 +88,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 w-full p-8 flex flex-col space-y-6 lg:hidden bg-bg-secondary border-b border-glass-border text-text-primary font-black tracking-[0.1em] text-sm">
+        <div className="absolute top-full left-0 w-full p-8 flex flex-col space-y-6 xl:hidden bg-bg-secondary border-b border-glass-border text-text-primary font-black tracking-[0.1em] text-sm">
           <Link to="/" onClick={() => setIsOpen(false)} className="hover:text-accent transition-colors p-2">HOME</Link>
           <Link to="/projects" onClick={() => setIsOpen(false)} className="hover:text-accent transition-colors p-2">WORK</Link>
           <Link to="/research" onClick={() => setIsOpen(false)} className="hover:text-accent transition-colors p-2">RESEARCH</Link>
