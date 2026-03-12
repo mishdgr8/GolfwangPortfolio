@@ -26,7 +26,8 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 w-full z-50 px-6 py-3 md:px-32 glass border-b border-glass-border">
       <div className="flex justify-between items-center">
-        <Link to="/" className="flex items-center space-x-2 group">
+        <Link to="/" className="flex items-center space-x-3 group">
+          <img src="/favicon.svg" alt="" className="w-8 h-8 rounded-lg group-hover:scale-110 transition-transform" />
           <span className="font-black tracking-[-0.1em] text-2xl text-text-primary uppercase">GOLFWANG0X</span>
         </Link>
 
@@ -87,7 +88,10 @@ const Footer = () => {
       {/* Top Section: Navigation Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
         <div>
-          <h3 className="text-2xl font-black tracking-tighter mb-6 text-text-primary">GOLFWANG0X</h3>
+          <div className="flex items-center space-x-3 mb-6">
+            <img src="/favicon.svg" alt="" className="w-10 h-10 rounded-xl" />
+            <h3 className="text-2xl font-black tracking-tighter text-text-primary">GOLFWANG0X</h3>
+          </div>
           <p className="text-sm text-text-secondary leading-relaxed max-w-xs">
             Pushing the boundaries of web development, research, and technical strategy.
             Smart insights. Seamless experiences.
