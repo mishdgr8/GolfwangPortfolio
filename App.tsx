@@ -15,6 +15,7 @@ const Tweets = lazy(() => import('./pages/Tweets'));
 const Research = lazy(() => import('./pages/Research'));
 const About = lazy(() => import('./pages/About'));
 const Projects = lazy(() => import('./pages/Projects'));
+const Contact = lazy(() => import('./pages/Contact'));
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -59,9 +60,9 @@ const Navbar = () => {
           <Link to="/about" className={`transition-colors py-2 ${isActive('/about')}`}>About</Link>
 
           <div className="flex items-center space-x-8 pl-8 border-l border-glass-border">
-            <a href="mailto:golfwang0x@gmail.com" className="text-text-primary hover:text-accent transition-colors underline decoration-2 underline-offset-8 decoration-accent py-2">
+            <Link to="/contact" className="text-text-primary hover:text-accent transition-colors underline decoration-2 underline-offset-8 decoration-accent py-2">
               Start a project
-            </a>
+            </Link>
             <button
               onClick={toggleTheme}
               className="transition-all hover:scale-110"
@@ -94,7 +95,7 @@ const Navbar = () => {
           <Link to="/research" onClick={() => setIsOpen(false)} className="hover:text-accent transition-colors p-2">RESEARCH</Link>
           <Link to="/tweets" onClick={() => setIsOpen(false)} className="hover:text-accent transition-colors p-2">TWEETS</Link>
           <Link to="/about" onClick={() => setIsOpen(false)} className="hover:text-accent transition-colors p-2">ABOUT</Link>
-          <a href="mailto:golfwang0x@gmail.com" onClick={() => setIsOpen(false)} className="text-accent underline p-2">START A PROJECT</a>
+          <Link to="/contact" onClick={() => setIsOpen(false)} className="text-accent underline p-2">START A PROJECT</Link>
         </div>
       )}
     </nav>
@@ -140,24 +141,25 @@ const Footer = () => {
             <li><Link to="/projects" className="text-text-secondary hover:text-accent transition-colors">WORK</Link></li>
             <li><Link to="/research" className="text-text-secondary hover:text-accent transition-colors">RESEARCH</Link></li>
             <li><Link to="/about" className="text-text-secondary hover:text-accent transition-colors">ABOUT</Link></li>
+            <li><Link to="/contact" className="text-text-secondary hover:text-accent transition-colors">CONTACT</Link></li>
           </ul>
         </div>
 
         <div>
           <h4 className="text-xs font-bold uppercase tracking-widest mb-6 text-accent">OFFERINGS</h4>
           <ul className="space-y-4 text-sm font-medium">
-            <li className="text-text-secondary">WEB DEVELOPMENT</li>
-            <li className="text-text-secondary">UI/UX DESIGN</li>
-            <li className="text-text-secondary">CONTENT STRATEGY</li>
-            <li className="text-text-secondary">WEB3 CONSULTING</li>
+            <li className="text-text-secondary">FRONTEND WEBSITES</li>
+            <li className="text-text-secondary">BACKEND SYSTEMS</li>
+            <li className="text-text-secondary">AI AUTOMATION</li>
+            <li className="text-text-secondary">CLOUD SOLUTIONS</li>
           </ul>
         </div>
 
         <div>
           <h4 className="text-xs font-bold uppercase tracking-widest mb-6 text-accent">ENQUIRIES</h4>
           <p className="text-sm text-text-secondary mb-4 font-medium">Have an ambitious project in mind?</p>
-          <a href="mailto:golfwang0x@gmail.com" className="text-lg font-bold text-text-primary hover:text-accent transition-colors block">
-            golfwang0x@gmail.com
+          <a href="mailto:info@golfwang0x@gmail.com" className="text-lg font-bold text-text-primary hover:text-accent transition-colors block">
+            info@golfwang0x@gmail.com
           </a>
           <p className="text-xs text-text-muted mt-4 uppercase">© 2026 GOLFWANG0X STUDIO</p>
         </div>
@@ -279,6 +281,7 @@ export default function App() {
                 <Route path="/research" element={<Research />} />
                 <Route path="/projects" element={<Projects />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
                 <Route path="/content/:id" element={<ContentDetail />} />
               </Routes>
             </Suspense>
