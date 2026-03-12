@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
             // Router chunk
             'vendor-router': ['react-router-dom'],
             // GSAP animation library (large, cached separately)
-            'vendor-gsap': ['gsap', '@gsap/react', 'gsap/ScrollTrigger', 'gsap/ScrollSmoother'],
+            'vendor-gsap': ['gsap', '@gsap/react', 'gsap/ScrollTrigger'],
             // Icons (tree-shaken but still a chunk)
             'vendor-icons': ['lucide-react'],
           },

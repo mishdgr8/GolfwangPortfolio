@@ -122,6 +122,9 @@ const About: React.FC = () => {
         </div>
 
         <div className="border-t border-glass-border pt-24 text-center">
+          <Link to="/contact" className="inline-block px-12 py-6 bg-accent text-bg-primary font-black rounded-2xl hover:scale-105 transition-all uppercase tracking-[0.4em] text-[10px] mb-20 shadow-[0_0_50px_rgba(var(--accent-rgb),0.3)]">
+            Hire Me / Start Project
+          </Link>
           <h2 className="text-huge uppercase tracking-tighter mb-16">
             CONTACT
           </h2>

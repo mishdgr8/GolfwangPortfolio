@@ -28,6 +28,7 @@ export interface ProjectItem {
 
   demoUrl?: string;
   repoUrl?: string;
+  imageUrl?: string;
   date: string;
   featured?: boolean;
 }

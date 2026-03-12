@@ -147,19 +147,21 @@ const Footer = () => {
 
         <div>
           <h4 className="text-xs font-bold uppercase tracking-widest mb-6 text-accent">OFFERINGS</h4>
-          <ul className="space-y-4 text-sm font-medium">
-            <li className="text-text-secondary">FRONTEND WEBSITES</li>
-            <li className="text-text-secondary">BACKEND SYSTEMS</li>
-            <li className="text-text-secondary">AI AUTOMATION</li>
-            <li className="text-text-secondary">CLOUD SOLUTIONS</li>
+          <ul className="space-y-4 text-sm font-medium uppercase">
+            <li className="text-text-secondary">Precision Frontend</li>
+            <li className="text-text-secondary">Robust Architectures</li>
+            <li className="text-text-secondary">Agentic AI Systems</li>
+            <li className="text-text-secondary">Cross-Platform Genesis</li>
+            <li className="text-text-secondary">Cloud Supremacy</li>
+            <li className="text-text-secondary">Full-Spectrum Fullstack</li>
           </ul>
         </div>
 
         <div>
           <h4 className="text-xs font-bold uppercase tracking-widest mb-6 text-accent">ENQUIRIES</h4>
           <p className="text-sm text-text-secondary mb-4 font-medium">Have an ambitious project in mind?</p>
-          <a href="mailto:info@golfwang0x@gmail.com" className="text-lg font-bold text-text-primary hover:text-accent transition-colors block">
-            info@golfwang0x@gmail.com
+          <a href="mailto:info@golfwang0x.com" className="text-lg font-bold text-text-primary hover:text-accent transition-colors block">
+            info@golfwang0x.com
           </a>
           <p className="text-xs text-text-muted mt-4 uppercase">© 2026 GOLFWANG0X STUDIO</p>
         </div>

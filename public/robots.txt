@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://golfwang0x.xyz/sitemap.xml
+Sitemap: https://golfwang0x.com/sitemap.xml

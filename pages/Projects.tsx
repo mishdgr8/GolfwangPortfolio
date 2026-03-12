@@ -1,6 +1,7 @@
 import React from 'react';
 import { ExternalLink, Github, ArrowRight, Code } from 'lucide-react';
 import { projectsData } from '../data';
+import { Link } from 'react-router-dom'; // Import Link
 
 const Projects: React.FC = () => {
     return (
@@ -116,12 +117,12 @@ const Projects: React.FC = () => {
                         <h3 className="text-2xl md:text-4xl font-black tracking-tighter uppercase mb-4">Ready to build?</h3>
                         <p className="text-text-muted font-medium">Available for frontend & full-stack opportunities.</p>
                     </div>
-                    <a
-                        href="mailto:contact@golfwang0x.xyz"
+                    <Link
+                        to="/contact"
                         className="w-full md:w-auto px-10 py-5 bg-text-primary text-bg-primary rounded-full font-black text-[11px] uppercase tracking-[0.3em] hover:bg-accent transition-colors flex items-center justify-center whitespace-nowrap z-10"
                     >
-                        Start Transmission <ArrowRight className="w-4 h-4 ml-3" />
-                    </a>
+                        Inquire Now <ArrowRight className="w-4 h-4 ml-3" />
+                    </Link>
                 </div>
             </div>
         </div>

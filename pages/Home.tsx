@@ -276,7 +276,7 @@ const Home: React.FC = () => {
       </div>
 
       {/* Hero Section */}
-      <section id="hero-section" className="relative h-[100vh] flex flex-col justify-between px-6 xl:px-32 pt-32 pb-6 md:pb-12 z-10 bg-bg-primary overflow-hidden">
+      <section id="hero-section" className="relative h-[100vh] flex flex-col justify-between px-6 xl:px-32 pt-20 md:pt-32 pb-4 md:pb-12 z-10 bg-bg-primary overflow-hidden">
 
         {/* Sonar / Radar SVG Background */}
         <div className="absolute inset-0 z-0 opacity-100 pointer-events-none" aria-hidden="true">
@@ -325,14 +325,14 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          <div className="hero-subtitle-box max-w-xl self-end mt-12 md:mt-0">
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tighter uppercase hero-reveal-line overflow-hidden">
+          <div className="hero-subtitle-box max-w-xl self-end mt-8 md:mt-0">
+            <h2 className="text-2xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tighter uppercase hero-reveal-line overflow-hidden">
               <span className="block">Channeling Creativity</span>
             </h2>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tighter uppercase hero-reveal-line overflow-hidden">
+            <h2 className="text-2xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tighter uppercase hero-reveal-line overflow-hidden">
               <span className="block">& Passion Through My</span>
             </h2>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tighter uppercase hero-reveal-line overflow-hidden">
+            <h2 className="text-2xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tighter uppercase hero-reveal-line overflow-hidden">
               <span className="block text-accent">Web Dev & Technical Writing.</span>
             </h2>
           </div>
@@ -373,7 +373,7 @@ const Home: React.FC = () => {
 
         {/* Premium Magnetic CTA */}
         <div ref={magneticCtaRef} className="absolute left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-32 bottom-12 z-30 w-full md:w-auto px-6 md:px-0">
-          <Link to="/about" className="group flex flex-col items-center md:items-end w-full">
+          <Link to="/contact" className="group flex flex-col items-center md:items-end w-full">
             <div className="flex items-center space-x-3 mb-6">
               <span className="flex h-2 w-2 rounded-full bg-accent animate-pulse"></span>
               <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.5em]">AVAILABILITY: Q2 2026_OPEN</span>
@@ -714,9 +714,9 @@ const Home: React.FC = () => {
             "The best way to predict the future is to encode it."
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-8 md:gap-12">
-            <a href="mailto:contact@golfwang0x.xyz" target="_blank" rel="noopener noreferrer" className="px-16 md:px-20 py-7 md:py-9 bg-accent text-bg-primary font-black rounded-[2rem] hover:scale-105 transition-all uppercase tracking-[0.3em] text-xs shadow-[0_0_50px_rgba(var(--accent-rgb),0.3)] text-center">
+            <Link to="/contact" className="px-16 md:px-20 py-7 md:py-9 bg-accent text-bg-primary font-black rounded-[2rem] hover:scale-105 transition-all uppercase tracking-[0.3em] text-xs shadow-[0_0_50px_rgba(var(--accent-rgb),0.3)] text-center">
               ESTABLISH CONNECTION
-            </a>
+            </Link>
             <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="px-16 md:px-20 py-7 md:py-9 glass border border-glass-border text-text-primary font-black rounded-[2rem] hover:bg-glass-bg transition-all uppercase tracking-[0.3em] text-xs text-center backdrop-blur-md">
               FOLLOW_FEED
             </a>
