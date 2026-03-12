@@ -45,17 +45,10 @@ const Navbar = () => {
       <div className="flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-3 group">
           <img src="/favicon.svg" alt="" className="w-8 h-8 rounded-lg group-hover:scale-110 transition-transform hidden md:block" />
-          <span ref={brandRef} className="font-black tracking-[-0.1em] text-2xl text-text-primary uppercase flex lg:flex overflow-hidden py-1">
-            <span className="md:hidden lg:inline-flex">
-              {"GOLFWANG0X".split("").map((char, i) => (
-                <span key={i} className="char inline-block translate-y-full">{char === " " ? "\u00A0" : char}</span>
-              ))}
-            </span>
-            <span className="hidden lg:inline-flex">
-              {"GOLFWANG0X".split("").map((char, i) => (
-                <span key={i} className="char inline-block translate-y-full">{char === " " ? "\u00A0" : char}</span>
-              ))}
-            </span>
+          <span ref={brandRef} className="font-black tracking-[-0.1em] text-2xl text-text-primary uppercase overflow-hidden py-1 flex md:hidden lg:flex">
+            {"GOLFWANG0X".split("").map((char, i) => (
+              <span key={i} className="char inline-block translate-y-full">{char === " " ? "\u00A0" : char}</span>
+            ))}
           </span>
         </Link>
 
