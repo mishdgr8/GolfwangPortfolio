@@ -20,6 +20,23 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const { theme, toggleTheme } = useTheme();
   const { pathname } = useLocation();
+  const brandRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (brandRef.current) {
+      const chars = brandRef.current.querySelectorAll('.char');
+      gsap.fromTo(chars,
+        { y: '100%' },
+        {
+          y: '0%',
+          duration: 1,
+          stagger: 0.02,
+          ease: "power4.out",
+          delay: 0.2
+        }
+      );
+    }
+  }, []);
 
   const isActive = (path: string) => pathname === path ? "text-accent" : "hover:text-text-primary";
 
@@ -27,8 +44,12 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 w-full z-50 px-6 py-3 md:px-32 glass border-b border-glass-border">
       <div className="flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-3 group">
-          <img src="/favicon.svg" alt="" className="w-8 h-8 rounded-lg group-hover:scale-110 transition-transform" />
-          <span className="font-black tracking-[-0.1em] text-2xl text-text-primary uppercase">GOLFWANG0X</span>
+          <img src="/favicon.svg" alt="" className="w-8 h-8 rounded-lg group-hover:scale-110 transition-transform hidden lg:block" />
+          <span ref={brandRef} className="font-black tracking-[-0.1em] text-2xl text-text-primary uppercase flex overflow-hidden py-1">
+            {"GOLFWANG0X".split("").map((char, i) => (
+              <span key={i} className="char inline-block translate-y-full">{char === " " ? "\u00A0" : char}</span>
+            ))}
+          </span>
         </Link>
 
         <div className="hidden md:flex items-center space-x-12 text-[12px] font-black tracking-[0.4em] text-text-muted uppercase">
