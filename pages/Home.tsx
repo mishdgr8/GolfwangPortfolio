@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import { portfolioData, projectsData } from '../data';
 import { ArrowRight, TrendingUp, Sparkles, BookOpen, ExternalLink, Terminal, Cpu, PenTool, BarChart, Twitter, Code, X, Monitor, Activity } from 'lucide-react';
@@ -257,6 +258,10 @@ const Home: React.FC = () => {
 
   return (
     <div ref={container} className="relative min-h-screen">
+      <SEO
+        title="Premium Website Builder & Web Developers in Nigeria"
+        description="GOLFWANG0X - Creating high-performance digital experiences. Specializing in Web Development & Technical Writing in Lagos and Abuja."
+      />
 
       {/* Cinematic Sidebar Text */}
       <div className="absolute left-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex" aria-hidden="true">

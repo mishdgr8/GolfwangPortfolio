@@ -30,46 +30,84 @@
         content="Premium Website Builder and Web Developers in Nigeria. Serving Lagos, Abuja, and globally.">
     <meta property="twitter:image" content="https://golfwang-portfolio.vercel.app/og-image.png">
 
-    <!-- JSON-LD Structured Data for Local SEO -->
+    <!-- JSON-LD Structured Data for Local SEO & Sitelinks -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ProfessionalService",
-      "name": "Golfwang0x",
-      "image": "https://golfwang-portfolio.vercel.app/favicon.svg",
-      "@id": "https://golfwang-portfolio.vercel.app/",
-      "url": "https://golfwang-portfolio.vercel.app/",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Lagos",
-        "addressRegion": "Lagos State",
-        "addressCountry": "NG"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 6.5244,
-        "longitude": 3.3792
-      },
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Lagos"
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Golfwang0x",
+        "image": "https://golfwang-portfolio.vercel.app/favicon.svg",
+        "@id": "https://golfwang-portfolio.vercel.app/",
+        "url": "https://golfwang-portfolio.vercel.app/",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lagos",
+          "addressRegion": "Lagos State",
+          "addressCountry": "NG"
         },
-        {
-          "@type": "City",
-          "name": "Abuja"
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 6.5244,
+          "longitude": 3.3792
         },
-        {
-          "@type": "Country",
-          "name": "Nigeria"
-        }
-      ],
-      "description": "Premium Website Builder and Web Developers in Nigeria. Building high-performance sites and providing technical analysis for the global market.",
-      "sameAs": [
-        "https://x.com/golfwang0x",
-        "https://github.com/mishdgr8"
-      ]
-    }
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Lagos"
+          },
+          {
+            "@type": "City",
+            "name": "Abuja"
+          },
+          {
+            "@type": "Country",
+            "name": "Nigeria"
+          }
+        ],
+        "description": "Premium Website Builder and Web Developers in Nigeria. Building high-performance sites and providing technical analysis for the global market.",
+        "sameAs": [
+          "https://x.com/golfwang0x",
+          "https://github.com/mishdgr8"
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "itemListElement": [
+          {
+            "@type": "SiteNavigationElement",
+            "position": 1,
+            "name": "Work",
+            "url": "https://golfwang0x.com/projects"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 2,
+            "name": "Research",
+            "url": "https://golfwang0x.com/research"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 3,
+            "name": "Tweets",
+            "url": "https://golfwang0x.com/tweets"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 4,
+            "name": "About",
+            "url": "https://golfwang0x.com/about"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 5,
+            "name": "Contact",
+            "url": "https://golfwang0x.com/contact"
+          }
+        ]
+      }
+    ]
     </script>
 
     <!-- Resource hints for faster external connections -->

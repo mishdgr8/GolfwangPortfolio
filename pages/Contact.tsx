@@ -1,5 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
+import SEO from '../components/SEO';
 import gsap from 'gsap';
 import { Send, CheckCircle2, Globe, Cpu, Smartphone, Cloud, Code, Zap } from 'lucide-react';
 
@@ -86,6 +87,10 @@ export default function Contact() {
 
     return (
         <div ref={containerRef} className="min-h-screen pt-24 md:pt-40 pb-24 px-6 md:px-32 relative overflow-hidden bg-bg-primary">
+            <SEO
+                title="Contact GOLFWANG0X | Web Development Services in Nigeria"
+                description="Get in touch with GOLFWANG0X for premium web development, software engineering, and technical writing services. Let's build your next digital masterpiece."
+            />
 
             {/* MEGA SCALE BACKGROUND HUB (Behind everything) */}
             <div className="absolute inset-0 flex items-center justify-center z-0 overflow-hidden pointer-events-none">

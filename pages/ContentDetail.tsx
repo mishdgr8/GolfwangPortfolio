@@ -1,5 +1,6 @@
 
 import React from 'react';
+import SEO from '../components/SEO';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { portfolioData } from '../data';
 import { ArrowLeft, ExternalLink, Calendar, Tag, Share2, CornerDownRight } from 'lucide-react';
@@ -25,6 +26,10 @@ const ContentDetail: React.FC = () => {
 
   return (
     <div className="pt-32 pb-48 px-6 reveal">
+      <SEO
+        title={`${item.title} | GOLFWANG0X Intelligence`}
+        description={item.excerpt}
+      />
       <div className="max-w-4xl mx-auto">
         <Link to="/" className="inline-flex items-center text-[10px] font-black tracking-widest text-text-muted hover:text-accent mb-16 group uppercase">
           <ArrowLeft className="w-3 h-3 mr-2 group-hover:-translate-x-1 transition-transform" />

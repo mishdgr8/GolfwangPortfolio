@@ -1,4 +1,5 @@
 import React from 'react';
+import SEO from '../components/SEO';
 import { ExternalLink, Github, ArrowRight, Code } from 'lucide-react';
 import { projectsData } from '../data';
 import { Link } from 'react-router-dom'; // Import Link
@@ -6,6 +7,10 @@ import { Link } from 'react-router-dom'; // Import Link
 const Projects: React.FC = () => {
     return (
         <div className="pt-24 pb-24 relative min-h-screen overflow-hidden">
+            <SEO
+                title="Work & Projects | GOLFWANG0X Portfolio"
+                description="Explore the portfolio of GOLFWANG0X. Featuring high-performance web applications, functional architectures, and aesthetic frontend systems built with React and TypeScript."
+            />
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <div className="mb-20 reveal">
                     <div className="flex items-center space-x-3 mb-6">

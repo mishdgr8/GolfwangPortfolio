@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import { portfolioData } from '../data';
 import { ArrowLeft, TrendingUp, Search, ChevronDown, X } from 'lucide-react';
@@ -21,6 +22,10 @@ const Tweets: React.FC = () => {
 
   return (
     <div className="pt-32 pb-48 px-6 reveal">
+      <SEO
+        title="Signals & Transmissions | GOLFWANG0X"
+        description="Archive of decoded signals, technical deep-dives, and community strategies from GOLFWANG0X. Stay updated with the latest in modular blockchain and web architecture."
+      />
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
           <Link to="/" className="inline-flex items-center text-[10px] font-black tracking-widest text-text-muted hover:text-accent group uppercase">

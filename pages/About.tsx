@@ -1,11 +1,16 @@
 
 import React from 'react';
+import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Shield, Terminal, Zap, Cpu, Search, Fingerprint } from 'lucide-react';
 
 const About: React.FC = () => {
   return (
     <div className="pt-32 pb-48 px-6 reveal relative overflow-hidden">
+      <SEO
+        title="About GOLFWANG0X | Premier Web Developer in Nigeria"
+        description="Learn about GOLFWANG0X, a software engineer and blockchain analyst based in Nigeria. Specializing in high-performance web engineering and technical writing."
+      />
       <div className="max-w-5xl mx-auto relative z-10">
         <Link to="/" className="inline-flex items-center text-[10px] font-black tracking-widest text-text-muted hover:text-accent mb-16 group uppercase">
           <ArrowLeft className="w-3 h-3 mr-2 group-hover:-translate-x-1 transition-transform" />
