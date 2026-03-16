@@ -587,7 +587,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* STACKED PANEL 3: ANALYTICAL POSTS */}
-      <section id="analytical-section" className="stacked-panel px-6 xl:px-32 pt-24 pb-0 xl:pt-32 xl:pb-0 border-t border-glass-border bg-bg-primary shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col">
+      <section id="analytical-section" className="stacked-panel px-6 xl:px-32 pt-24 pb-0 xl:pt-32 xl:pb-0 border-t border-glass-border bg-bg-primary shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col" >
         <div className="max-w-7xl mx-auto w-full flex flex-col">
           <div className="panel-header mb-16">
             <div className="flex items-center space-x-3 mb-6">
@@ -629,7 +629,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* STACKED PANEL 4: MEDIUM RESEARCH */}
-      <section id="medium-section" className="stacked-panel px-6 xl:px-32 py-24 xl:py-32 border-t border-glass-border bg-bg-primary flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
+      <section id="medium-section" className="stacked-panel px-6 xl:px-32 py-24 xl:py-32 border-t border-glass-border bg-bg-primary flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.5)]" >
         <div className="max-w-[1600px] mx-auto w-full flex flex-col">
           <div className="panel-header flex justify-between items-end mb-20">
             <div>
@@ -686,7 +686,7 @@ const Home: React.FC = () => {
                       {article.metrics?.slice(0, 2).map((m, i) => (
                         <div key={i}>
                           <p className="text-[9px] uppercase tracking-[0.3em] text-text-faint font-black mb-2">{m.label}</p>
-                          <p className="text-2xl font-black text-text-secondary">{m.value}</p>
+                          <p className="text-xl font-black text-text-secondary">{m.value}</p>
                         </div>
                       ))}
                     </div>
@@ -702,7 +702,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* FINAL NOT PINNED SECTION: CONTACT */}
-      <section className="px-6 xl:px-32 py-32 md:py-48 relative overflow-hidden border-t border-glass-border bg-bg-primary z-[60]">
+      <section className="px-6 xl:px-32 py-32 md:py-48 relative overflow-hidden border-t border-glass-border bg-bg-primary z-[60]" >
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <div className="inline-block px-6 py-3 rounded-full bg-accent/10 border border-accent/30 text-[11px] font-black text-accent uppercase tracking-[0.4em] mb-12 animate-pulse">
             SYSTEMS ONLINE / OPEN_FOR_OPS
@@ -713,13 +713,28 @@ const Home: React.FC = () => {
           <p className="text-text-muted mb-16 md:mb-24 text-2xl md:text-4xl font-medium max-w-3xl mx-auto leading-tight italic tracking-tighter">
             "The best way to predict the future is to encode it."
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-8 md:gap-12">
+          <div className="flex flex-col sm:flex-row justify-center gap-8 md:gap-12 mb-24">
             <Link to="/contact" className="px-16 md:px-20 py-7 md:py-9 bg-accent text-bg-primary font-black rounded-[2rem] hover:scale-105 transition-all uppercase tracking-[0.3em] text-xs shadow-[0_0_50px_rgba(var(--accent-rgb),0.3)] text-center">
               ESTABLISH CONNECTION
             </Link>
             <a href="https://x.com/golfwang0x" target="_blank" rel="noopener noreferrer" className="px-16 md:px-20 py-7 md:py-9 glass border border-glass-border text-text-primary font-black rounded-[2rem] hover:bg-glass-bg transition-all uppercase tracking-[0.3em] text-xs text-center backdrop-blur-md">
               FOLLOW_FEED
             </a>
+          </div>
+
+          {/* SUBTLE SEO METADATA FOOTER */}
+          <div className="pt-12 border-t border-glass-border opacity-20">
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-[9px] font-black uppercase tracking-[0.3em] text-text-muted">
+              <span>NODE: LAGOS_NG.EDGE</span>
+              <span>//</span>
+              <span>GEO: 6.5244° N, 3.3792° E</span>
+              <span>//</span>
+              <span>SVC: WEB_ARCHITECTURE_LAGOS</span>
+              <span>//</span>
+              <span>SVC: SYSTEMS_ENGINEERING_ABUJA</span>
+              <span>//</span>
+              <span>SVC: NIGERIA_TECH_STRATEGY</span>
+            </div>
           </div>
         </div>
       </section>

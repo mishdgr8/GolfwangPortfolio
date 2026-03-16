@@ -37,7 +37,7 @@ const About: React.FC = () => {
             <div>
               <h3 className="text-[11px] font-black text-accent tracking-[0.4em] uppercase mb-6">/ THE_BIO</h3>
               <p className="text-lg text-text-muted leading-relaxed font-medium">
-                Born out of the early DeFi summer, Golfwang0x has evolved from a retail participant into a specialized analyst focusing on the modular ecosystem. My work focuses on uncovering hidden supply dynamics, Sybil detection in emerging testnets, and technical breakdowns that even your developer would respect.
+                Based in Nigeria, Golfwang0x is a premier website builder and web developer serving clients in Lagos, Abuja, and globally. Born out of the early DeFi summer, I have evolved from a retail participant into a specialized analyst and system architect. My work focuses on uncovering hidden supply dynamics, high-performance web engineering, and technical breakdowns that even your developer would respect.
               </p>
             </div>
 
