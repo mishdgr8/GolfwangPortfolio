@@ -344,7 +344,7 @@ const Home: React.FC = () => {
         </div>
 
         {/* Floating Play Reel Card */}
-        <div className="floating-reel-card absolute left-6 md:left-32 bottom-[10%] md:bottom-[15%] w-[190px] md:w-[340px] z-30 group cursor-pointer hidden md:block">
+        <div className="floating-reel-card absolute xl:left-32 xl:bottom-[15%] xl:w-[340px] z-30 group cursor-pointer hidden xl:block">
           <div className="relative aspect-[3/4] rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-glass-border shadow-2xl glass transition-transform duration-700 group-hover:scale-[1.02]">
             <img
               src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=800"
