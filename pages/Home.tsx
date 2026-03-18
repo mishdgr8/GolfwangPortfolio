@@ -50,8 +50,7 @@ const Home: React.FC = () => {
   const topSignal = sortedByViews.slice(0, 6);
   const analyticalPosts = sortedByViews.slice(6, 12);
   const mediumResearch = portfolioData.filter(item => item.type === 'article').slice(0, 3);
-  const featuredProjects = projectsData.filter(item => item.featured).slice(0, 3);
-
+  const featuredProjects = projectsData.filter(item => item.featured).slice(0, 4);
   useGSAP(() => {
     // ── MOBILE: skip all GSAP, just make hidden elements visible ──
     if (isMobile) {
