@@ -606,6 +606,17 @@ export const portfolioData: PortfolioItem[] = [
 
 export const projectsData: ProjectItem[] = [
   {
+    id: 'project-umizoi',
+    title: 'Umizoi',
+    excerpt: 'A premium digital experience for an elite Omakase restaurant, blending minimalist design with immersive visual storytelling.',
+    longDescription: 'Engineered a high-end web platform that translates the artistry of Japanese Omakase dining into a cinematic digital journey. Features fluid transitions, minimalist typography, and a refined user interface tailored for an evocative brand experience.',
+    techStack: ["React", "Tailwind CSS", "GSAP", "Lenis"],
+    imageUrl: "https://images.unsplash.com/photo-1579027989536-b7b1f875659b?auto=format&fit=crop&q=80&w=800",
+    demoUrl: "https://umizoi.pages.dev/",
+    date: 'Mar 2026',
+    featured: true,
+  },
+  {
     id: 'project-tefa',
     title: 'TÉFA',
     excerpt: 'A high-end editorial gallery platform with intricate rich-text serialization and aesthetic glassmorphism elements.',
@@ -632,8 +643,8 @@ export const projectsData: ProjectItem[] = [
   {
     id: 'project-golfwang-portfolio',
     title: 'Golfwang0x Portfolio',
-    excerpt: 'A terminal-inspired, cinematic web3 research sanctuary.',
-    longDescription: 'Architected my personal portfolio to act as a definitive "Signal" node. Combines data-driven telemetry UI with immersive background layers, bridging my identity as a technical content strategist and frontend developer.',
+    excerpt: 'A professional, cinematic showcase of web3 research and development.',
+    longDescription: 'Architected my personal portfolio to showcase my work as a technical content strategist and frontend developer. Combines data-driven design with immersive visual layers to create a premium user experience.',
     techStack: ["React", "TypeScript", "Vite", "Lucide Icons"],
     imageUrl: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=50&w=800&fm=webp",
     demoUrl: "https://golfwang-portfolio.vercel.app/",

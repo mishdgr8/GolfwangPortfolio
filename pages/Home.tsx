@@ -50,7 +50,7 @@ const Home: React.FC = () => {
   const topSignal = sortedByViews.slice(0, 6);
   const analyticalPosts = sortedByViews.slice(6, 12);
   const mediumResearch = portfolioData.filter(item => item.type === 'article').slice(0, 3);
-  const featuredProjects = projectsData.filter(item => item.featured).slice(0, 4);
+  const featuredProjects = projectsData.filter(item => item.featured).slice(0, 5);
   useGSAP(() => {
     // ── MOBILE: skip all GSAP, just make hidden elements visible ──
     if (isMobile) {
@@ -266,7 +266,7 @@ const Home: React.FC = () => {
       <div className="absolute left-6 top-0 bottom-0 items-center z-50 pointer-events-none hidden xl:flex" aria-hidden="true">
         <div className="sidebar-text-cont rotate-180 pointer-events-auto" style={{ writingMode: 'vertical-rl', visibility: 'hidden' }}>
           <span className="text-[10px] font-black tracking-[0.4em] text-text-secondary uppercase hover:text-accent transition-colors cursor-pointer">
-            GOLFWANG0X // SYSTEMS ONLINE
+            GOLFWANG0X // PORTFOLIO
           </span>
         </div>
       </div>
@@ -380,11 +380,11 @@ const Home: React.FC = () => {
           <Link to="/contact" className="group flex flex-col items-center md:items-end w-full">
             <div className="flex items-center space-x-3 mb-6">
               <span className="flex h-2 w-2 rounded-full bg-accent animate-pulse"></span>
-              <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.5em]">AVAILABILITY: Q2 2026_OPEN</span>
+              <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.5em]">AVAILABILITY: Q2 2026</span>
             </div>
             <div className="flex items-center space-x-4 md:space-x-8">
               <div className="flex flex-col items-center md:items-end">
-                <span className="text-[11px] font-black text-accent uppercase tracking-[0.4em] mb-2 font-mono">INITIATE_BUILD</span>
+                <span className="text-[11px] font-black text-accent uppercase tracking-[0.4em] mb-2 font-mono">START_A_PROJECT</span>
                 <span className="text-2xl md:text-3xl font-black text-text-primary uppercase tracking-tighter leading-none group-hover:text-accent transition-colors whitespace-nowrap">WORK WITH US.</span>
               </div>
               <div className="w-16 h-16 md:w-24 md:h-24 rounded-full border border-glass-border flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all duration-500 shadow-2xl relative overflow-hidden group-hover:scale-110">
@@ -446,7 +446,7 @@ const Home: React.FC = () => {
                               className="absolute top-6 right-6 z-50 bg-bg-primary/90 hover:bg-accent hover:text-bg-primary text-accent border border-accent/20 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.3em] flex items-center space-x-2 transition-all shadow-[0_0_20px_rgba(var(--accent-rgb),0.2)]"
                             >
                               <X className="w-3 h-3" />
-                              <span>Exit Interface</span>
+                              <span>CLOSE PREVIEW</span>
                             </button>
                             {/* Active Scanline Overlay */}
                             <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden opacity-10">
@@ -478,7 +478,7 @@ const Home: React.FC = () => {
                                     <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
                                   </div>
                                   <span className="text-[10px] md:text-[11px] font-black text-accent uppercase tracking-[0.4em] font-mono group-hover/launcher:text-white transition-colors">
-                                    CLICK_TO_INITIATE_PREVIEW_
+                                    VIEW_PROJECT_PREVIEW_
                                   </span>
                                 </div>
                               </div>
@@ -491,7 +491,7 @@ const Home: React.FC = () => {
 
                               {/* Telemetry data overlay */}
                               <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full px-12 flex justify-between opacity-0 group-hover/launcher:opacity-100 transition-opacity duration-500">
-                                <span className="text-[8px] font-mono text-zinc-600 uppercase">SYS.STATUS: RDY</span>
+                                <span className="text-[8px] font-mono text-zinc-600 uppercase">STATUS: AVAILABLE</span>
                                 <span className="text-[8px] font-mono text-zinc-600 uppercase">ID: {project.id?.split('-').pop()}</span>
                               </div>
                             </div>
@@ -501,7 +501,7 @@ const Home: React.FC = () => {
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center bg-[#050505] relative overflow-hidden px-8 text-center">
                         <Monitor className="w-12 h-12 text-text-faint mb-4 opacity-50" />
-                        <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.3em] font-mono mb-2">Internal_Interface</span>
+                        <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.3em] font-mono mb-2">Project Details</span>
                         <h3 className="text-lg font-black text-text-secondary uppercase tracking-tight">{project.title}</h3>
                       </div>
                     )}
@@ -623,7 +623,7 @@ const Home: React.FC = () => {
                   </div>
                 </div>
                 <div className="mt-12 md:mt-0 flex items-center space-x-4 text-[11px] font-black tracking-[0.4em] uppercase text-text-faint group-hover:text-text-primary transition-colors">
-                  <span>DECODE_SIGNAL</span>
+                  <span>VIEW ARTICLE</span>
                   <ArrowRight className="w-6 h-6 group-hover:translate-x-3 transition-transform text-accent" />
                 </div>
               </Link>
@@ -709,10 +709,10 @@ const Home: React.FC = () => {
       <section className="px-6 xl:px-32 py-32 md:py-48 relative overflow-hidden border-t border-glass-border bg-bg-primary z-[60]" >
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <div className="inline-block px-6 py-3 rounded-full bg-accent/10 border border-accent/30 text-[11px] font-black text-accent uppercase tracking-[0.4em] mb-12 animate-pulse">
-            SYSTEMS ONLINE / OPEN_FOR_OPS
+            AVAILABLE FOR WORK
           </div>
           <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-9xl font-black tracking-tighter mb-12 md:mb-16 leading-[0.8] uppercase">
-            Start the <br /> <span className="text-accent drop-shadow-[0_0_50px_rgba(var(--accent-rgb),0.4)]">Transmission.</span>
+            Start a <br /> <span className="text-accent drop-shadow-[0_0_50px_rgba(var(--accent-rgb),0.4)]">Conversation.</span>
           </h2>
           <p className="text-text-muted mb-16 md:mb-24 text-2xl md:text-4xl font-medium max-w-3xl mx-auto leading-tight italic tracking-tighter">
             "The best way to predict the future is to encode it."
@@ -729,15 +729,15 @@ const Home: React.FC = () => {
           {/* SUBTLE SEO METADATA FOOTER */}
           <div className="pt-12 border-t border-glass-border opacity-20">
             <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-[9px] font-black uppercase tracking-[0.3em] text-text-muted">
-              <span>NODE: LAGOS_NG.EDGE</span>
+              <span>LOCATED: LAGOS, NG</span>
               <span>//</span>
               <span>GEO: 6.5244° N, 3.3792° E</span>
               <span>//</span>
-              <span>SVC: WEB_ARCHITECTURE_LAGOS</span>
+              <span>WEB ARCHITECTURE</span>
               <span>//</span>
-              <span>SVC: SYSTEMS_ENGINEERING_ABUJA</span>
+              <span>SYSTEMS ENGINEERING</span>
               <span>//</span>
-              <span>SVC: NIGERIA_TECH_STRATEGY</span>
+              <span>NIGERIA TECH STRATEGY</span>
             </div>
           </div>
         </div>
